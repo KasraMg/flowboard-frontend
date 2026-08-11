@@ -1,15 +1,16 @@
-'use client';
+"use client";
 
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { useApp } from '@/src/providers/app-provider';
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useApp } from "@/src/providers/app-provider";
 
 export default function Home() {
   const router = useRouter();
   const { isAuthenticated } = useApp();
 
   useEffect(() => {
-    router.replace(isAuthenticated ? '/dashboard' : '/login');
+    // router.replace(isAuthenticated ? "/dashboard" : "/login");
+    router.replace("/dashboard");
   }, [isAuthenticated, router]);
 
   return (
