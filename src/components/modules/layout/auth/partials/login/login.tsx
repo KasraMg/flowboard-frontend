@@ -9,8 +9,16 @@ import { Input } from "@/src/components/ui/input";
 import { Label } from "@/src/components/ui/label";
 import { Lock, Mail } from "lucide-react";
 import Link from "next/link";
+import { useLogin } from "./hook";
 
 const Login = ({ setStep }: { setStep: (step: string) => void }) => {
+  const {
+    register,
+    onSubmit,
+    formState: { errors },
+    isLoading,
+    error,
+  } = useLogin();
   return (
     <>
       <DialogHeader>
@@ -24,7 +32,7 @@ const Login = ({ setStep }: { setStep: (step: string) => void }) => {
         </DialogTitle>
       </DialogHeader>
       <div className="space-y-6">
-        <form className="space-y-4">
+        <form onSubmit={onSubmit} className="space-y-4">
           <div className="space-y-1.5">
             <Label htmlFor="email">Email</Label>
             <div className="relative pt-1">
@@ -34,8 +42,14 @@ const Login = ({ setStep }: { setStep: (step: string) => void }) => {
                 type="email"
                 placeholder="you@company.com"
                 className="pl-9"
+                {...register("email")}
               />
             </div>
+            {errors.email && (
+              <p className="text-sm text-red-500 pt-1">
+                {errors.email.message}
+              </p>
+            )}
           </div>
 
           <div className="space-y-1.5">
@@ -55,8 +69,14 @@ const Login = ({ setStep }: { setStep: (step: string) => void }) => {
                 type={"password"}
                 placeholder="••••••••"
                 className="pl-9 pr-9"
+                {...register("password")}
               />
             </div>
+            {errors.password && (
+              <p className="text-sm text-red-500 pt-1">
+                {errors.password.message}
+              </p>
+            )}
           </div>
 
           <div className="flex items-center gap-2">
@@ -69,7 +89,7 @@ const Login = ({ setStep }: { setStep: (step: string) => void }) => {
             </Label>
           </div>
 
-          <Button type="submit" className="w-full">
+          <Button loading={isLoading} type="submit" className="w-full">
             Sign in
           </Button>
         </form>
