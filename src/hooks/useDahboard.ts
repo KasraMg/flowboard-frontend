@@ -2,8 +2,8 @@ import { useQuery } from "@tanstack/react-query";
 import Cookies from "js-cookie";
 import { backendUrl } from "../lib/helpers";
 
-export const fetchMe = async () => {
-  const response = await fetch(`${backendUrl}/auth/me`, {
+export const fetchDashboard = async () => {
+  const response = await fetch(`${backendUrl}/dashboard`, {
     headers: {
       Authorization: `Bearer ${Cookies.get("token")}`,
     },
@@ -19,13 +19,13 @@ export const fetchMe = async () => {
   return response.json();
 };
 
-const useUser = () => {
+const useDashboard = () => {
   return useQuery({
-    queryKey: ["user"],
-    queryFn: fetchMe,
+    queryKey: ["dashboard"],
+    queryFn: fetchDashboard,
     enabled: true,
     retry: false,
   });
 };
 
-export default useUser;
+export default useDashboard;

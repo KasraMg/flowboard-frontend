@@ -1,11 +1,12 @@
 "use client";
 
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Cookies from "js-cookie";
 import { backendUrl } from "@/src/lib/helpers";
+import { toast } from "sonner";
 
 const loginSchema = z.object({
   email: z
@@ -45,6 +46,7 @@ const loginRequest = async (data: LoginFormValues): Promise<LoginResponse> => {
 };
 
 export const useLogin = (setOpen: (open: boolean) => void) => {
+  const queryClient = useQueryClient();
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -65,7 +67,13 @@ export const useLogin = (setOpen: (open: boolean) => void) => {
     mutation.mutate(data, {
       onSuccess(data) {
         Cookies.set("token", data.access_token);
+        queryClient.invalidateQueries({
+          queryKey: ["user"],
+        });
         setOpen(false);
+      },
+      onError(error) {
+        toast.error(error.message);
       },
     });
   });
