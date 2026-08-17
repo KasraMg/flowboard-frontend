@@ -1,11 +1,12 @@
 "use client";
 
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Cookies from "js-cookie";
 import { backendUrl } from "@/src/lib/helpers";
+import { toast } from "sonner";
 
 const registerSchema = z
   .object({
@@ -66,6 +67,7 @@ const registerRequest = async (
 };
 
 export const useRegister = (setOpen: (open: boolean) => void) => {
+  const queryClient = useQueryClient();
   const form = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
@@ -82,6 +84,12 @@ export const useRegister = (setOpen: (open: boolean) => void) => {
 
     onSuccess: (data) => {
       localStorage.setItem("access_token", data.access_token);
+      queryClient.invalidateQueries({
+        queryKey: ["user"],
+      });
+    },
+    onError(error) {
+      toast.error(error.message);
     },
   });
 

@@ -8,7 +8,7 @@ export default function AppGroupLayout({
 }) {
   return (
     <AuthGuard>
-      <AppShell>{/* {children} */}</AppShell>
+      <AppShell>{children}</AppShell>
     </AuthGuard>
   );
 }

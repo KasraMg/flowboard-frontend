@@ -1,6 +1,5 @@
 "use client";
 
-import { currentUser } from "@/src/lib/mock-data";
 import { ChevronDown, User, Settings, LogOut } from "lucide-react";
 import router from "next/router";
 import {
@@ -23,16 +22,16 @@ const UserMenu = () => {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <button className="flex items-center gap-2 rounded-lg p-1 transition-colors hover:bg-accent">
-          <UserAvatar user={currentUser} size="md" />
+          <UserAvatar user={data.data.user} size="md" />
           <ChevronDown className="hidden h-4 w-4 text-muted-foreground sm:block" />
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">
         <DropdownMenuLabel>
           <div className="flex flex-col">
-            <span className="text-sm font-medium">{currentUser.name}</span>
+            <span className="text-sm font-medium">{data.data.user.name}</span>
             <span className="truncate text-xs font-normal text-muted-foreground">
-              {currentUser.email}
+              {data.data.user.email}
             </span>
           </div>
         </DropdownMenuLabel>
