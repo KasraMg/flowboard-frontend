@@ -1,136 +1,224 @@
-'use client';
+"use client";
 
-import * as React from 'react';
-import { Image as ImageIcon } from 'lucide-react';
-import { useApp } from '@/src/providers/app-provider';
-import { Button } from '@/src/components/ui/button';
-import { Input } from '@/src/components/ui/input';
-import { Label } from '@/src/components/ui/label';
-import { Textarea } from '@/src/components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/src/components/ui/select';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/src/components/ui/dialog';
-import { PROJECT_COLORS } from '@/src/lib/types';
-import { cn } from '@/src/lib/utils';
-import { toast } from 'sonner';
-import type { Project } from '@/src/lib/types';
+import { useEffect, useState } from "react";
+import { Plus } from "lucide-react";
+import { toast } from "sonner";
+
+import { Button } from "@/src/components/ui/button";
+import { Input } from "@/src/components/ui/input";
+import { Label } from "@/src/components/ui/label";
+import { Textarea } from "@/src/components/ui/textarea";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+  DialogTrigger,
+} from "@/src/components/ui/dialog";
+
+import { cn } from "@/src/lib/utils";
+
+import {
+  CreateProjectPayload,
+  ProjectBackground,
+  useCreateProject,
+} from "@/src/hooks/useProject";
+import { PROJECT_BACKGROUNDS } from "@/src/lib/project-backgrounds";
 
 export function ProjectFormModal({
-  open, onOpenChange, editProject,
+  editProject,
 }: {
-  open: boolean;
-  onOpenChange: (v: boolean) => void;
-  editProject?: Project | null;
+  editProject?: any | null;
 }) {
-  const { createProject, updateProject, workspaces, activeWorkspaceId } = useApp();
-  const [name, setName] = React.useState('');
-  const [description, setDescription] = React.useState('');
-  const [color, setColor] = React.useState(PROJECT_COLORS[0]);
-  const [visibility, setVisibility] = React.useState<Project['visibility']>('workspace');
-  const [workspaceId, setWorkspaceId] = React.useState(activeWorkspaceId);
-  const [errors, setErrors] = React.useState<Record<string, string>>({});
+  const [open, setOpen] = useState(false);
 
-  React.useEffect(() => {
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+
+  const [background, setBackground] = useState<ProjectBackground>(
+    ProjectBackground.OCEAN,
+  );
+
+  const [errors, setErrors] = useState<Record<string, string>>({});
+
+  const createProjectMutation = useCreateProject();
+
+  useEffect(() => {
     if (editProject) {
-      setName(editProject.name);
+      setName(editProject.title);
       setDescription(editProject.description);
-      setColor(editProject.backgroundColor);
-      setVisibility(editProject.visibility);
-      setWorkspaceId(editProject.workspaceId);
+      setBackground(editProject.background);
     } else {
-      setName('');
-      setDescription('');
-      setColor(PROJECT_COLORS[0]);
-      setVisibility('workspace');
-      setWorkspaceId(activeWorkspaceId);
+      setName("");
+      setDescription("");
+      setBackground(ProjectBackground.OCEAN);
     }
+
     setErrors({});
-  }, [editProject, open, activeWorkspaceId]);
+  }, [editProject, open]);
 
   const handleSubmit = () => {
-    const e: Record<string, string> = {};
-    if (!name.trim()) e.name = 'Project name is required';
-    setErrors(e);
-    if (Object.keys(e).length > 0) return;
+    const validationErrors: Record<string, string> = {};
+
+    if (!name.trim()) {
+      validationErrors.name = "Project name is required";
+    }
+
+    setErrors(validationErrors);
+
+    if (Object.keys(validationErrors).length > 0) {
+      return;
+    }
 
     if (editProject) {
-      updateProject(editProject.id, { name, description, backgroundColor: color, visibility, workspaceId });
-      toast.success('Project updated');
-    } else {
-      createProject({ name, description, backgroundColor: color, visibility, workspaceId });
-      toast.success('Project created', { description: `"${name}" is ready to go.` });
+      return;
     }
-    onOpenChange(false);
+
+    const payload: CreateProjectPayload = {
+      title: name.trim(),
+      description: description.trim(),
+      background,
+    };
+
+    createProjectMutation.mutate(payload, {
+      onSuccess: () => {
+        toast.success("Project created successfully");
+
+        setOpen(false);
+
+        setName("");
+        setDescription("");
+        setBackground(ProjectBackground.OCEAN);
+        setErrors({});
+      },
+
+      onError: (error) => {
+        toast.error(error.message || "Failed to create project");
+      },
+    });
   };
 
+  const isLoading = createProjectMutation.isPending;
+
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button className="gap-2 self-start sm:self-auto">
+          <Plus className="h-4 w-4" />
+          New Project
+        </Button>
+      </DialogTrigger>
+
       <DialogContent className="max-w-lg">
         <DialogHeader>
-          <DialogTitle>{editProject ? 'Edit project' : 'Create project'}</DialogTitle>
+          <DialogTitle>
+            {editProject ? "Edit project" : "Create project"}
+          </DialogTitle>
         </DialogHeader>
 
         <div className="space-y-4">
-          {/* Preview */}
-          <div className="relative h-24 overflow-hidden rounded-xl" style={{ backgroundColor: color }}>
+          <div
+            className="relative h-24 overflow-hidden rounded-xl"
+            style={{
+              background: PROJECT_BACKGROUNDS[background],
+            }}
+          >
             <div className="absolute inset-0 bg-grid opacity-20" />
+
             <div className="absolute inset-0 flex items-center justify-center">
-              <span className="text-lg font-semibold text-white drop-shadow">{name || 'Project name'}</span>
+              <span className="text-lg font-semibold text-white drop-shadow">
+                {name || "Project name"}
+              </span>
             </div>
           </div>
 
           <div className="space-y-1.5">
             <Label htmlFor="proj-name">Project name</Label>
-            <Input id="proj-name" value={name} onChange={(e) => setName(e.target.value)} placeholder="e.g. Mobile App Redesign" aria-invalid={!!errors.name} />
-            {errors.name && <p className="text-xs text-destructive">{errors.name}</p>}
+
+            <Input
+              id="proj-name"
+              value={name}
+              onChange={(e) => {
+                setName(e.target.value);
+
+                if (errors.name) {
+                  setErrors((prev) => ({
+                    ...prev,
+                    name: "",
+                  }));
+                }
+              }}
+              placeholder="e.g. Mobile App Redesign"
+              aria-invalid={!!errors.name}
+              disabled={isLoading}
+            />
+
+            {errors.name && (
+              <p className="text-xs text-destructive">{errors.name}</p>
+            )}
           </div>
 
           <div className="space-y-1.5">
             <Label htmlFor="proj-desc">Description</Label>
-            <Textarea id="proj-desc" value={description} onChange={(e) => setDescription(e.target.value)} placeholder="What is this project about?" rows={3} />
+
+            <Textarea
+              id="proj-desc"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="What is this project about?"
+              rows={3}
+              disabled={isLoading}
+            />
           </div>
 
           <div className="space-y-1.5">
-            <Label>Project color</Label>
+            <Label>Project background</Label>
+
             <div className="flex flex-wrap gap-2">
-              {PROJECT_COLORS.map((c) => (
+              {Object.values(ProjectBackground).map((item) => (
                 <button
-                  key={c}
+                  key={item}
                   type="button"
-                  onClick={() => setColor(c)}
-                  className={cn('h-8 w-8 rounded-lg transition-all', color === c ? 'ring-2 ring-primary ring-offset-2 ring-offset-background' : 'hover:scale-110')}
-                  style={{ backgroundColor: c }}
+                  disabled={isLoading}
+                  onClick={() => setBackground(item)}
+                  className={cn(
+                    "h-9 w-9 rounded-lg transition-all",
+                    "disabled:cursor-not-allowed disabled:opacity-50",
+                    background === item
+                      ? "ring-2 ring-primary ring-offset-2 ring-offset-background"
+                      : "hover:scale-110",
+                  )}
+                  style={{
+                    background: PROJECT_BACKGROUNDS[item],
+                  }}
+                  aria-label={`Select ${item} background`}
                 />
               ))}
             </div>
-          </div>
 
-          <div className="grid grid-cols-2 gap-3">
-            <div className="space-y-1.5">
-              <Label>Visibility</Label>
-              <Select value={visibility} onValueChange={(v) => setVisibility(v as Project['visibility'])}>
-                <SelectTrigger><SelectValue /></SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="private">Private</SelectItem>
-                  <SelectItem value="workspace">Workspace</SelectItem>
-                  <SelectItem value="public">Public</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="space-y-1.5">
-              <Label>Workspace</Label>
-              <Select value={workspaceId} onValueChange={setWorkspaceId}>
-                <SelectTrigger><SelectValue /></SelectTrigger>
-                <SelectContent>
-                  {workspaces.map((w) => <SelectItem key={w.id} value={w.id}>{w.name}</SelectItem>)}
-                </SelectContent>
-              </Select>
-            </div>
+            <p className="text-xs text-muted-foreground capitalize">
+              Selected: {background}
+            </p>
           </div>
         </div>
 
         <DialogFooter>
-          <Button variant="outline" onClick={() => onOpenChange(false)}>Cancel</Button>
-          <Button onClick={handleSubmit}>{editProject ? 'Save changes' : 'Create project'}</Button>
+          <Button
+            variant="outline"
+            onClick={() => setOpen(false)}
+            disabled={isLoading}
+          >
+            Cancel
+          </Button>
+
+          <Button onClick={handleSubmit} disabled={isLoading}>
+            {isLoading
+              ? "Creating..."
+              : editProject
+                ? "Save changes"
+                : "Create project"}
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

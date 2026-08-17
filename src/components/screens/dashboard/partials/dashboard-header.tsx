@@ -1,13 +1,9 @@
 "use client";
-
-import { Plus } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { Button } from "@/src/components/ui/button";
 import useUser from "@/src/hooks/useUser";
+import { ProjectFormModal } from "../../projects/partials/project-form-modal";
 
 export function DashboardHeader() {
   const { data } = useUser();
-  const router = useRouter();
 
   const hour = new Date().getHours();
 
@@ -26,13 +22,7 @@ export function DashboardHeader() {
         </p>
       </div>
 
-      <Button
-        onClick={() => router.push("/projects")}
-        className="gap-2 self-start sm:self-auto"
-      >
-        <Plus className="h-4 w-4" />
-        New Project
-      </Button>
+      <ProjectFormModal />
     </div>
   );
 }
