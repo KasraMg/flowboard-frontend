@@ -19,9 +19,9 @@ const AuthModal = () => {
       </DialogTrigger>
       <DialogContent className="max-h-[90vh] max-w-xl overflow-y-auto">
         {step === "login" ? (
-          <Login setStep={setStep} />
+          <Login setOpen={setOpen} setStep={setStep} />
         ) : (
-          <Register setStep={setStep} />
+          <Register setOpen={setOpen} setStep={setStep} />
         )}
       </DialogContent>
     </Dialog>

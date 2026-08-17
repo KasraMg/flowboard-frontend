@@ -9,14 +9,19 @@ import { Label } from "@/src/components/ui/label";
 import { Lock, Mail, User } from "lucide-react";
 import { useRegister } from "./hook";
 
-const Register = ({ setStep }: { setStep: (step: string) => void }) => {
+const Register = ({
+  setStep,
+  setOpen,
+}: {
+  setOpen: (open: boolean) => void;
+  setStep: (step: string) => void;
+}) => {
   const {
     register,
     onSubmit,
     formState: { errors },
-    isLoading,
-    error,
-  } = useRegister();
+    isLoading, 
+  } = useRegister(setOpen);
   return (
     <>
       <DialogHeader>
@@ -68,7 +73,9 @@ const Register = ({ setStep }: { setStep: (step: string) => void }) => {
             </div>
 
             {errors.email && (
-              <p className="text-sm text-red-500 pt-1">{errors.email.message}</p>
+              <p className="text-sm text-red-500 pt-1">
+                {errors.email.message}
+              </p>
             )}
           </div>
 
@@ -76,6 +83,7 @@ const Register = ({ setStep }: { setStep: (step: string) => void }) => {
             <Label htmlFor="age">Age</Label>
 
             <Input
+              className="mt-1"
               id="age"
               type="number"
               placeholder="20"

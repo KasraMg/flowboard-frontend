@@ -4,6 +4,8 @@ import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import Cookies from "js-cookie";
+import { backendUrl } from "@/src/lib/helpers";
 
 const registerSchema = z
   .object({
@@ -22,13 +24,9 @@ const registerSchema = z
       .min(18, "You must be at least 18 years old")
       .max(100, "Please enter a valid age"),
 
-    password: z
-      .string()
-      .min(8, "Password must be at least 8 characters"),
+    password: z.string().min(8, "Password must be at least 8 characters"),
 
-    confirmPassword: z
-      .string()
-      .min(1, "Please confirm your password"),
+    confirmPassword: z.string().min(1, "Please confirm your password"),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords do not match",
@@ -46,7 +44,7 @@ const registerRequest = async (
 ): Promise<RegisterResponse> => {
   const { confirmPassword, ...registerData } = data;
 
-  const response = await fetch("http://localhost:3000/auth/register", {
+  const response = await fetch(`${backendUrl}/auth/register`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -67,7 +65,7 @@ const registerRequest = async (
   return response.json();
 };
 
-export const useRegister = () => {
+export const useRegister = (setOpen: (open: boolean) => void) => {
   const form = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
@@ -88,7 +86,12 @@ export const useRegister = () => {
   });
 
   const onSubmit = form.handleSubmit((data) => {
-    mutation.mutate(data);
+    mutation.mutate(data, {
+      onSuccess(data) {
+        Cookies.set("token", data.access_token);
+        setOpen(false);
+      },
+    });
   });
 
   return {

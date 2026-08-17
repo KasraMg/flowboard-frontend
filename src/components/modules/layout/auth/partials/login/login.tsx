@@ -11,14 +11,19 @@ import { Lock, Mail } from "lucide-react";
 import Link from "next/link";
 import { useLogin } from "./hook";
 
-const Login = ({ setStep }: { setStep: (step: string) => void }) => {
+const Login = ({
+  setOpen,
+  setStep,
+}: {
+  setOpen: (open: boolean) => void;
+  setStep: (step: string) => void;
+}) => {
   const {
     register,
     onSubmit,
     formState: { errors },
-    isLoading,
-    error,
-  } = useLogin();
+    isLoading, 
+  } = useLogin(setOpen);
   return (
     <>
       <DialogHeader>

@@ -12,12 +12,14 @@ import {
   DropdownMenuTrigger,
 } from "../../ui/dropdown-menu";
 import { UserAvatar } from "../user-avatar";
-import { useState } from "react";
 import AuthModal from "./auth/auth-modal";
+import useUser from "@/src/hooks/useUser";
 
 const UserMenu = () => {
-  const [login, setLogin] = useState(false);
-  return login ? (
+  const { data } = useUser();
+  console.log(data);
+
+  return data ? (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <button className="flex items-center gap-2 rounded-lg p-1 transition-colors hover:bg-accent">

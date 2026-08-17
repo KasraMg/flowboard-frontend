@@ -6,6 +6,8 @@ import { AppProvider } from "@/src/providers/app-provider";
 import { Toaster } from "@/src/components/ui/toaster";
 import { Toaster as SonnerToaster } from "@/src/components/ui/sonner";
 import QueryWrapper from "../providers/query-wrapper";
+import Hydrated from "../providers/hydrated";
+import { getUser } from "../lib/server-fetches";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -40,7 +42,9 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <AppProvider>{children}</AppProvider>
+            <Hydrated queryKey={["user"]} queryFn={getUser}>
+              <AppProvider>{children}</AppProvider>
+            </Hydrated>
 
             <Toaster />
             <SonnerToaster />

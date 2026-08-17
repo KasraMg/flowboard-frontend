@@ -4,6 +4,8 @@ import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import Cookies from "js-cookie";
+import { backendUrl } from "@/src/lib/helpers";
 
 const loginSchema = z.object({
   email: z
@@ -21,7 +23,7 @@ type LoginResponse = {
 };
 
 const loginRequest = async (data: LoginFormValues): Promise<LoginResponse> => {
-  const response = await fetch("http://localhost:3000/auth/login", {
+  const response = await fetch(`${backendUrl}/auth/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -42,7 +44,7 @@ const loginRequest = async (data: LoginFormValues): Promise<LoginResponse> => {
   return response.json();
 };
 
-export const useLogin = () => {
+export const useLogin = (setOpen: (open: boolean) => void) => {
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -60,7 +62,12 @@ export const useLogin = () => {
   });
 
   const onSubmit = form.handleSubmit((data) => {
-    mutation.mutate(data);
+    mutation.mutate(data, {
+      onSuccess(data) {
+        Cookies.set("token", data.access_token);
+        setOpen(false);
+      },
+    });
   });
 
   return {
