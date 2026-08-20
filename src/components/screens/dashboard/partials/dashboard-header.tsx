@@ -14,7 +14,7 @@ export function DashboardHeader() {
     <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
       <div>
         <h1 className="text-2xl font-bold tracking-tight">
-          {greeting}, {data?.data.user.name.split(" ")[0]} 👋
+          {greeting}, {data?.data?.user.name.split(" ")[0]} 👋
         </h1>
 
         <p className="mt-1 text-sm text-muted-foreground">
