@@ -7,6 +7,7 @@ import useDashboard from "@/src/hooks/useDahboard";
 
 export default function DashboardScreen() {
   const { data } = useDashboard();
+console.log(data);
 
   return (
     <div className="mx-auto max-w-7xl space-y-6 p-4 md:p-6">

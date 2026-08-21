@@ -1,4 +1,3 @@
-// Core domain types — structured to map cleanly to a future REST API.
 
 export type ID = string;
 
@@ -33,31 +32,59 @@ export interface DashboardResponse {
 export type ProjectStatus = "active" | "on_hold" | "completed" | "archived";
 
 export type Project = {
-  id: ID;
-  name: string;
-  description: string;
-  status: ProjectStatus;
-  backgroundColor: string;
-  backgroundImage?: string;
-  visibility: "private" | "workspace" | "public";
-  workspaceId: ID;
+  background: string;
   createdAt: string;
+  description: string;
+  id: number;
+  status: string;
+  title: string;
   updatedAt: string;
-  ownerId: ID;
-  memberIds: ID[];
-  favorite?: boolean;
-  archived?: boolean;
+  members: {
+    id: number;
+    role: string;
+    user: User;
+  }[];
+
+  columns: Column[];
+};
+
+export type Column = {
+  id: number;
+  position: number;
+  tasks: [];
+  title: string;
 };
 
 export type TaskStatus = "backlog" | "todo" | "in_progress" | "review" | "done";
 
 export type Priority = "low" | "medium" | "high" | "urgent";
-
-export type Label = {
-  id: ID;
-  name: string;
-  color: string;
+export type Task = {
+  assignees: [];
+  backgroundColor: string;
+  completed: boolean;
+  createdAt: string;
+  description: string;
+  dueDate: string;
+  id: number;
+  position: number;
+  priority:Priority;
+  title: string;
+  updatedAt: string;
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 export type ChecklistItem = {
   id: ID;
@@ -96,37 +123,6 @@ export type Attachment = {
   fileType: string;
   fileSize: string;
   url?: string;
-};
-
-export type Task = {
-  id: ID;
-  title: string;
-  description: string;
-  completed: boolean;
-  status: TaskStatus;
-  priority: Priority;
-  backgroundColor?: string;
-  coverImage?: string;
-  dueDate?: string;
-  createdAt: string;
-  updatedAt: string;
-  projectId: ID;
-  assigneeId?: ID;
-  labelIds: ID[];
-  checklist: ChecklistItem[];
-  comments: Comment[];
-  attachments: Attachment[];
-  activity: Activity[];
-  position: number;
-  columnId: ID;
-};
-
-export type Column = {
-  id: ID;
-  name: string;
-  projectId: ID;
-  position: number;
-  color?: string;
 };
 
 export type Workspace = {
