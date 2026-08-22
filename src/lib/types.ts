@@ -1,4 +1,3 @@
-
 export type ID = string;
 
 export type Role = "owner" | "admin" | "member";
@@ -67,24 +66,29 @@ export type Task = {
   dueDate: string;
   id: number;
   position: number;
-  priority:Priority;
+  priority: Priority;
   title: string;
   updatedAt: string;
+  creator: {
+    email: string;
+    id: number;
+    name: string;
+  };
+  project: {
+    background: string;
+    createdAt: string;
+    description: string;
+    id: number;
+    status: string;
+    title: string;
+    updatedAt: string;
+    owner: {
+      email: string;
+      id: number;
+      name: string;
+    };
+  };
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 export type ChecklistItem = {
   id: ID;

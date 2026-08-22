@@ -14,7 +14,7 @@ import {
 import { cn } from "@/src/lib/utils";
 import { useState } from "react";
 import { AddItem } from "./add-column";
-import TaskModal from "./kanban-task-card/task-modal";
+import TaskModal from "./kanban-task-card/task-modal/task-modal";
 
 type KanbanColumnProps = {
   column: Column;
@@ -113,7 +113,7 @@ export function KanbanColumn({ column, tasks, columns }: KanbanColumnProps) {
         {tasks.length !== 0 ? (
           <div className="w-full space-y-3 pb-2">
             {tasks.map((task) => (
-              <TaskModal task={task} />
+              <TaskModal key={task.id} task={task} />
             ))}
           </div>
         ) : (
