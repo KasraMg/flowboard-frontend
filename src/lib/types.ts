@@ -90,6 +90,14 @@ export type Task = {
   };
 };
 
+export type NotificationData = {
+  createdAt: string;
+  id: number;
+  invitedBy: { id: number; name: string; email: string };
+  project: Project;
+  status: string;
+};
+////
 export type ChecklistItem = {
   id: ID;
   text: string;
