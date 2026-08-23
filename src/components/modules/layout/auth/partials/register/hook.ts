@@ -82,8 +82,7 @@ export const useRegister = (setOpen: (open: boolean) => void) => {
   const mutation = useMutation({
     mutationFn: registerRequest,
 
-    onSuccess: (data) => {
-      localStorage.setItem("access_token", data.access_token);
+    onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["user"],
       });
@@ -97,6 +96,9 @@ export const useRegister = (setOpen: (open: boolean) => void) => {
     mutation.mutate(data, {
       onSuccess(data) {
         Cookies.set("token", data.access_token);
+        queryClient.invalidateQueries({
+          queryKey: ["user"],
+        });
         setOpen(false);
       },
     });

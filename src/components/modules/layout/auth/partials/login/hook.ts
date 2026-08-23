@@ -57,10 +57,6 @@ export const useLogin = (setOpen: (open: boolean) => void) => {
 
   const mutation = useMutation({
     mutationFn: loginRequest,
-
-    onSuccess: (data) => {
-      localStorage.setItem("access_token", data.access_token);
-    },
   });
 
   const onSubmit = form.handleSubmit((data) => {

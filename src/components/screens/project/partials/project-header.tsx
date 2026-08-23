@@ -13,6 +13,7 @@ import { AvatarGroup, UserAvatar } from "@/src/components/modules/user-avatar";
 import { PROJECT_BACKGROUNDS } from "@/src/lib/project-backgrounds";
 import { useRouter } from "next/navigation";
 import type { Project } from "@/src/lib/types";
+import InviteModal from "./invite-modal";
 
 export function ProjectHeader({ project }: { project: Project }) {
   const router = useRouter();
@@ -61,10 +62,7 @@ export function ProjectHeader({ project }: { project: Project }) {
               <UserAvatar key={member.role} user={member.user} size="md" />
             ))}
 
-            <Button variant="secondary" size="sm" className="gap-1.5">
-              <Users className="h-3.5 w-3.5" />
-              Invite
-            </Button>
+            <InviteModal />
 
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
