@@ -5,11 +5,12 @@ import {
   DialogTrigger,
 } from "../../../../../../../ui/dialog";
 import { Task } from "@/src/lib/types";
-import { NotebookText } from "lucide-react";
+import { Check, NotebookText } from "lucide-react";
 import TaskModalDropDownMenus from "./task-modal-drop-down-menus";
 import { useDebounce } from "@/src/hooks/useDebounce";
 import TaskModalActions from "./task-modal-actions";
 import { useEditTask } from "@/src/hooks/useTask";
+import TaskPreview from "./task-preview";
 
 const TaskModal = ({ task }: { task: Task }) => {
   const [open, setOpen] = useState(false);
@@ -23,56 +24,54 @@ const TaskModal = ({ task }: { task: Task }) => {
     assigneeIds: task.assignees.map((user) => user.id),
   });
 
-  const debouncedForm = useDebounce(form, 1500);
-
+  const debouncedTitle = useDebounce(form.title, 1500);
+  const debouncedDescription = useDebounce(form.description, 1500);
   const { mutate } = useEditTask(task.id, task.project.id);
 
   useEffect(() => {
+    const titleChanged = debouncedTitle !== task.title;
+
+    const descriptionChanged = debouncedDescription !== task.description;
+
+    const completedChanged = form.completed !== task.completed;
+
+    const backgroundColorChanged =
+      form.backgroundColor !== task.backgroundColor;
+
+    const assigneeIdsChanged =
+      JSON.stringify(form.assigneeIds) !==
+      JSON.stringify(task.assignees.map((user) => user.id));
+
     if (
-      debouncedForm.title === task.title &&
-      debouncedForm.completed === task.completed &&
-      debouncedForm.description === task.description &&
-      debouncedForm.backgroundColor === task.backgroundColor &&
-      JSON.stringify(debouncedForm.assigneeIds) ===
-        JSON.stringify(task.assignees.map((user) => user.id))
+      !titleChanged &&
+      !descriptionChanged &&
+      !completedChanged &&
+      !backgroundColorChanged &&
+      !assigneeIdsChanged
     ) {
       return;
     }
 
-    mutate(debouncedForm);
-  }, [debouncedForm, mutate, task]);
-
+    mutate({
+      title: debouncedTitle,
+      description: debouncedDescription,
+      completed: form.completed,
+      backgroundColor: form.backgroundColor,
+      assigneeIds: form.assigneeIds,
+    });
+  }, [
+    debouncedTitle,
+    debouncedDescription,
+    form.completed,
+    form.backgroundColor,
+    form.assigneeIds,
+    mutate,
+    task,
+  ]);
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger className="w-full cursor-pointer">
-        <div
-          style={{
-            backgroundColor: task.backgroundColor ? task.backgroundColor : "",
-          }}
-          className={`rounded-lg bg-gray-800 py-2 w-full text-center pl-2.5`}
-        >
-          <p className="text-sm text-left">{task.title}</p>
-          {task.description ? (
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="15"
-              height="15"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="lucide lucide-list-sort-ascending-icon lucide-list-sort-ascending mt-2 ml-2"
-            >
-              <path d="M3 19h18" />
-              <path d="M15 12H3" />
-              <path d="M9 5H3" />
-            </svg>
-          ) : (
-            ""
-          )}
-        </div>
+        <TaskPreview form={form} setForm={setForm} task={task} />
       </DialogTrigger>
       <DialogContent
         hideX
@@ -80,17 +79,38 @@ const TaskModal = ({ task }: { task: Task }) => {
       >
         <TaskModalActions setOpen={setOpen} task={task} />
         <div className="flex items-center gap-2">
-          <input
-            type="checkbox"
-            checked={form.completed}
-            onChange={(event) =>
+          <button
+            onPointerDown={(e) => e.stopPropagation()}
+            onClick={() => {
               setForm((prev: any) => ({
                 ...prev,
-                completed: event?.target.checked,
-              }))
+                completed: !form.completed,
+              }));
+            }}
+            aria-label={
+              form.completed ? "Mark as incomplete" : "Mark as complete"
             }
-            className="accent-green-500 size-4"
-          />
+            className={`
+            flex items-center justify-center
+            rounded-full border
+            cursor-pointer
+            transition-all duration-200 ease-out
+            h-5 w-5 visible
+            ${
+              form.completed
+                ? "h-5 w-5 border-green-500 bg-green-500"
+                : "border-gray-400 bg-transparent"
+            }
+          `}
+          >
+            <Check
+              className={`
+              h-3 w-3 text-white
+              transition-all duration-200
+              ${form.completed ? "scale-100 opacity-100" : "scale-0 opacity-0"}
+            `}
+            />
+          </button>
           <input
             className="text-2xl p-2 rounded-lg w-full"
             type="text"
