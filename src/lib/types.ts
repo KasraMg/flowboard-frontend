@@ -43,7 +43,11 @@ export type Project = {
     role: string;
     user: User;
   }[];
-
+  owner: {
+    email: string;
+    id: number;
+    name: string;
+  };
   columns: Column[];
 };
 

@@ -13,36 +13,46 @@ import {
 } from "@/src/components/ui/dropdown-menu";
 import { cn } from "@/src/lib/utils";
 import { useState } from "react";
-import { AddItem } from "./add-column";
-import TaskModal from "./kanban-task-card/task-modal/task-modal";
+import { AddItem } from "./add-item";
+import TaskModal from "./kanban-task-card/task-modal";
+import { useDeleteColumn, useEditColumn } from "@/src/hooks/useColumn";
 
 type KanbanColumnProps = {
   column: Column;
   tasks: Task[];
   columns: Column[];
+  projectId: number;
 };
 
-export function KanbanColumn({ column, tasks, columns }: KanbanColumnProps) {
+export function KanbanColumn({
+  column,
+  tasks,
+  columns,
+  projectId,
+}: KanbanColumnProps) {
   const [editing, setEditing] = useState(false);
-  const [name, setName] = useState(column.title);
+  const [title, setTitle] = useState(column.title);
+  const { mutate } = useEditColumn(projectId);
+  const { mutate: deleteColumnMutate } = useDeleteColumn(projectId);
 
   const startEditing = () => {
-    setName(column.title);
+    setTitle(column.title);
     setEditing(true);
   };
 
-  const handleDeleteColumn = (columnId: string) => {};
-
-  const handleRenameColumn = (columnId: string, name: string) => {};
+  const handleRenameColumn = (columnId: string, title: string) => {
+    mutate({
+      columnId: Number(columnId),
+      title,
+    });
+  };
 
   const saveEditing = () => {
-    const trimmedName = name.trim();
+    const trimmedName = title.trim();
 
     if (trimmedName && trimmedName !== column.title) {
       handleRenameColumn(String(column.id), trimmedName);
     }
-
-    setEditing(false);
   };
 
   return (
@@ -56,15 +66,16 @@ export function KanbanColumn({ column, tasks, columns }: KanbanColumnProps) {
 
         {editing ? (
           <Input
-            value={name}
-            onChange={(event) => setName(event.target.value)}
+            value={title}
+            onChange={(event) => setTitle(event.target.value)}
             onBlur={saveEditing}
             onKeyDown={(event) => {
               if (event.key === "Enter") {
                 saveEditing();
+                setEditing(false);
               }
               if (event.key === "Escape") {
-                setName(column.title);
+                setTitle(column.title);
                 setEditing(false);
               }
             }}
@@ -100,7 +111,7 @@ export function KanbanColumn({ column, tasks, columns }: KanbanColumnProps) {
 
             <DropdownMenuItem
               className="text-destructive"
-              onClick={() => handleDeleteColumn(String(column.id))}
+              onClick={() => deleteColumnMutate(column.id)}
             >
               <Trash2 className="mr-2 h-3.5 w-3.5" />
               Delete column

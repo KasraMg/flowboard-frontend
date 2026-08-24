@@ -3,7 +3,7 @@ import {
   Dialog,
   DialogContent,
   DialogTrigger,
-} from "../../../../../../../ui/dialog";
+} from "../../../../../../ui/dialog";
 import { Task } from "@/src/lib/types";
 import { Check, NotebookText } from "lucide-react";
 import TaskModalDropDownMenus from "./task-modal-drop-down-menus";
@@ -14,7 +14,6 @@ import TaskPreview from "./task-preview";
 
 const TaskModal = ({ task }: { task: Task }) => {
   const [open, setOpen] = useState(false);
-  console.log(task);
 
   const [form, setForm] = useState({
     title: task.title,

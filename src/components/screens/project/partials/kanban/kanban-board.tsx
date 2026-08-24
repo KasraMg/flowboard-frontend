@@ -1,6 +1,6 @@
 "use client";
 
-import { AddItem } from "./partials/add-column";
+import { AddItem } from "./partials/add-item";
 import { KanbanColumn } from "./partials/kanban-column";
 import { useProject } from "@/src/hooks/useProject";
 
@@ -15,6 +15,7 @@ export function KanbanBoard({ projectId }: { projectId: number }) {
           column={column}
           tasks={column.tasks}
           columns={project?.columns}
+          projectId={project.id}
         />
       ))}
 
