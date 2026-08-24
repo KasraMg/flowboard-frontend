@@ -1,12 +1,11 @@
 "use client";
 
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Cookies from "js-cookie";
-import { backendUrl } from "@/src/lib/helpers";
-import { toast } from "sonner";
+import Cookies from "js-cookie"; 
+import { useLogin as useLoginMutation } from "@/src/hooks/useLogin";
 
 const loginSchema = z.object({
   email: z
@@ -17,33 +16,7 @@ const loginSchema = z.object({
   password: z.string().min(8, "Password must be at least 8 characters"),
 });
 
-type LoginFormValues = z.infer<typeof loginSchema>;
-
-type LoginResponse = {
-  access_token: string;
-};
-
-const loginRequest = async (data: LoginFormValues): Promise<LoginResponse> => {
-  const response = await fetch(`${backendUrl}/auth/login`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  });
-
-  if (!response.ok) {
-    const error = await response.json();
-
-    throw new Error(
-      Array.isArray(error.message)
-        ? error.message[0]
-        : error.message || "Login failed",
-    );
-  }
-
-  return response.json();
-};
+export type LoginFormValues = z.infer<typeof loginSchema>;
 
 export const useLogin = (setOpen: (open: boolean) => void) => {
   const queryClient = useQueryClient();
@@ -55,10 +28,7 @@ export const useLogin = (setOpen: (open: boolean) => void) => {
     },
   });
 
-  const mutation = useMutation({
-    mutationFn: loginRequest,
-  });
-
+  const mutation = useLoginMutation();
   const onSubmit = form.handleSubmit((data) => {
     mutation.mutate(data, {
       onSuccess(data) {
@@ -67,9 +37,6 @@ export const useLogin = (setOpen: (open: boolean) => void) => {
           queryKey: ["user"],
         });
         setOpen(false);
-      },
-      onError(error) {
-        toast.error(error.message);
       },
     });
   });
