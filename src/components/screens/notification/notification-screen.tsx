@@ -6,6 +6,7 @@ import { Card, CardContent } from "@/src/components/ui/card";
 import { cn } from "@/src/lib/utils";
 import { relativeTime } from "@/src/lib/helpers";
 import type { NotificationData, User } from "@/src/lib/types";
+import { useChangeInvitationStatus } from "@/src/hooks/useInvitation";
 
 export default function NotificationsScreen({
   data,
@@ -15,11 +16,12 @@ export default function NotificationsScreen({
   };
 }) {
   console.log(data);
+  const { mutate } = useChangeInvitationStatus();
 
   return (
     <div className="mx-auto max-w-2xl space-y-5 p-4 md:p-6">
       {data?.data.length == 0 ? (
-        <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-border p-12 text-center">
+        <div className="flex flex-col items-center justify-center pt-20 text-center">
           <Bell className="h-10 w-10 text-muted-foreground/40" />
           <h3 className="mt-3 font-medium">No notifications</h3>
           <p className="mt-1 text-sm text-muted-foreground">
@@ -32,7 +34,7 @@ export default function NotificationsScreen({
             <CardContent className="flex items-center gap-3 p-3">
               <div
                 className={cn(
-                  "flex h-9 w-9 shrink-0 items-center justify-center rounded-lg",
+                  "sm:flex! hidden h-9 w-9 shrink-0 items-center justify-center rounded-lg",
                 )}
               >
                 <UserPlus className="h-4 w-4" />
@@ -43,7 +45,7 @@ export default function NotificationsScreen({
                     <UserAvatar user={notif.invitedBy as User} size="xs" />
                   )}
                   <p className="text-sm font-medium">
-                    ! New project: {notif.project.title}
+                    ! New invitation: {notif.project.title}
                   </p>
                 </div>
                 <p className="pt-2 text-sm text-muted-foreground">
@@ -56,11 +58,31 @@ export default function NotificationsScreen({
                 </p>
               </div>
 
-              <div className="flex gap-3">
-                <Button size={"sm"} className="w-full" variant={"default"}>
+              <div className="flex gap-3 lg:w-max! w-full lg:pt-0! pt-3">
+                <Button
+                  onClick={() => {
+                    mutate({
+                      action: "accept",
+                      invitationId: notif.id,
+                    });
+                  }}
+                  size={"sm"}
+                  className="w-full"
+                  variant={"default"}
+                >
                   Accept
                 </Button>
-                <Button size={"sm"} className="w-full" variant={"destructive"}>
+                <Button
+                  onClick={() => {
+                    mutate({
+                      action: "reject",
+                      invitationId: notif.id,
+                    });
+                  }}
+                  size={"sm"}
+                  className="w-full"
+                  variant={"destructive"}
+                >
                   Reject
                 </Button>
               </div>

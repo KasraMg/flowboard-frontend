@@ -8,14 +8,11 @@ import {
 import { Button } from "@/src/components/ui/button";
 import { Palette, User } from "lucide-react";
 import { Task } from "@/src/lib/types";
+import { useProject } from "@/src/hooks/useProject";
+import { UserAvatar } from "@/src/components/modules/user-avatar";
+import { useEffect, useState } from "react";
 
-const colors = [
-  "#EF4444",
-  "#F97316",
-  "#EAB308",
-  "#3B82F6",
-  "#8B5CF6",
-];
+const colors = ["#EF4444", "#F97316", "#EAB308", "#3B82F6", "#8B5CF6"];
 
 const TaskModalDropDownMenus = ({
   task,
@@ -26,6 +23,18 @@ const TaskModalDropDownMenus = ({
   form: any;
   setForm: any;
 }) => {
+  const { data: project } = useProject(String(task.project.id));
+  const [assignIds, setAssignIds] = useState<Number[] | []>(
+    form.assigneeIds || null,
+  );
+
+  useEffect(() => {
+    setForm((prev: any) => ({
+      ...prev,
+      assigneeIds: assignIds,
+    }));
+  }, [assignIds]);
+
   return (
     <div className="flex gap-3 pb-4">
       <DropdownMenu modal={false}>
@@ -82,21 +91,34 @@ const TaskModalDropDownMenus = ({
         </DropdownMenuTrigger>
 
         <DropdownMenuContent sideOffset={5} className="z-99999 w-48">
-          <DropdownMenuLabel>Colors</DropdownMenuLabel>
+          <DropdownMenuLabel>Members</DropdownMenuLabel>
 
           <DropdownMenuSeparator />
 
-          <div className="grid grid-cols-4 gap-2 p-2">
-            {colors.map((color) => (
-              <Button
-                key={color}
-                type="button"
-                className="h-5 w-full rounded-sm transition-opacity hover:opacity-70"
-                style={{ backgroundColor: color }}
-                onClick={() => {
-                  console.log("selected color:", color);
-                }}
-              />
+          <div className="grid gap-y-4 pl-1">
+            {project?.members.map((member) => (
+              <div key={member.id} className="flex gap-2 items-center">
+                <input
+                  type="checkbox"
+                  name="task_color"
+                  value={member.user.id}
+                  checked={assignIds.some((item) => item === member.user.id)}
+                  onChange={(event) => {
+                    if (event.target.checked) {
+                      setAssignIds((prev) => [...prev, member.user.id]);
+                    } else {
+                      const newAssignIds = assignIds.filter(
+                        (item) => item !== member.user.id,
+                      );
+                      setAssignIds(newAssignIds);
+                    }
+                  }}
+                  className="accent-green-500 size-4"
+                />
+
+                <UserAvatar key={member.role} user={member.user} size="md" />
+                <p>{member.user.name}</p>
+              </div>
             ))}
           </div>
         </DropdownMenuContent>
