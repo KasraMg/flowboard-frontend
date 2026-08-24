@@ -2,7 +2,7 @@
 
 import { Button } from "@/src/components/ui/button";
 import { Input } from "@/src/components/ui/input";
-import { useCreateColumn } from "@/src/hooks/useProject";
+import { useCreateColumn } from "@/src/hooks/useColumn";
 import { useCreateTask } from "@/src/hooks/useTask";
 import { Plus } from "lucide-react";
 import { useParams } from "next/navigation";

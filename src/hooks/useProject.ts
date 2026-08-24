@@ -5,7 +5,6 @@ import type { Project } from "@/src/lib/types";
 import { backendUrl } from "../lib/helpers";
 import Cookies from "js-cookie";
 import { useQuery } from "@tanstack/react-query";
-import { toast } from "sonner";
 
 export enum ProjectBackground {
   OCEAN = "ocean",
@@ -89,52 +88,5 @@ export function useProject(projectId: string) {
   });
 }
 
-export interface CreateColumnPayload {
-  title: string;
-  position: number;
-}
 
-export interface CreateColumnResponse {
-  message: string;
-  success: boolean;
-  data: any;
-}
-
-export function useCreateColumn(projectId: number) {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: async (
-      payload: CreateColumnPayload,
-    ): Promise<CreateColumnResponse> => {
-      const response = await fetch(`${backendUrl}/columns/${projectId}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${Cookies.get("token")}`,
-        },
-        credentials: "include",
-        body: JSON.stringify(payload),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data?.message || "Failed to create column");
-      }
-
-      return data;
-    },
-
-    onSuccess: (data) => {
-      toast.success(data.message);
-      queryClient.invalidateQueries({
-        queryKey: ["project", String(projectId)],
-      });
-    },
-    onError(error) {
-      toast.error(error.message);
-    },
-  });
-}
 

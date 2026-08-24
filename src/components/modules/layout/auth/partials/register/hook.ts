@@ -1,12 +1,11 @@
 "use client";
 
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Cookies from "js-cookie";
-import { backendUrl } from "@/src/lib/helpers";
-import { toast } from "sonner";
+import { useRegister as useRegisterMutation } from "@/src/hooks/useRegister";
 
 const registerSchema = z
   .object({
@@ -34,37 +33,7 @@ const registerSchema = z
     path: ["confirmPassword"],
   });
 
-type RegisterFormValues = z.infer<typeof registerSchema>;
-
-type RegisterResponse = {
-  access_token: string;
-};
-
-const registerRequest = async (
-  data: RegisterFormValues,
-): Promise<RegisterResponse> => {
-  const { confirmPassword, ...registerData } = data;
-
-  const response = await fetch(`${backendUrl}/auth/register`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(registerData),
-  });
-
-  if (!response.ok) {
-    const error = await response.json();
-
-    throw new Error(
-      Array.isArray(error.message)
-        ? error.message[0]
-        : error.message || "Registration failed",
-    );
-  }
-
-  return response.json();
-};
+export type RegisterFormValues = z.infer<typeof registerSchema>;
 
 export const useRegister = (setOpen: (open: boolean) => void) => {
   const queryClient = useQueryClient();
@@ -79,18 +48,7 @@ export const useRegister = (setOpen: (open: boolean) => void) => {
     },
   });
 
-  const mutation = useMutation({
-    mutationFn: registerRequest,
-
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["user"],
-      });
-    },
-    onError(error) {
-      toast.error(error.message);
-    },
-  });
+  const mutation = useRegisterMutation();
 
   const onSubmit = form.handleSubmit((data) => {
     mutation.mutate(data, {

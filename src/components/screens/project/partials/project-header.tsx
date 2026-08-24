@@ -14,11 +14,13 @@ import { PROJECT_BACKGROUNDS } from "@/src/lib/project-backgrounds";
 import { useRouter } from "next/navigation";
 import type { Project } from "@/src/lib/types";
 import InviteModal from "./invite-modal";
+import useUser from "@/src/hooks/useUser";
 
 export function ProjectHeader({ project }: { project: Project }) {
   const router = useRouter();
-
+  const { data } = useUser();
   const background = PROJECT_BACKGROUNDS[project.background];
+  console.log(project);
 
   return (
     <header className="shrink-0">
@@ -61,8 +63,7 @@ export function ProjectHeader({ project }: { project: Project }) {
             {project.members.map((member) => (
               <UserAvatar key={member.role} user={member.user} size="md" />
             ))}
-
-            <InviteModal />
+            {data.data.user.id == project.owner.id ? <InviteModal /> : ""}
 
             <DropdownMenu>
               <DropdownMenuTrigger asChild>

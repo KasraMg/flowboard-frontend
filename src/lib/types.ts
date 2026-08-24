@@ -43,7 +43,11 @@ export type Project = {
     role: string;
     user: User;
   }[];
-
+  owner: {
+    email: string;
+    id: number;
+    name: string;
+  };
   columns: Column[];
 };
 
@@ -58,7 +62,7 @@ export type TaskStatus = "backlog" | "todo" | "in_progress" | "review" | "done";
 
 export type Priority = "low" | "medium" | "high" | "urgent";
 export type Task = {
-  assignees: [];
+  assignees: User[];
   backgroundColor: string;
   completed: boolean;
   createdAt: string;
