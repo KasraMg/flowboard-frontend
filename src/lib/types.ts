@@ -24,7 +24,15 @@ export interface DashboardResponse {
       completedTasks: number;
       incompleteTasks: number;
     };
-    recentProjects: Project[];
+    recentProjects: {
+      project: Project;
+      isFave: boolean;
+      taskStats: {
+        completed: number;
+        completionPercentage: number;
+        total: number;
+      };
+    }[];
     recentTasks: Task[];
   };
 }
@@ -34,6 +42,7 @@ export type Project = {
   background: string;
   createdAt: string;
   description: string;
+  isFave: boolean;
   id: number;
   status: string;
   title: string;

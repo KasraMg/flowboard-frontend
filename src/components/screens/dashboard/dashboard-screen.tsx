@@ -7,16 +7,12 @@ import useDashboard from "@/src/hooks/useDahboard";
 
 export default function DashboardScreen() {
   const { data } = useDashboard();
-console.log(data);
 
   return (
     <div className="mx-auto max-w-7xl space-y-6 p-4 md:p-6">
       <DashboardHeader />
       <DashboardStats data={data} />
-      <div className="grid gap-6 lg:grid-cols-3">
-        <RecentProjects data={data} />
-        {/* <ActivityFeed activities={activities} users={users} /> */}
-      </div>
+      <RecentProjects data={data} />
       <RecentTasks data={data} />
     </div>
   );
