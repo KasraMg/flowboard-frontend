@@ -88,5 +88,23 @@ export function useProject(projectId: string) {
   });
 }
 
+export function useProjects() {
+  return useQuery<Project>({
+    queryKey: ["projects"],
 
+    queryFn: async () => {
+      const response = await fetch(`${backendUrl}/projects`, {
+        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${Cookies.get("token")}`,
+        },
+      });
 
+      if (!response.ok) {
+        throw new Error("Failed to fetch projects");
+      }
+
+      return response.json();
+    },
+  });
+}
