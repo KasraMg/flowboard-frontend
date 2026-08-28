@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Dialog, DialogContent, DialogTrigger } from "../../../ui/dialog";
 import { Button } from "@/src/components/ui/button";
-import { UserPlus, Users } from "lucide-react";
+import { UserPlus } from "lucide-react";
 import { useCreateInvitation } from "@/src/hooks/useInvitation";
 import { useParams } from "next/navigation";
 
@@ -58,11 +58,6 @@ const InviteModal = () => {
           >
             Invite
           </Button>
-        </div>
-
-        <div className="flex gap-2 items-center pt-9">
-          <Users className="h-4.5 w-4.5" />
-          <p>Members</p>
         </div>
       </DialogContent>
     </Dialog>

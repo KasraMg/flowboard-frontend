@@ -1,7 +1,4 @@
-import { ProjectActivity } from "./project-activity";
 import { ProjectBoard } from "./project-board";
-import { ProjectCalendar } from "./project-calendar";
-import { ProjectList } from "./project-list";
 import { ProjectSettings } from "./project-settings";
 import {
   Tabs,
@@ -28,19 +25,9 @@ export function ProjectContent({ projectId }: { projectId: number }) {
               Board
             </TabsTrigger>
 
-            <TabsTrigger value="list" className="gap-1.5">
-              <List className="h-3.5 w-3.5" />
-              List
-            </TabsTrigger>
-
-            <TabsTrigger value="calendar" className="gap-1.5">
-              <Calendar className="h-3.5 w-3.5" />
-              Calendar
-            </TabsTrigger>
-
-            <TabsTrigger value="activity" className="gap-1.5">
+            <TabsTrigger value="members" className="gap-1.5">
               <Activity className="h-3.5 w-3.5" />
-              Activity
+              Members
             </TabsTrigger>
 
             <TabsTrigger value="settings" className="gap-1.5">
@@ -53,14 +40,8 @@ export function ProjectContent({ projectId }: { projectId: number }) {
             <TabsContent value="board">
               <ProjectBoard projectId={projectId} />
             </TabsContent>
-            <TabsContent value="list">
-              <ProjectList projectId={projectId} />
-            </TabsContent>
-            <TabsContent value="calendar">
-              <ProjectCalendar projectId={projectId} />
-            </TabsContent>
-            <TabsContent value="activity">
-              <ProjectActivity projectId={projectId} />
+            <TabsContent value="members">
+              <ProjectBoard projectId={projectId} />
             </TabsContent>
             <TabsContent value="settings">
               <ProjectSettings projectId={projectId} />
