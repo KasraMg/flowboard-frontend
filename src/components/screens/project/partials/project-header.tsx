@@ -1,26 +1,19 @@
 "use client";
 
-import { ArrowLeft, MoreHorizontal, Star, Users } from "lucide-react";
+import { ArrowLeft, Star } from "lucide-react";
 import { Button } from "@/src/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/src/components/ui/dropdown-menu";
-import { AvatarGroup, UserAvatar } from "@/src/components/modules/user-avatar";
+import { UserAvatar } from "@/src/components/modules/user-avatar";
 import { PROJECT_BACKGROUNDS } from "@/src/lib/project-backgrounds";
 import { useRouter } from "next/navigation";
 import type { Project } from "@/src/lib/types";
 import InviteModal from "./invite-modal";
 import useUser from "@/src/hooks/useUser";
+import FavoriteButton from "@/src/components/modules/layout/favorite-button";
 
 export function ProjectHeader({ project }: { project: Project }) {
   const router = useRouter();
   const { data } = useUser();
   const background = PROJECT_BACKGROUNDS[project.background];
-  console.log(project);
 
   return (
     <header className="shrink-0">
@@ -31,7 +24,7 @@ export function ProjectHeader({ project }: { project: Project }) {
       </div>
 
       <div className="px-4 pb-4 md:px-6 z-50 relative">
-        <div className="-mt-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+        <div className="-mt-8 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <div className="flex min-w-0 items-start gap-3">
             <Button
               variant="ghost"
@@ -48,7 +41,7 @@ export function ProjectHeader({ project }: { project: Project }) {
                   {project.title}
                 </h1>
 
-                <Star className="h-4 w-4 text-muted-foreground" />
+                <Star className={`${project.isFave ? ' text-yellow-400 fill-yellow-400 stroke-yellow-400' : ''} h-4 w-4 text-muted-foreground`} />
               </div>
 
               {project.description && (
@@ -64,34 +57,10 @@ export function ProjectHeader({ project }: { project: Project }) {
               <UserAvatar key={member.role} user={member.user} size="md" />
             ))}
             {data.data.user.id == project.owner.id ? <InviteModal /> : ""}
-
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="secondary" size="icon">
-                  <MoreHorizontal className="h-4 w-4" />
-                </Button>
-              </DropdownMenuTrigger>
-
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem>
-                  <Star className="mr-2 h-3.5 w-3.5" />
-                  Favorite
-                </DropdownMenuItem>
-
-                <DropdownMenuItem>
-                  <Users className="mr-2 h-3.5 w-3.5" />
-                  Manage members
-                </DropdownMenuItem>
-
-                <DropdownMenuItem>Archive project</DropdownMenuItem>
-
-                <DropdownMenuSeparator />
-
-                <DropdownMenuItem className="text-destructive">
-                  Delete project
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <FavoriteButton
+              projectId={project.id}
+              isFavorite={project.isFave}
+            />
           </div>
         </div>
       </div>
