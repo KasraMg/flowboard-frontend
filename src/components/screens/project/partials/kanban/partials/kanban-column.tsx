@@ -22,13 +22,16 @@ type KanbanColumnProps = {
   tasks: Task[];
   columns: Column[];
   projectId: number;
+  dragAttributes: Record<string, any>;
+  dragListeners: any;
 };
-
 export function KanbanColumn({
   column,
   tasks,
   columns,
   projectId,
+  dragAttributes,
+  dragListeners,
 }: KanbanColumnProps) {
   const [editing, setEditing] = useState(false);
   const [title, setTitle] = useState(column.title);
@@ -41,10 +44,17 @@ export function KanbanColumn({
   };
 
   const handleRenameColumn = (columnId: string, title: string) => {
-    mutate({
-      columnId: Number(columnId),
-      title,
-    });
+    mutate(
+      {
+        columnId: Number(columnId),
+        title,
+      },
+      {
+        onSuccess() {
+          setEditing(false);
+        },
+      },
+    );
   };
 
   const saveEditing = () => {
@@ -52,15 +62,20 @@ export function KanbanColumn({
 
     if (trimmedName && trimmedName !== column.title) {
       handleRenameColumn(String(column.id), trimmedName);
-    }
+    } else setEditing(false);
   };
 
   return (
     <div
       className={cn(
-        "flex h-fit max-h-full w-72 shrink-0 flex-col transition-colors rounded-xl border bg-muted/40",
+        "flex h-fit max-h-full relative w-72 shrink-0 flex-col transition-colors rounded-xl border bg-muted/40",
       )}
     >
+      <div
+        {...dragAttributes}
+        {...dragListeners}
+        className="absolute inset-0 z-0 cursor-grab"
+      />
       <div className="flex items-center gap-2 px-3 py-2.5">
         <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-[#94a3b8]" />
 
@@ -80,23 +95,29 @@ export function KanbanColumn({
               }
             }}
             autoFocus
-            className="h-7 text-sm font-semibold"
+            className="h-7 z-50 relative text-sm font-semibold"
           />
         ) : (
           <button
             type="button"
             onClick={startEditing}
-            className="flex-1 truncate text-left text-sm font-semibold hover:text-primary"
+            className="w-max! truncate z-50 relative text-left text-sm font-semibold hover:text-primary"
           >
             {column.title}
           </button>
         )}
 
-        <span className="text-xs text-muted-foreground">{tasks.length}</span>
+        <span className="text-xs text-muted-foreground ml-auto">
+          {tasks.length}
+        </span>
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon" className="h-6 w-6 shrink-0">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-6 w-6 shrink-0 z-50 relative"
+            >
               <MoreHorizontal className="h-3.5 w-3.5" />
             </Button>
           </DropdownMenuTrigger>
@@ -120,9 +141,9 @@ export function KanbanColumn({
         </DropdownMenu>
       </div>
 
-      <div className="min-h-15 flex-1 space-y-2 overflow-y-auto px-2 pb-2 scrollbar-thin">
+      <div className="min-h-15 z-50 relative flex-1 space-y-2 overflow-y-auto px-2 pb-2 scrollbar-thin">
         {tasks.length !== 0 ? (
-          <div className="w-full space-y-3 pb-2">
+          <div className=" space-y-3 pb-2">
             {tasks.map((task) => (
               <TaskModal key={task.id} task={task} />
             ))}

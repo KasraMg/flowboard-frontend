@@ -26,7 +26,7 @@ const TaskPreview = ({
       className="group relative w-full rounded-lg bg-gray-800 py-2 px-2.5 text-center"
     >
       <div className="flex items-center gap-2">
-        <button
+        <div
           onPointerDown={(e) => e.stopPropagation()}
           onClick={handleToggleComplete}
           aria-label={
@@ -43,7 +43,7 @@ const TaskPreview = ({
           <Check
             className={`h-3 w-3 text-white transition-all duration-200 ${form.completed ? "scale-100 opacity-100" : "scale-0 opacity-0"}`}
           />
-        </button>
+        </div>
         <p
           className={`text-left text-sm ${form.completed ? "text-gray-400 line-through" : ""}`}
         >

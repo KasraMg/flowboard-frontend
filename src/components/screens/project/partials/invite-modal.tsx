@@ -12,7 +12,7 @@ const InviteModal = () => {
   const { projectId } = useParams();
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger>
+      <DialogTrigger asChild>
         <Button variant="secondary" size="sm" className="gap-1.5">
           <UserPlus className="h-3.5 w-3.5" />
           Invite

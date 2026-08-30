@@ -25,7 +25,6 @@ export default function ProjectScreen() {
     }
   }, [project]);
 
-  console.log(project);
 
   return project ? (
     <div className="flex h-full flex-col overflow-hidden">
