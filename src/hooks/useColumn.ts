@@ -141,3 +141,41 @@ export function useDeleteColumn(projectId: number) {
     },
   });
 }
+
+export function useReorderColumns(projectId: number) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (columnIds: number[]) => {
+      const response = await fetch(
+        `${backendUrl}/columns/reorder/${projectId}`,
+        {
+          method: "PATCH",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${Cookies.get("token")}`,
+          },
+          body: JSON.stringify({
+            columnIds,
+          }),
+        },
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to reorder columns");
+      }
+
+      return response.json();
+    },
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["project", String(projectId)],
+      });
+    },
+    onError(error) {
+      toast.error(error.message);
+    },
+  });
+}

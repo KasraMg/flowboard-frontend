@@ -15,7 +15,6 @@ export default function NotificationsScreen({
     data: NotificationData[];
   };
 }) {
-  console.log(data);
   const { mutate } = useChangeInvitationStatus();
 
   return (
