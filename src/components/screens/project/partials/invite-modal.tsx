@@ -5,7 +5,11 @@ import { UserPlus } from "lucide-react";
 import { useCreateInvitation } from "@/src/hooks/useInvitation";
 import { useParams } from "next/navigation";
 
-const InviteModal = () => {
+const InviteModal = ({
+  triggerSize,
+}: {
+  triggerSize?: "default" | "sm" | "lg" | "icon" | null | undefined;
+}) => {
   const [open, setOpen] = useState(false);
   const [email, setEmail] = useState<string | null>(null);
   const { mutate } = useCreateInvitation();
@@ -13,7 +17,11 @@ const InviteModal = () => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="secondary" size="sm" className="gap-1.5">
+        <Button
+          variant="secondary"
+          size={triggerSize ? triggerSize : "sm"}
+          className="gap-1.5"
+        >
           <UserPlus className="h-3.5 w-3.5" />
           Invite
         </Button>
@@ -21,7 +29,7 @@ const InviteModal = () => {
       <DialogContent className="max-h-[90vh] max-w-xl overflow-y-auto">
         <div className="flex gap-2 items-center">
           <UserPlus className="h-4.5 w-4.5" />
-          <p>Invite Members</p>
+          <p>Invite Member</p>
         </div>
 
         <div className="flex gap-3 items-center">

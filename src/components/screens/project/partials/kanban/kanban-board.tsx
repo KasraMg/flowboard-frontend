@@ -18,7 +18,6 @@ import { useReorderColumns } from "@/src/hooks/useColumn";
 
 export function KanbanBoard({ projectId }: { projectId: number }) {
   const { data: project } = useProject(String(projectId));
-  console.log(project);
 
   const [columns, setColumns] = useState(project?.columns ?? []);
   const { mutate: reorderColumns } = useReorderColumns(projectId);

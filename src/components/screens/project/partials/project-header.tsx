@@ -24,7 +24,7 @@ export function ProjectHeader({ project }: { project: Project }) {
       </div>
 
       <div className="px-4 pb-4 md:px-6 z-50 relative">
-        <div className="-mt-8 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+        <div className="-mt-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div className="flex min-w-0 items-start gap-3">
             <Button
               variant="ghost"
@@ -53,7 +53,7 @@ export function ProjectHeader({ project }: { project: Project }) {
           </div>
 
           <div className="flex items-center gap-2">
-            {project.members.map((member) => (
+            {project?.members?.map((member) => (
               <UserAvatar key={member.role} user={member.user} size="md" />
             ))}
             {data.data.user.id == project.owner.id ? <InviteModal /> : ""}

@@ -44,7 +44,7 @@ export type Project = {
   description: string;
   isFave: boolean;
   id: number;
-  status: string;
+  status: "archived" | "active";
   title: string;
   updatedAt: string;
   members: {

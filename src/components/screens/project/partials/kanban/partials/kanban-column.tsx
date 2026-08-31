@@ -68,7 +68,7 @@ export function KanbanColumn({
   return (
     <div
       className={cn(
-        "flex h-fit max-h-full relative w-72 shrink-0 flex-col transition-colors rounded-xl border bg-muted/40",
+        "flex h-fit max-h-full z-40 relative w-72 shrink-0 flex-col transition-colors rounded-xl border bg-muted/40",
       )}
     >
       <div

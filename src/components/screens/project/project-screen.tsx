@@ -20,14 +20,13 @@ export default function ProjectScreen() {
   }
 
   useEffect(() => {
-    if (!project && !isPending) {
+    if ((project as any)?.statusCode == 404 && !isPending) {
       notFound();
     }
   }, [project]);
 
-
-  return project ? (
-    <div className="flex h-full flex-col overflow-hidden">
+  return project?.id ? (
+    <div className="flex h-full flex-col">
       <ProjectHeader project={project} />
       <ProjectContent projectId={Number(params.projectId)} />
     </div>
