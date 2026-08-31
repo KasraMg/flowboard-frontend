@@ -26,7 +26,7 @@ export default function ProjectScreen() {
   }, [project]);
 
   return project?.id ? (
-    <div className="flex h-full flex-col overflow-hidden">
+    <div className="flex h-full flex-col">
       <ProjectHeader project={project} />
       <ProjectContent projectId={Number(params.projectId)} />
     </div>

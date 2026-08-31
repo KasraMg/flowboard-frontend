@@ -38,6 +38,14 @@ export function ProjectCard({
         <div className="absolute inset-0 bg-linear-to-br from-transparent to-black/10" />
       </Link>
 
+      {data.project.status == "archived" ? (
+        <div className="absolute left-2 top-2 text-xs text-red-500 bg-gray-800 p-2 rounded-xl">
+          <p>Archived</p>
+        </div>
+      ) : (
+        ""
+      )}
+
       <button
         className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-lg bg-background/80 backdrop-blur transition-all hover:bg-background"
         aria-label="Toggle favorite"

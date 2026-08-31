@@ -69,6 +69,98 @@ export function useCreateProject() {
   });
 }
 
+export function useDeleteProject(projectId: string) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (): Promise<CreateProjectResponse> => {
+      const response = await fetch(`${backendUrl}/projects/${projectId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${Cookies.get("token")}`,
+        },
+        credentials: "include",
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data?.message || "Failed to delete project");
+      }
+
+      return data;
+    },
+
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({
+        queryKey: ["project", projectId],
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: ["dashboard"],
+      });
+      toast.success(data.message);
+    },
+    onError(error) {
+      toast.error(error.message);
+    },
+  });
+}
+
+export interface UpdateProjectPayload {
+  title?: string;
+  description?: string;
+  background?: ProjectBackground;
+  status?: "archived" | "active";
+}
+export interface UpdateProjectResponse {
+  message: string;
+  success: boolean;
+  data: Project;
+}
+export function useUpdateProject(projectId: string) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (
+      payload: UpdateProjectPayload,
+    ): Promise<UpdateProjectResponse> => {
+      const response = await fetch(`${backendUrl}/projects/${projectId}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${Cookies.get("token")}`,
+        },
+        credentials: "include",
+        body: JSON.stringify(payload),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data?.message || "Failed to update project");
+      }
+
+      return data;
+    },
+
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({
+        queryKey: ["project", projectId],
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: ["dashboard"],
+      });
+      toast.success(data.message);
+    },
+    onError(error) {
+      toast.error(error.message);
+    },
+  });
+}
+
 export function useRemoveUserFromProject(projectId: string) {
   const queryClient = useQueryClient();
 

@@ -1,6 +1,7 @@
+import useUser from "@/src/hooks/useUser";
 import { ProjectBoard } from "./project-board";
 import ProjectMembers from "./project-members";
-import { ProjectSettings } from "./project-settings";
+import { ProjectSetting } from "./project-setting/project-setting";
 import {
   Tabs,
   TabsContent,
@@ -8,8 +9,11 @@ import {
   TabsTrigger,
 } from "@/src/components/ui/tabs";
 import { Activity, LayoutDashboard, Settings } from "lucide-react";
+import { useProject } from "@/src/hooks/useProject";
 
 export function ProjectContent({ projectId }: { projectId: number }) {
+  const { data: project } = useProject(String(projectId));
+  const { data } = useUser();
   return (
     <>
       <div className="shrink-0 border-b px-4 py-3 md:px-6">
@@ -24,23 +28,30 @@ export function ProjectContent({ projectId }: { projectId: number }) {
               <Activity className="h-3.5 w-3.5" />
               Members
             </TabsTrigger>
-
-            <TabsTrigger value="settings" className="gap-1.5 cursor-pointer">
-              <Settings className="h-3.5 w-3.5" />
-              Settings
-            </TabsTrigger>
+            {data.data.user.id == project?.owner.id ? (
+              <TabsTrigger value="settings" className="gap-1.5 cursor-pointer">
+                <Settings className="h-3.5 w-3.5" />
+                Settings
+              </TabsTrigger>
+            ) : (
+              ""
+            )}
           </TabsList>
 
-          <main className="min-h-0 flex-1 overflow-hidden">
-            <TabsContent value="board">
+          <main className="min-h-0 flex-1">
+            <TabsContent className="pb-10" value="board">
               <ProjectBoard projectId={projectId} />
             </TabsContent>
-            <TabsContent value="members">
+            <TabsContent className="pb-10" value="members">
               <ProjectMembers projectId={projectId} />
             </TabsContent>
-            <TabsContent value="settings">
-              <ProjectSettings projectId={projectId} />
-            </TabsContent>
+            {data.data.user.id == project?.owner.id ? (
+              <TabsContent className="pb-10" value="settings">
+                <ProjectSetting projectId={projectId} />
+              </TabsContent>
+            ) : (
+              ""
+            )}
           </main>
         </Tabs>
       </div>
