@@ -1,4 +1,5 @@
 import { ProjectBoard } from "./project-board";
+import ProjectMembers from "./project-members";
 import { ProjectSettings } from "./project-settings";
 import {
   Tabs,
@@ -6,13 +7,7 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/src/components/ui/tabs";
-import {
-  Activity,
-  Calendar,
-  LayoutDashboard,
-  List,
-  Settings,
-} from "lucide-react";
+import { Activity, LayoutDashboard, Settings } from "lucide-react";
 
 export function ProjectContent({ projectId }: { projectId: number }) {
   return (
@@ -20,17 +15,17 @@ export function ProjectContent({ projectId }: { projectId: number }) {
       <div className="shrink-0 border-b px-4 py-3 md:px-6">
         <Tabs defaultValue="board">
           <TabsList>
-            <TabsTrigger value="board" className="gap-1.5">
+            <TabsTrigger value="board" className="gap-1.5 cursor-pointer">
               <LayoutDashboard className="h-3.5 w-3.5" />
               Board
             </TabsTrigger>
 
-            <TabsTrigger value="members" className="gap-1.5">
+            <TabsTrigger value="members" className="gap-1.5 cursor-pointer">
               <Activity className="h-3.5 w-3.5" />
               Members
             </TabsTrigger>
 
-            <TabsTrigger value="settings" className="gap-1.5">
+            <TabsTrigger value="settings" className="gap-1.5 cursor-pointer">
               <Settings className="h-3.5 w-3.5" />
               Settings
             </TabsTrigger>
@@ -41,7 +36,7 @@ export function ProjectContent({ projectId }: { projectId: number }) {
               <ProjectBoard projectId={projectId} />
             </TabsContent>
             <TabsContent value="members">
-              <ProjectBoard projectId={projectId} />
+              <ProjectMembers projectId={projectId} />
             </TabsContent>
             <TabsContent value="settings">
               <ProjectSettings projectId={projectId} />
