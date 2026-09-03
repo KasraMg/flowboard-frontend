@@ -36,6 +36,9 @@ export function useToggleFavorite(projectId: number) {
       queryClient.invalidateQueries({
         queryKey: ["project", String(projectId)],
       });
+      queryClient.invalidateQueries({
+        queryKey: ["sidebar"],
+      });
 
       toast.success(data.message);
     },
