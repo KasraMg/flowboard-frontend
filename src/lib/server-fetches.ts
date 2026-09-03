@@ -57,3 +57,17 @@ export async function getDashboardData() {
   });
   return response.json();
 }
+export async function getSideBar() {
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get("token");
+  if (!accessToken?.value) {
+    return null;
+  }
+
+  const response = await fetch(`${backendUrl}/users/sidebar`, {
+    headers: {
+      Authorization: `Bearer ${accessToken?.value}`,
+    },
+  });
+  return response.json();
+}

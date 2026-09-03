@@ -29,3 +29,29 @@ const useUser = () => {
 };
 
 export default useUser;
+
+export const fetchSidebar = async () => {
+  const response = await fetch(`${backendUrl}/users/sidebar`, {
+    headers: {
+      Authorization: `Bearer ${Cookies.get("token")}`,
+    },
+  });
+  if (!response.ok) {
+    if (response.status === 401) {
+      Cookies.remove("token");
+      throw new Error("Unauthorized");
+    }
+    const error = await response.json().catch(() => ({}));
+    throw new Error(error.message || "error");
+  }
+  return response.json();
+};
+
+export const userSidebar = () => {
+  return useQuery({
+    queryKey: ["sidebar"],
+    queryFn: fetchSidebar,
+    enabled: true,
+    retry: false,
+  });
+};

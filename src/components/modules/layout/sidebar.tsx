@@ -14,8 +14,7 @@ import {
   Sparkles,
   LogOut,
 } from "lucide-react";
-import { cn } from "@/src/lib/utils";
-import { useApp } from "@/src/providers/app-provider";
+import { cn, getBackground } from "@/src/lib/utils";
 import { Button } from "@/src/components/ui/button";
 import {
   Tooltip,
@@ -39,6 +38,8 @@ const bottomNav: NavItem[] = [
 
 import Cookies from "js-cookie";
 import { useQueryClient } from "@tanstack/react-query";
+import { userSidebar } from "@/src/hooks/useUser";
+import { Project } from "@/src/lib/types";
 
 export function Sidebar({
   collapsed,
@@ -48,19 +49,16 @@ export function Sidebar({
   onToggleCollapse: () => void;
 }) {
   const pathname = usePathname();
-  const { projects, notifications } = useApp();
-  const favProjects = projects
-    .filter((p) => p.favorite && !p.archived)
-    .slice(0, 5);
-  const unreadCount = notifications.filter((n) => !n.read).length;
-
   const queryClient = useQueryClient();
+
+  const { data } = userSidebar();
+
   return (
     <TooltipProvider delayDuration={collapsed ? 200 : 999999}>
       <aside
         className={cn(
           "flex h-full flex-col border-r border-sidebar-border bg-sidebar transition-[width] duration-200",
-          collapsed ? "w-[68px]" : "w-64",
+          collapsed ? "w-17" : "w-64",
         )}
       >
         <div className="flex h-16 items-center gap-2 border-b border-sidebar-border px-3">
@@ -104,35 +102,35 @@ export function Sidebar({
                 <Star className="h-3.5 w-3.5 text-amber-500" />
               </div>
               <div className="space-y-0.5">
-                {favProjects.length === 0 ? (
+                {data?.data?.favorites.length === 0 ? (
                   <p className="px-2 text-xs text-muted-foreground">
                     No favorites yet
                   </p>
                 ) : (
-                  favProjects.map((p) => (
+                  data?.data?.favorites.map((p: { project: Project }) => (
                     <Link
-                      key={p.id}
-                      href={`/projects/${p.id}`}
+                      key={p.project.id}
+                      href={`/projects/${p.project.id}`}
                       className={cn(
                         "flex items-center gap-2 rounded-lg px-2 py-1.5 text-sm transition-colors hover:bg-sidebar-accent",
-                        pathname.startsWith(`/projects/${p.id}`) &&
+                        pathname.startsWith(`/projects/${p.project.id}`) &&
                           "bg-sidebar-accent text-sidebar-accent-foreground",
                       )}
                     >
                       <span
                         className="h-2.5 w-2.5 shrink-0 rounded-full"
-                        style={{ backgroundColor: p.backgroundColor }}
+                        style={{
+                          background: getBackground(p.project.background),
+                        }}
                       />
-                      <span className="truncate">{p.name}</span>
+                      <span className="truncate">{p.project.title}</span>
                     </Link>
                   ))
                 )}
               </div>
             </div>
           )}
-
-          {/* Recent projects */}
-          {!collapsed && (
+          {!collapsed && data?.data?.projects.length > 0 && (
             <div className="mt-6">
               <div className="mb-2 flex items-center justify-between px-2">
                 <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
@@ -145,26 +143,25 @@ export function Sidebar({
                 </Link>
               </div>
               <div className="space-y-0.5">
-                {projects
-                  .filter((p) => !p.archived)
-                  .slice(0, 4)
-                  .map((p) => (
-                    <Link
-                      key={p.id}
-                      href={`/projects/${p.id}`}
-                      className={cn(
-                        "flex items-center gap-2 rounded-lg px-2 py-1.5 text-sm transition-colors hover:bg-sidebar-accent",
-                        pathname.startsWith(`/projects/${p.id}`) &&
-                          "bg-sidebar-accent text-sidebar-accent-foreground",
-                      )}
-                    >
-                      <span
-                        className="h-2.5 w-2.5 shrink-0 rounded-full"
-                        style={{ backgroundColor: p.backgroundColor }}
-                      />
-                      <span className="truncate">{p.name}</span>
-                    </Link>
-                  ))}
+                {data?.data?.projects.slice(0, 4).map((p: Project) => (
+                  <Link
+                    key={p.id}
+                    href={`/projects/${p.id}`}
+                    className={cn(
+                      "flex items-center gap-2 rounded-lg px-2 py-1.5 text-sm transition-colors hover:bg-sidebar-accent",
+                      pathname.startsWith(`/projects/${p.id}`) &&
+                        "bg-sidebar-accent text-sidebar-accent-foreground",
+                    )}
+                  >
+                    <span
+                      className="h-2.5 w-2.5 shrink-0 rounded-full"
+                      style={{
+                        background: getBackground(p.background),
+                      }}
+                    />
+                    <span className="truncate">{p.title}</span>
+                  </Link>
+                ))}
               </div>
             </div>
           )}
@@ -178,11 +175,7 @@ export function Sidebar({
                   pathname === item.href || pathname.startsWith(item.href + "/")
                 }
                 collapsed={collapsed}
-                badge={
-                  item.href === "/notifications" && unreadCount > 0
-                    ? unreadCount
-                    : undefined
-                }
+                badge={item.href === "/notifications" && 1 > 0 ? 1 : undefined}
               />
             ))}
             <div
