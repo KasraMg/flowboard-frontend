@@ -2,11 +2,11 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { ThemeProvider } from "@/src/providers/theme-provider";
-import { AppProvider } from "@/src/providers/app-provider"; 
+import { AppProvider } from "@/src/providers/app-provider";
 import { Toaster as SonnerToaster } from "@/src/components/ui/sonner";
 import QueryWrapper from "../providers/query-wrapper";
 import Hydrated from "../providers/hydrated";
-import { getUser } from "../lib/server-fetches";
+import { getSideBar, getUser } from "../lib/server-fetches";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -42,8 +42,10 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <Hydrated queryKey={["user"]} queryFn={getUser}>
-              <AppProvider>{children}</AppProvider>
-            </Hydrated> 
+              <Hydrated queryKey={["sidebar"]} queryFn={getSideBar}>
+                <AppProvider>{children}</AppProvider>
+              </Hydrated>
+            </Hydrated>
             <SonnerToaster />
           </ThemeProvider>
         </QueryWrapper>

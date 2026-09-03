@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { Star, MoreHorizontal, Settings } from "lucide-react";
-import { cn, getBackground } from "@/src/lib/utils";
+import { MoreHorizontal, Settings } from "lucide-react";
+import { getBackground } from "@/src/lib/utils";
 import { Button } from "@/src/components/ui/button";
 import {
   DropdownMenu,
@@ -11,6 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/src/components/ui/dropdown-menu";
 import { Project } from "@/src/lib/types";
+import FavoriteButton from "@/src/components/modules/layout/favorite-button";
 
 export function ProjectCard({
   data,
@@ -46,31 +47,21 @@ export function ProjectCard({
         ""
       )}
 
-      <button
-        className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-lg bg-background/80 backdrop-blur transition-all hover:bg-background"
-        aria-label="Toggle favorite"
-      >
+      <div className="absolute right-3 top-3 h-8" aria-label="Toggle favorite">
         {isDashboard ? (
-          <Star
-            className={cn(
-              "h-4 w-4",
-
-              data.isFave
-                ? "fill-amber-400 text-amber-400"
-                : "text-muted-foreground",
-            )}
+          <FavoriteButton
+            size="sm"
+            projectId={data.project.id}
+            isFavorite={data.isFave}
           />
         ) : (
-          <Star
-            className={cn(
-              "h-4 w-4",
-              data.project.isFave
-                ? "fill-amber-400 text-amber-400"
-                : "text-muted-foreground",
-            )}
+          <FavoriteButton
+            size="sm"
+            projectId={data.project.id}
+            isFavorite={data.project.isFave}
           />
         )}
-      </button>
+      </div>
 
       <div className="flex flex-1 flex-col p-4">
         <div className="flex items-start justify-between gap-2">

@@ -3,21 +3,23 @@
 import { ArrowLeft, Star } from "lucide-react";
 import { Button } from "@/src/components/ui/button";
 import { UserAvatar } from "@/src/components/modules/user-avatar";
-import { PROJECT_BACKGROUNDS } from "@/src/lib/project-backgrounds";
 import { useRouter } from "next/navigation";
 import type { Project } from "@/src/lib/types";
 import InviteModal from "./invite-modal";
 import useUser from "@/src/hooks/useUser";
 import FavoriteButton from "@/src/components/modules/layout/favorite-button";
+import { getBackground } from "@/src/lib/utils";
 
 export function ProjectHeader({ project }: { project: Project }) {
   const router = useRouter();
   const { data } = useUser();
-  const background = PROJECT_BACKGROUNDS[project.background];
 
   return (
     <header className="shrink-0">
-      <div className="relative h-28 overflow-hidden" style={{ background }}>
+      <div
+        className="relative h-28 overflow-hidden"
+        style={{ background: getBackground(project.background) }}
+      >
         <div className="absolute inset-0 bg-grid opacity-20" />
 
         <div className="absolute inset-0 bg-linear-to-br from-transparent to-black/20" />
@@ -41,7 +43,9 @@ export function ProjectHeader({ project }: { project: Project }) {
                   {project.title}
                 </h1>
 
-                <Star className={`${project.isFave ? ' text-yellow-400 fill-yellow-400 stroke-yellow-400' : ''} h-4 w-4 text-muted-foreground`} />
+                <Star
+                  className={`${project.isFave ? " text-yellow-400 fill-yellow-400 stroke-yellow-400" : ""} h-4 w-4 text-muted-foreground`}
+                />
               </div>
 
               {project.description && (
