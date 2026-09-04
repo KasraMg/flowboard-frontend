@@ -1,7 +1,6 @@
 "use client";
 
 import { ChevronDown, User, Settings, LogOut } from "lucide-react";
-import router from "next/router";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,16 +12,24 @@ import {
 import { UserAvatar } from "../user-avatar";
 import AuthModal from "./auth/auth-modal";
 import useUser from "@/src/hooks/useUser";
+import Link from "next/link";
+import { redirect } from "next/navigation";
+import Cookies from "js-cookie";
+import { useQueryClient } from "@tanstack/react-query";
 
 const UserMenu = () => {
   const { data } = useUser();
-  console.log(data);
+  const queryClient = useQueryClient();
 
   return data?.data ? (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <button className="flex items-center gap-2 rounded-lg p-1 transition-colors hover:bg-accent">
-          <UserAvatar user={data?.data?.user} size="md" />
+          <UserAvatar
+            user={data?.data?.user}
+            size="md"
+            className="min-h-8 min-w-8"
+          />
           <ChevronDown className="hidden h-4 w-4 text-muted-foreground sm:block" />
         </button>
       </DropdownMenuTrigger>
@@ -36,20 +43,26 @@ const UserMenu = () => {
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => router.push("/profile")}>
-          <User className="mr-2 h-4 w-4" /> Profile
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => router.push("/settings")}>
-          <Settings className="mr-2 h-4 w-4" /> Settings
+
+        <DropdownMenuItem>
+          <Link className="flex" href={"/settings"}>
+            <Settings className="mr-2 h-4 w-4" /> Settings
+          </Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem
-          onClick={() => {
-            router.push("/login");
-          }}
-          className="text-destructive focus:text-destructive"
-        >
-          <LogOut className="mr-2 h-4 w-4" /> Sign out
+        <DropdownMenuItem className="text-destructive focus:text-destructive">
+          <div
+            className="flex"
+            onClick={() => {
+              Cookies.remove("token");
+              queryClient.removeQueries({
+                queryKey: ["user"],
+              });
+              redirect("/");
+            }}
+          >
+            <LogOut className="mr-2 h-4 w-4" /> Sign out
+          </div>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

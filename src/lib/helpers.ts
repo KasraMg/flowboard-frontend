@@ -1,5 +1,6 @@
 export const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
+import { Monitor, Moon, Sun } from "lucide-react";
 import type { Priority, TaskStatus, ProjectStatus } from "./types";
 import { PRIORITY_META, STATUS_META, PROJECT_STATUS_META } from "./types";
 
@@ -86,3 +87,21 @@ export function checklistProgress(items: { completed: boolean }[]): number {
     (items.filter((i) => i.completed).length / items.length) * 100,
   );
 }
+
+export const themes = [
+  {
+    value: "light",
+    label: "Light",
+    icon: Sun,
+  },
+  {
+    value: "dark",
+    label: "Dark",
+    icon: Moon,
+  },
+  {
+    value: "system",
+    label: "System",
+    icon: Monitor,
+  },
+];

@@ -36,10 +36,10 @@ export function Topbar({
         </kbd>
       </button>
 
-      <div className="flex-1" />
+      <div className="flex-1 sm:flex hidden" />
 
-      <Link href="/projects">
-        <Button variant="default" size="sm" className="hidden gap-1.5 sm:flex">
+      <Link href="/projects" className="hidden sm:block">
+        <Button variant="default" size="sm" className="gap-1.5 flex">
           <Plus className="h-4 w-4" /> New Project
         </Button>
       </Link>

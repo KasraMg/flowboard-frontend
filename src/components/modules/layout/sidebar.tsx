@@ -24,6 +24,11 @@ import {
 } from "@/src/components/ui/tooltip";
 import type { LucideIcon } from "lucide-react";
 
+import Cookies from "js-cookie";
+import { useQueryClient } from "@tanstack/react-query";
+import { userSidebar } from "@/src/hooks/useUser";
+import { Project } from "@/src/lib/types";
+
 type NavItem = { label: string; href: string; icon: LucideIcon };
 
 const mainNav: NavItem[] = [
@@ -35,11 +40,6 @@ const mainNav: NavItem[] = [
 const bottomNav: NavItem[] = [
   { label: "Settings", href: "/settings", icon: Settings },
 ];
-
-import Cookies from "js-cookie";
-import { useQueryClient } from "@tanstack/react-query";
-import { userSidebar } from "@/src/hooks/useUser";
-import { Project } from "@/src/lib/types";
 
 export function Sidebar({
   collapsed,
@@ -63,7 +63,7 @@ export function Sidebar({
       >
         <div className="flex h-16 items-center gap-2 border-b border-sidebar-border px-3">
           <Link href="/dashboard" className="flex items-center gap-2.5 min-w-0">
-            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-blue-600 text-white shadow-sm">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-linear-to-br from-primary to-blue-600 text-white shadow-sm">
               <Sparkles className="h-5 w-5" />
             </div>
             {!collapsed && (
