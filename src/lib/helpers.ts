@@ -1,5 +1,7 @@
 export const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
+import { Eye, CalendarCheck, BarChart3, Users, Workflow } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import { Monitor, Moon, Sun } from "lucide-react";
 import type { Priority, TaskStatus, ProjectStatus } from "./types";
 import { PRIORITY_META, STATUS_META, PROJECT_STATUS_META } from "./types";
@@ -103,5 +105,60 @@ export const themes = [
     value: "system",
     label: "System",
     icon: Monitor,
+  },
+];
+
+export const priority = [
+  {
+    name: "Low",
+    color: "#24d144",
+    baseColor: "#205c2a",
+  },
+  {
+    name: "Medium",
+    color: "#1f34de",
+    baseColor: "#94c8ff",
+  },
+  {
+    name: "High",
+    color: "#ff8600",
+    baseColor: "#624628",
+  },
+  {
+    name: "Urgent",
+    color: "#ff0000 ",
+    baseColor: "#451616",
+  },
+];
+
+export const benefits: { icon: LucideIcon; title: string; description: string }[] = [
+  {
+    icon: Eye,
+    title: "Know what needs attention",
+    description:
+      "See at a glance which tasks are overdue, in progress, or blocked.",
+  },
+  {
+    icon: CalendarCheck,
+    title: "Never lose track of deadlines",
+    description:
+      "Due dates and priorities keep important work from slipping away.",
+  },
+  {
+    icon: BarChart3,
+    title: "See project progress instantly",
+    description:
+      "Visual dashboards show exactly how far along each project is.",
+  },
+  {
+    icon: Users,
+    title: "Keep your team aligned",
+    description:
+      "Everyone knows what they\u2019re responsible for and what\u2019s next.",
+  },
+  {
+    icon: Workflow,
+    title: "Turn scattered work into a clear workflow",
+    description: "Stop juggling tools. Start moving work from idea to done.",
   },
 ];

@@ -70,7 +70,12 @@ export type Column = {
 
 export type TaskStatus = "backlog" | "todo" | "in_progress" | "review" | "done";
 
-export type Priority = "low" | "medium" | "high" | "urgent";
+type TaskLabel = {
+  title: string;
+  backgroundColor: string;
+};
+
+export type Priority = "Low" | "Medium" | "High" | "Urgent";
 export type Task = {
   assignees: User[];
   backgroundColor: string;
@@ -83,6 +88,7 @@ export type Task = {
   priority: Priority;
   title: string;
   updatedAt: string;
+  labels: TaskLabel[];
   creator: {
     email: string;
     id: number;
@@ -102,6 +108,36 @@ export type Task = {
       name: string;
     };
   };
+};
+
+export const PRIORITY_META: Record<
+  Priority,
+  { label: string; color: string; bg: string; dot: string }
+> = {
+  Low: {
+    label: "Low",
+    color: "text-slate-600 dark:text-slate-300",
+    bg: "bg-slate-100 dark:bg-slate-800",
+    dot: "bg-slate-400",
+  },
+  Medium: {
+    label: "Medium",
+    color: "text-blue-600 dark:text-blue-300",
+    bg: "bg-blue-50 dark:bg-blue-950",
+    dot: "bg-blue-500",
+  },
+  High: {
+    label: "High",
+    color: "text-amber-600 dark:text-amber-300",
+    bg: "bg-amber-50 dark:bg-amber-950",
+    dot: "bg-amber-500",
+  },
+  Urgent: {
+    label: "Urgent",
+    color: "text-red-600 dark:text-red-300",
+    bg: "bg-red-50 dark:bg-red-950",
+    dot: "bg-red-500",
+  },
 };
 
 export type NotificationData = {
@@ -177,36 +213,6 @@ export type Notification = {
   userId: ID;
   targetId?: ID;
   targetType?: "task" | "project";
-};
-
-export const PRIORITY_META: Record<
-  Priority,
-  { label: string; color: string; bg: string; dot: string }
-> = {
-  low: {
-    label: "Low",
-    color: "text-slate-600 dark:text-slate-300",
-    bg: "bg-slate-100 dark:bg-slate-800",
-    dot: "bg-slate-400",
-  },
-  medium: {
-    label: "Medium",
-    color: "text-blue-600 dark:text-blue-300",
-    bg: "bg-blue-50 dark:bg-blue-950",
-    dot: "bg-blue-500",
-  },
-  high: {
-    label: "High",
-    color: "text-amber-600 dark:text-amber-300",
-    bg: "bg-amber-50 dark:bg-amber-950",
-    dot: "bg-amber-500",
-  },
-  urgent: {
-    label: "Urgent",
-    color: "text-red-600 dark:text-red-300",
-    bg: "bg-red-50 dark:bg-red-950",
-    dot: "bg-red-500",
-  },
 };
 
 export const STATUS_META: Record<

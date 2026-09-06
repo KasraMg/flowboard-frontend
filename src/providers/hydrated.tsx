@@ -14,12 +14,14 @@ export default async function Hydrated({
   queryFn,
   children,
 }: HydratedProps) {
-  const queryClient: QueryClient = getQueryClient();
+  const queryClient = getQueryClient();
 
-  // Prefetch the query data
-  await queryClient.prefetchQuery({ queryKey, queryFn });
+  const data = await queryFn();
 
-  // Dehydrate the query client state
+  if (data !== undefined) {
+    queryClient.setQueryData(queryKey, data);
+  }
+
   const dehydratedState = dehydrate(queryClient);
 
   return (
