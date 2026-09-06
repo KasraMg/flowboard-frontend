@@ -62,9 +62,10 @@ export interface EditTaskPayload {
   description?: string;
   completed?: boolean;
   backgroundColor?: string;
-  priority?: "low" | "medium" | "high";
+  priority?: any;
   dueDate?: string;
   assigneeIds?: number[];
+  labels: any;
 }
 
 export interface EditTaskResponse {

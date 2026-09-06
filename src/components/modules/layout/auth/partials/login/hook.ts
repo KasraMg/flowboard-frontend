@@ -4,8 +4,10 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Cookies from "js-cookie"; 
+import Cookies from "js-cookie";
 import { useLogin as useLoginMutation } from "@/src/hooks/useLogin";
+import { useRouter } from "next/navigation";
+import { fetchMe } from "@/src/hooks/useUser";
 
 const loginSchema = z.object({
   email: z
@@ -28,15 +30,20 @@ export const useLogin = (setOpen: (open: boolean) => void) => {
     },
   });
 
+  const router = useRouter();
   const mutation = useLoginMutation();
+
   const onSubmit = form.handleSubmit((data) => {
     mutation.mutate(data, {
-      onSuccess(data) {
+      onSuccess: async (data) => {
         Cookies.set("token", data.access_token);
-        queryClient.invalidateQueries({
+        await queryClient.refetchQueries({
           queryKey: ["user"],
         });
+
         setOpen(false);
+        router.refresh();
+        router.replace("/dashboard");
       },
     });
   });

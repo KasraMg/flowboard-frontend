@@ -6,6 +6,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Cookies from "js-cookie";
 import { useRegister as useRegisterMutation } from "@/src/hooks/useRegister";
+import { useRouter } from "next/navigation";
 
 const registerSchema = z
   .object({
@@ -49,6 +50,7 @@ export const useRegister = (setOpen: (open: boolean) => void) => {
   });
 
   const mutation = useRegisterMutation();
+  const router = useRouter();
 
   const onSubmit = form.handleSubmit((data) => {
     mutation.mutate(data, {
@@ -58,6 +60,7 @@ export const useRegister = (setOpen: (open: boolean) => void) => {
           queryKey: ["user"],
         });
         setOpen(false);
+        router.push("/dashboard");
       },
     });
   });
