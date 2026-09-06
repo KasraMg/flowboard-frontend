@@ -3,14 +3,10 @@ import { backendUrl } from "../lib/helpers";
 import { useMutation } from "@tanstack/react-query";
 import { LoginFormValues } from "../components/modules/layout/auth/partials/login/hook";
 
-type LoginResponse = {
-  access_token: string;
-};
-
 export const useLogin = () => {
   const loginRequest = async (
     data: LoginFormValues,
-  ): Promise<LoginResponse> => {
+  ): Promise<{ access_token: string }> => {
     const response = await fetch(`${backendUrl}/auth/login`, {
       method: "POST",
       headers: {

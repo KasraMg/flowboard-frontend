@@ -1,14 +1,11 @@
-"use client";
+import { redirect } from "next/navigation";
+import LandingScreen from "../components/screens/landing/landing-screen";
+import { getUser } from "../lib/server-fetches";
 
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { useApp } from "@/src/providers/app-provider";
-
-export default function Home() {
-  const router = useRouter();
-  const { isAuthenticated } = useApp();
-
-  return (
-    <div className="flex h-screen items-center justify-center">landing</div>
-  );
+export default async function Home() {
+  const user = await getUser();
+  if (user) {
+    redirect("/dashboard");
+  }
+  return <LandingScreen />;
 }

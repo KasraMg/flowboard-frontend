@@ -6,9 +6,9 @@ import {
 } from "../../../../../../ui/dialog";
 import { Task } from "@/src/lib/types";
 import { Check, NotebookText } from "lucide-react";
-import TaskModalDropDownMenus from "./task-modal-drop-down-menus";
+import TaskModalDropDownMenus from "./partials/task-modal-drop-down-menus";
 import { useDebounce } from "@/src/hooks/useDebounce";
-import TaskModalActions from "./task-modal-actions";
+import TaskModalActions from "./partials/task-modal-actions";
 import { useEditTask } from "@/src/hooks/useTask";
 import TaskPreview from "./task-preview";
 
@@ -20,7 +20,9 @@ const TaskModal = ({ task }: { task: Task }) => {
     description: task.description,
     completed: task.completed,
     backgroundColor: task.backgroundColor,
+    priority: task.priority,
     assigneeIds: task.assignees.map((user) => user.id),
+    labels: task.labels || [],
   });
 
   const debouncedTitle = useDebounce(form.title, 1500);
@@ -33,7 +35,11 @@ const TaskModal = ({ task }: { task: Task }) => {
     const descriptionChanged = debouncedDescription !== task.description;
 
     const completedChanged = form.completed !== task.completed;
+    const priorityChanged = form.priority !== task.priority;
 
+    const labelsChanged =
+      JSON.stringify(form.labels ?? []) !== JSON.stringify(task.labels ?? []);
+      
     const backgroundColorChanged =
       form.backgroundColor !== task.backgroundColor;
 
@@ -43,9 +49,11 @@ const TaskModal = ({ task }: { task: Task }) => {
 
     if (
       !titleChanged &&
+      !priorityChanged &&
       !descriptionChanged &&
       !completedChanged &&
       !backgroundColorChanged &&
+      !labelsChanged &&
       !assigneeIdsChanged
     ) {
       return;
@@ -57,6 +65,8 @@ const TaskModal = ({ task }: { task: Task }) => {
       completed: form.completed,
       backgroundColor: form.backgroundColor,
       assigneeIds: form.assigneeIds,
+      priority: form.priority,
+      labels: form.labels,
     });
   }, [
     debouncedTitle,
@@ -64,6 +74,9 @@ const TaskModal = ({ task }: { task: Task }) => {
     form.completed,
     form.backgroundColor,
     form.assigneeIds,
+    form.priority,
+    form.labels,
+
     mutate,
     task,
   ]);

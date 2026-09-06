@@ -13,13 +13,15 @@ import { UserAvatar } from "../user-avatar";
 import AuthModal from "./auth/auth-modal";
 import useUser from "@/src/hooks/useUser";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 import Cookies from "js-cookie";
 import { useQueryClient } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 
 const UserMenu = () => {
   const { data } = useUser();
   const queryClient = useQueryClient();
+  const router = useRouter();
+  console.log(data);
 
   return data?.data ? (
     <DropdownMenu>
@@ -45,20 +47,20 @@ const UserMenu = () => {
         <DropdownMenuSeparator />
 
         <DropdownMenuItem>
-          <Link className="flex" href={"/settings"}>
+          <Link className="flex items-center" href={"/settings"}>
             <Settings className="mr-2 h-4 w-4" /> Settings
           </Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem className="text-destructive focus:text-destructive">
           <div
-            className="flex"
+            className="flex items-center w-full cursor-pointer"
             onClick={() => {
               Cookies.remove("token");
               queryClient.removeQueries({
                 queryKey: ["user"],
               });
-              redirect("/");
+              router.push("/");
             }}
           >
             <LogOut className="mr-2 h-4 w-4" /> Sign out
