@@ -15,7 +15,7 @@ export function KanbanMockup({ compact = false }: { compact?: boolean }) {
     : landingColumns;
 
   return (
-    <div className="flex gap-3 overflow-hidden">
+    <div className="flex gap-3 overflow-auto">
       {visibleColumns.map((column) => {
         const colTasks = landingTasks
           .filter((t) => t.columnId === column.id)
@@ -38,7 +38,7 @@ export function KanbanMockup({ compact = false }: { compact?: boolean }) {
               </span>
               <MoreHorizontal className="h-3.5 w-3.5" />
             </div>
-            <div className="flex-1 space-y-2 px-2 pb-2">
+            <div className="flex-1 space-y-3 px-2 pb-2">
               {colTasks.map((task) => (
                 <MockTaskCard
                   key={task.id}
@@ -47,11 +47,6 @@ export function KanbanMockup({ compact = false }: { compact?: boolean }) {
                   labels={landingLabels}
                 />
               ))}
-              {colTasks.length === 0 && (
-                <div className="flex items-center justify-center py-6 text-xs text-muted-foreground">
-                  No tasks
-                </div>
-              )}
             </div>
           </div>
         );

@@ -1,5 +1,3 @@
-"use client";
-
 import { ArrowRight, Play } from "lucide-react";
 import { KanbanMockup } from "./partials/kanban-mockup";
 import { Button } from "@/src/components/ui/button";
@@ -75,7 +73,7 @@ export function LandingHero() {
                 <div className="h-3 w-3 rounded-full bg-emerald-400/70" />
               </div>
               <div className="ml-3 flex h-6 flex-1 items-center rounded-md bg-background px-3 text-xs text-muted-foreground">
-                app.flowboard.app/projects/mobile-app-redesign
+                flowboard/projects/3
               </div>
             </div>
             <div className="flex">
@@ -90,27 +88,24 @@ export function LandingHero() {
                       <path d="M12 2L2 7l10 5 10-5-10-5z" />
                     </svg>
                   </div>
-                  <span className="text-sm font-semibold">Acme Studio</span>
+                  <span className="text-sm font-semibold">FlowBoard</span>
                 </div>
                 <div className="space-y-1">
-                  {["Dashboard", "My Tasks", "Projects", "Calendar"].map(
-                    (item, i) => (
+                  {["Dashboard", "Projects", "Notification"].map((item, i) => (
+                    <div
+                      key={item}
+                      className={`flex items-center gap-2 rounded-lg px-2.5 py-1.5 text-xs ${i === 2 ? "bg-primary/10 font-medium text-primary" : "text-muted-foreground"}`}
+                    >
                       <div
-                        key={item}
-                        className={`flex items-center gap-2 rounded-lg px-2.5 py-1.5 text-xs ${i === 2 ? "bg-primary/10 font-medium text-primary" : "text-muted-foreground"}`}
-                      >
-                        <div
-                          className="h-3.5 w-3.5 rounded"
-                          style={{
-                            backgroundColor:
-                              i === 2 ? "#3b82f6" : "currentColor",
-                            opacity: i === 2 ? 1 : 0.4,
-                          }}
-                        />
-                        {item}
-                      </div>
-                    ),
-                  )}
+                        className="h-3.5 w-3.5 rounded"
+                        style={{
+                          backgroundColor: i === 2 ? "#3b82f6" : "currentColor",
+                          opacity: i === 2 ? 1 : 0.4,
+                        }}
+                      />
+                      {item}
+                    </div>
+                  ))}
                 </div>
                 <div className="mt-4">
                   <p className="mb-1.5 px-2 text-[10px] font-medium uppercase tracking-wider text-muted-foreground">

@@ -29,7 +29,7 @@ const TaskPreview = ({
       className={`group ${task.backgroundColor ? "border-t-6" : ""} relative w-full rounded-lg bg-gray-800 py-2 px-2.5 text-center`}
     >
       {task.labels.length > 0 ? (
-        <div className="flex gap-3 pb-3 pt-1">
+        <div className="flex gap-2 pb-3 pt-1">
           {task.labels.map((l) => (
             <div
               className="inline-flex h-5 items-center rounded-full px-1.5 text-[12px]"

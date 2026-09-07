@@ -1,10 +1,8 @@
 "use client";
 
-import Link from "next/link";
-import { Check, ArrowRight } from "lucide-react";
+import { Check } from "lucide-react";
 import { useReveal } from "./use-reveal";
 import { cn } from "@/src/lib/utils";
-import { Button } from "@/src/components/ui/button";
 import AuthModal from "@/src/components/modules/layout/auth/auth-modal";
 
 const included = [

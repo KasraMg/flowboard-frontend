@@ -1,7 +1,6 @@
 "use client";
 
 import { LandingBenefits } from "./partials/landing-benefits";
-import { LandingFinalCTA } from "./partials/landing-final-cta";
 import { LandingFooter } from "./partials/landing-footer";
 import { LandingHero } from "./partials/landing-hero/landing-hero";
 import { LandingHowItWorks } from "./partials/landing-how-it-works";

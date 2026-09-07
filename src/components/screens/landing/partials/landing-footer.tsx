@@ -1,5 +1,3 @@
-'use client';
-
 import Link from 'next/link';
 import { Sparkles } from 'lucide-react';
 
@@ -24,7 +22,6 @@ export function LandingFooter() {
     <footer className="border-t border-border bg-card">
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="grid gap-8 lg:grid-cols-5">
-          {/* Brand */}
           <div className="lg:col-span-2">
             <Link href="/" className="flex items-center gap-2.5">
               <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-linear-to-br from-primary to-blue-600 text-white shadow-sm">
@@ -37,7 +34,6 @@ export function LandingFooter() {
             </p>
           </div>
 
-          {/* Link columns */}
           {Object.entries(footerLinks).map(([category, links]) => (
             <div key={category}>
               <h4 className="text-sm font-semibold">{category}</h4>
@@ -56,7 +52,6 @@ export function LandingFooter() {
             </div>
           ))}
 
-          {/* Auth links */}
           <div>
             <h4 className="text-sm font-semibold">Account</h4>
             <ul className="mt-3 space-y-2">
