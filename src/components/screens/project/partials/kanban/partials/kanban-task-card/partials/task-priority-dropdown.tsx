@@ -8,22 +8,26 @@ import {
 import { Button } from "@/src/components/ui/button";
 import { User } from "lucide-react";
 import { priority } from "@/src/lib/helpers";
+import { Badge } from "@/src/components/ui/badge";
+import { useTaskModal } from "@/src/store/task/task.store";
 
-const TaskPriorityDropdown = ({
-  setForm,
-  form,
-}: {
-  setForm: any;
-  form: any;
-}) => {
+const TaskPriorityDropdown = () => {
+  const { form, setForm } = useTaskModal();
+
   return (
     <DropdownMenu modal={false}>
       <DropdownMenuTrigger className="w-max" asChild>
         <Button
           size={"sm"}
-          className="bg-[#2a3b75] text-white hover:bg-[#2a3b75]"
+          className="bg-[#2a3b75] relative text-white hover:bg-[#2a3b75]"
         >
           Priority <User className="ml-2" />
+          <Badge
+            className="absolute -left-2 -top-3 px-2 border border-neutral-500"
+            variant={"secondary"}
+          >
+            {form.priority.slice(0, 1)}
+          </Badge>
         </Button>
       </DropdownMenuTrigger>
 

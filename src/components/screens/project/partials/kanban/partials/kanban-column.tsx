@@ -143,7 +143,7 @@ export function KanbanColumn({
 
       <div className="min-h-15 z-50 relative flex-1 space-y-2 overflow-y-auto px-2 pb-2 scrollbar-thin">
         {tasks.length !== 0 ? (
-          <div className=" space-y-3 pb-2">
+          <div className=" space-y-4 pb-2">
             {tasks.map((task) => (
               <TaskModal key={task.id} task={task} />
             ))}

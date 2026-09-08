@@ -1,4 +1,5 @@
 import { UserAvatar } from "@/src/components/modules/user-avatar";
+import { Badge } from "@/src/components/ui/badge";
 import { Button } from "@/src/components/ui/button";
 import {
   DropdownMenu,
@@ -8,27 +9,42 @@ import {
   DropdownMenuTrigger,
 } from "@/src/components/ui/dropdown-menu";
 import { useProject } from "@/src/hooks/useProject";
+import { useTaskModal } from "@/src/store/task/task.store";
 import { User } from "lucide-react";
 import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
-const TaskMembersDropdown = ({
-  setAssignIds,
-  assignIds,
-}: {
-  setAssignIds: (val: any) => void;
-  assignIds: {}[];
-}) => {
+const TaskMembersDropdown = () => {
   const { projectId } = useParams();
   const { data: project } = useProject(String(projectId));
+  const { form, setForm } = useTaskModal();
+
+  const [assignIds, setAssignIds] = useState<Number[] | []>(
+    form.assigneeIds || null,
+  );
+
+  useEffect(() => {
+    setForm((prev: any) => ({
+      ...prev,
+      assigneeIds: assignIds,
+    }));
+  }, [assignIds]);
 
   return (
     <DropdownMenu modal={false}>
       <DropdownMenuTrigger className="w-max" asChild>
         <Button
           size={"sm"}
-          className="bg-[#2a3b75] text-white hover:bg-[#2a3b75]"
+          className="bg-[#2a3b75] relative text-white hover:bg-[#2a3b75]"
         >
           Members <User className="ml-2" />
+          {assignIds.length > 0 ? (
+            <Badge className="absolute -left-2 -top-3 px-2" variant={"default"}>
+              {assignIds.length}
+            </Badge>
+          ) : (
+            ""
+          )}
         </Button>
       </DropdownMenuTrigger>
 
