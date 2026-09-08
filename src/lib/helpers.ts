@@ -111,27 +111,23 @@ export const themes = [
 export const priority = [
   {
     name: "Low",
-    color: "#24d144",
-    baseColor: "#205c2a",
   },
   {
     name: "Medium",
-    color: "#1f34de",
-    baseColor: "#94c8ff",
   },
   {
     name: "High",
-    color: "#ff8600",
-    baseColor: "#624628",
   },
   {
     name: "Urgent",
-    color: "#ff0000 ",
-    baseColor: "#451616",
   },
 ];
 
-export const benefits: { icon: LucideIcon; title: string; description: string }[] = [
+export const benefits: {
+  icon: LucideIcon;
+  title: string;
+  description: string;
+}[] = [
   {
     icon: Eye,
     title: "Know what needs attention",

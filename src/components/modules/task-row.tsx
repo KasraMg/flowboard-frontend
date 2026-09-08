@@ -2,7 +2,12 @@
 
 import { Clock } from "lucide-react";
 import { cn } from "@/src/lib/utils";
-import { formatDate, isOverdue, dueSoon } from "@/src/lib/helpers";
+import {
+  formatDate,
+  isOverdue,
+  dueSoon,
+  priorityMeta,
+} from "@/src/lib/helpers";
 import { Task } from "@/src/lib/types";
 import { UserAvatar } from "./user-avatar";
 import Link from "next/link";
@@ -16,6 +21,7 @@ export function TaskRow({
 }) {
   const overdue = isOverdue(task.dueDate) && !task.completed;
   const soon = dueSoon(task.dueDate) && !task.completed;
+  const pm = priorityMeta(task.priority);
 
   return (
     <Link
@@ -25,7 +31,7 @@ export function TaskRow({
       <div className="min-w-0 flex-1">
         <p
           className={cn(
-            "truncate text-sm font-medium",
+            "truncate text-sm font-medium pb-2",
             task.completed && "text-muted-foreground line-through",
           )}
         >
@@ -56,14 +62,26 @@ export function TaskRow({
         </div>
       </div>
 
-      {task?.assignees?.map((assigneee) => (
-        <UserAvatar
-          className="ring-transparent"
-          key={assigneee.id}
-          user={assigneee}
-          size="xs"
-        />
-      ))}
+      <div>
+        {task?.assignees?.map((assigneee) => (
+          <UserAvatar
+            className="ring-transparent mx-auto"
+            key={assigneee.id}
+            user={assigneee}
+            size="xs"
+          />
+        ))}
+
+        <span
+          className={cn(
+            "inline-flex h-5 mt-2 items-center gap-1 rounded-full px-1.5 text-[10px] font-medium",
+            pm.bg,
+            pm.color,
+          )}
+        >
+          <span className={cn("h-1.5 w-1.5 rounded-full", pm.dot)} /> {pm.label}
+        </span>
+      </div>
     </Link>
   );
 }

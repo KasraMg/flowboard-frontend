@@ -1,12 +1,13 @@
-import { Check, Dot } from "lucide-react";
+import { Check } from "lucide-react";
 import { Task } from "@/src/lib/types";
 import { UserAvatar } from "@/src/components/modules/user-avatar";
-import { priority } from "@/src/lib/helpers";
+import { priorityMeta } from "@/src/lib/helpers";
 import { useTaskModal } from "@/src/store/task/task.store";
+import { cn } from "@/src/lib/utils";
 
 const TaskPreview = ({ task }: { task: Task }) => {
   const { form, setForm } = useTaskModal();
-  
+
   const handleToggleComplete = (e: React.MouseEvent) => {
     e.stopPropagation();
     setForm((prev: any) => ({
@@ -14,7 +15,7 @@ const TaskPreview = ({ task }: { task: Task }) => {
       completed: !form.completed,
     }));
   };
-  const taskPriority = priority.find((p) => p.name == task.priority);
+  const pm = priorityMeta(task.priority);
 
   return (
     <div
@@ -71,26 +72,16 @@ const TaskPreview = ({ task }: { task: Task }) => {
         className={`${task.assignees.length > 0 ? "" : "pb-1"} flex justify-between pt-3`}
       >
         <div className="flex gap-2 items-center">
-          <div
-            className="inline-flex h-5 items-center pr-3 rounded-full px-1.5 text-[12px]"
-            style={{
-              backgroundColor: taskPriority?.baseColor,
-            }}
+          <span
+            className={cn(
+              "inline-flex h-5 items-center gap-1 rounded-full px-1.5 text-[10px] font-medium",
+              pm.bg,
+              pm.color,
+            )}
           >
-            <Dot
-              className="w-4 scale-150"
-              style={{
-                stroke: taskPriority?.color,
-              }}
-            />
-            <p
-              style={{
-                color: taskPriority?.color,
-              }}
-            >
-              {task.priority}
-            </p>
-          </div>
+            <span className={cn("h-1.5 w-1.5 rounded-full", pm.dot)} />{" "}
+            {pm.label}
+          </span>
           {task.description && (
             <svg
               xmlns="http://www.w3.org/2000/svg"
