@@ -1,13 +1,15 @@
 import {
   DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
+  DropdownMenuContent,
   DropdownMenuTrigger,
+  DropdownMenuLabel,
 } from "@/src/components/ui/dropdown-menu";
 import { Button } from "@/src/components/ui/button";
 import { Tags } from "lucide-react";
 import { useState } from "react";
+import { Badge } from "@/src/components/ui/badge";
+import { useTaskModal } from "@/src/store/task/task.store";
 
 export type TaskLabel = {
   title: string;
@@ -26,34 +28,39 @@ const colors = [
   "#EC4899",
 ];
 
-type Props = {
-  labels: TaskLabel[];
-  setLabels: React.Dispatch<React.SetStateAction<TaskLabel[]>>;
-};
-
-const TaskLabelDropdown = ({ labels, setLabels }: Props) => {
+const TaskLabelDropdown = () => {
   const [title, setTitle] = useState("");
   const [selectedColor, setSelectedColor] = useState(colors[0]);
+
+  const { form, setForm } = useTaskModal();
+
+  const labels = form.labels ?? [];
 
   const addLabel = () => {
     const trimmedTitle = title.trim();
 
     if (!trimmedTitle) return;
 
-    setLabels((prev) => [
+    setForm((prev) => ({
       ...prev,
-      {
-        title: trimmedTitle,
-        backgroundColor: selectedColor,
-      },
-    ]);
+      labels: [
+        ...(prev.labels ?? []),
+        {
+          title: trimmedTitle,
+          backgroundColor: selectedColor,
+        },
+      ],
+    }));
 
     setTitle("");
     setSelectedColor(colors[0]);
   };
 
   const removeLabel = (index: number) => {
-    setLabels((prev) => prev.filter((_, i) => i !== index));
+    setForm((prev) => ({
+      ...prev,
+      labels: (prev.labels ?? []).filter((_, i) => i !== index),
+    }));
   };
 
   return (
@@ -61,18 +68,26 @@ const TaskLabelDropdown = ({ labels, setLabels }: Props) => {
       <DropdownMenuTrigger className="w-max" asChild>
         <Button
           size="sm"
-          className="bg-[#2a3b75] text-white hover:bg-[#2a3b75]"
+          className="bg-[#2a3b75] relative text-white hover:bg-[#2a3b75]"
         >
           Labels
           <Tags className="ml-2" />
+          {labels.length > 0 ? (
+            <Badge
+              className="absolute -left-2 -top-3 px-2"
+              variant={"destructive"}
+            >
+              {labels.length}
+            </Badge>
+          ) : (
+            ""
+          )}
         </Button>
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent sideOffset={5} className="z-99999 w-64">
+      <DropdownMenuContent sideOffset={5} className="z-99999 w-80 sm:w-100">
         <DropdownMenuLabel>Add label</DropdownMenuLabel>
-
         <DropdownMenuSeparator />
-
         <div className="space-y-4 p-2">
           <input
             value={title}
@@ -90,7 +105,7 @@ const TaskLabelDropdown = ({ labels, setLabels }: Props) => {
           <div>
             <p className="mb-2 text-xs text-gray-400">Choose a color</p>
 
-            <div className="grid grid-cols-5 gap-2">
+            <div className="grid grid-cols-9 sm:grid-cols-9 gap-2">
               {colors.map((color) => (
                 <button
                   key={color}
@@ -120,16 +135,16 @@ const TaskLabelDropdown = ({ labels, setLabels }: Props) => {
           </Button>
 
           {labels.length > 0 && (
-            <div className="space-y-2 border-t border-gray-700 pt-3">
+            <div className="flex overflow-y-auto pb-2 gap-2 border-t border-gray-700 pt-3">
               {labels.map((label, index) => (
                 <div
                   key={`${label.title}-${index}`}
-                  className="flex items-center justify-between rounded-md px-3 py-2"
+                  className="flex items-center justify-between rounded-md px-2 py-1 w-max gap-2"
                   style={{
                     backgroundColor: label.backgroundColor,
                   }}
                 >
-                  <span className="text-sm text-white">{label.title}</span>
+                  <span className="text-[13px] text-white">{label.title}</span>
 
                   <button
                     type="button"

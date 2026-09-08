@@ -1,5 +1,3 @@
-"use client";
-
 import { FolderPlus, ListChecks, TrendingUp } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { useReveal } from "./use-reveal";

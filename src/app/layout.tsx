@@ -2,7 +2,6 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { ThemeProvider } from "@/src/providers/theme-provider";
-import { AppProvider } from "@/src/providers/app-provider";
 import { Toaster as SonnerToaster } from "@/src/components/ui/sonner";
 import QueryWrapper from "../providers/query-wrapper";
 import Hydrated from "../providers/hydrated";
@@ -43,7 +42,7 @@ export default function RootLayout({
           >
             <Hydrated queryKey={["user"]} queryFn={getUser}>
               <Hydrated queryKey={["sidebar"]} queryFn={getSideBar}>
-                <AppProvider>{children}</AppProvider>
+                {children}
               </Hydrated>
             </Hydrated>
             <SonnerToaster />

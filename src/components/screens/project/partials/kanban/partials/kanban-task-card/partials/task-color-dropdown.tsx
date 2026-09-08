@@ -1,3 +1,4 @@
+import { Badge } from "@/src/components/ui/badge";
 import { Button } from "@/src/components/ui/button";
 import {
   DropdownMenu,
@@ -6,9 +7,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/src/components/ui/dropdown-menu";
+import { useTaskModal } from "@/src/store/task/task.store";
 import { Palette } from "lucide-react";
 
-const TaskColorDropdown = ({ setForm, form }: { setForm: any; form: any }) => {
+const TaskColorDropdown = () => {
+  const { form, setForm } = useTaskModal();
+
   const colors = [
     "#EF4444",
     "#F97316",
@@ -26,23 +30,28 @@ const TaskColorDropdown = ({ setForm, form }: { setForm: any; form: any }) => {
       <DropdownMenuTrigger className="w-max" asChild>
         <Button
           size={"sm"}
-          className="bg-[#2a3b75] text-white hover:bg-[#2a3b75]"
+          className="bg-[#2a3b75] relative text-white hover:bg-[#2a3b75]"
         >
           Color <Palette className="ml-2" />
+          <Badge
+            className="absolute -left-2 w-3 h-5 -top-3 px-2.5"
+            style={{ backgroundColor: form.backgroundColor }}
+          />
         </Button>
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent sideOffset={5} className="z-99999 w-48">
+      <DropdownMenuContent sideOffset={5} className="z-99999 w-70">
         <DropdownMenuLabel>Colors</DropdownMenuLabel>
 
         <DropdownMenuSeparator />
 
-        <div className="grid gap-2 p-2">
+        <div className="grid grid-cols-3 gap-2 p-2">
           {colors.map((color) => (
             <div key={color} className="flex gap-2 items-center">
               <input
                 type="radio"
-                name="task_color"
+                name={`task_color_${color}`}
+                id={`task_color_${color}`}
                 value={color}
                 checked={form.backgroundColor == color}
                 onChange={() =>
@@ -54,8 +63,8 @@ const TaskColorDropdown = ({ setForm, form }: { setForm: any; form: any }) => {
                 className="accent-green-500 size-4"
               />
 
-              <Button
-                type="button"
+              <label
+                htmlFor={`task_color_${color}`}
                 className="h-7 w-full rounded-sm transition-opacity hover:opacity-70"
                 style={{ backgroundColor: color }}
                 onClick={() => {

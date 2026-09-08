@@ -1,5 +1,3 @@
-"use client";
-
 import { benefits } from "@/src/lib/helpers";
 import { useReveal } from "./use-reveal";
 import { cn } from "@/src/lib/utils";
