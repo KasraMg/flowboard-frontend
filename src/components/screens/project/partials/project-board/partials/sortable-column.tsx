@@ -7,9 +7,15 @@ type SortableColumnProps = {
   column: {
     id: number;
   };
+
   children: (props: {
-    dragAttributes: ReturnType<typeof useSortable>["attributes"];
-    dragListeners: ReturnType<typeof useSortable>["listeners"];
+    dragAttributes: ReturnType<
+      typeof useSortable
+    >["attributes"];
+
+    dragListeners: ReturnType<
+      typeof useSortable
+    >["listeners"];
   }) => ReactNode;
 };
 
@@ -24,7 +30,7 @@ export function SortableColumn({
     transform,
     transition,
   } = useSortable({
-    id: column.id,
+    id: `column-${column.id}`,
   });
 
   const style = {

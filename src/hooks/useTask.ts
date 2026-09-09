@@ -145,3 +145,36 @@ export function useDeleteTask(projectId: number) {
     },
   });
 }
+
+export function useReorderTasks(projectId: number) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (data:{}) => {
+      const response = await fetch(`${backendUrl}/tasks/reorder/${projectId}`, {
+        method: "PATCH",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${Cookies.get("token")}`,
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to reorder columns");
+      }
+
+      return response.json();
+    },
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["project", String(projectId)],
+      });
+    },
+    onError(error) {
+      toast.error(error.message);
+    },
+  });
+}
