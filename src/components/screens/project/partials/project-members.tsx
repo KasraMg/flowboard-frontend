@@ -27,7 +27,8 @@ const ProjectMembers = ({ projectId }: { projectId: number }) => {
 
             <div>
               <p className="text-sm">{member.role}</p>
-              {project.owner.email == data.data.user.email ? (
+              {project.owner.email == data.data.user.email &&
+              project.owner.email !== member.user.email ? (
                 <Button
                   onClick={() => mutate({ projectId, userId: member.user.id })}
                   size={"sm"}

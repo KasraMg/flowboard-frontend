@@ -28,7 +28,7 @@ export function Topbar({
       >
         <Search className="h-4 w-4" />
         <span className="hidden flex-1 text-left sm:block">
-          Search projects, tasks, people...
+          Search projects...
         </span>
         <span className="flex-1 text-left sm:hidden">Search...</span>
         <kbd className="hidden items-center gap-0.5 rounded border border-border bg-background px-1.5 py-0.5 text-[10px] font-medium sm:flex">
