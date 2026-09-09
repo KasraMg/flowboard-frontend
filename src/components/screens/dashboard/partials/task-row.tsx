@@ -9,7 +9,7 @@ import {
   priorityMeta,
 } from "@/src/lib/helpers";
 import { Task } from "@/src/lib/types";
-import { UserAvatar } from "./user-avatar";
+import { UserAvatar } from "../../../modules/user-avatar";
 import Link from "next/link";
 
 export function TaskRow({

@@ -10,8 +10,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/src/components/ui/dropdown-menu";
-import { Project } from "@/src/lib/types";
-import FavoriteButton from "@/src/components/modules/layout/favorite-button";
+import { Project } from "@/src/lib/types"; 
+import FavoriteButton from "@/src/components/modules/favorite-button";
 
 export function ProjectCard({
   data,

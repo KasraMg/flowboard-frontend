@@ -3,7 +3,7 @@
 import { Check } from "lucide-react";
 import { useReveal } from "./use-reveal";
 import { cn } from "@/src/lib/utils";
-import AuthModal from "@/src/components/modules/layout/auth/auth-modal";
+import AuthModal from "@/src/components/modules/auth/auth-modal";
 
 const included = [
   "Unlimited projects",

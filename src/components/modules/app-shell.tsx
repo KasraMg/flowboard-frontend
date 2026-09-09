@@ -1,16 +1,16 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { Sidebar } from "@/src/components/modules/layout/sidebar";
-import { Topbar } from "@/src/components/modules/layout/topbar";
+import { Sidebar } from "@/src/components/modules/sidebar";
 import {
   Sheet,
   SheetContent,
   SheetHeader,
   SheetTitle,
 } from "@/src/components/ui/sheet";
-import { GlobalSearch } from "../global-search";
+import { GlobalSearch } from "./global-search";
 import { ReactNode, useEffect, useState } from "react";
+import { Topbar } from "./topbar";
 
 export function AppShell({ children }: { children: ReactNode }) {
   const [collapsed, setCollapsed] = useState(false);

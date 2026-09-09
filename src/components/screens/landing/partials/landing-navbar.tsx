@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Sparkles } from "lucide-react";
 import { cn } from "@/src/lib/utils";
-import AuthModal from "@/src/components/modules/layout/auth/auth-modal";
+import AuthModal from "@/src/components/modules/auth/auth-modal";
 
 const navLinks = [
   { label: "Features", href: "#features" },

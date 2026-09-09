@@ -8,8 +8,8 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "../../ui/dropdown-menu";
-import { UserAvatar } from "../user-avatar";
+} from "../ui/dropdown-menu";
+import { UserAvatar } from "./user-avatar";
 import AuthModal from "./auth/auth-modal";
 import useUser from "@/src/hooks/useUser";
 import Link from "next/link";

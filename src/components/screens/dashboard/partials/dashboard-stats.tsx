@@ -5,7 +5,7 @@ import {
   NotebookText,
 } from "lucide-react";
 
-import { StatCard } from "@/src/components/modules/stat-card";
+import { StatCard } from "@/src/components/screens/dashboard/partials/stat-card";
 import { DashboardResponse } from "@/src/lib/types";
 
 export function DashboardStats({ data }: { data: DashboardResponse }) {

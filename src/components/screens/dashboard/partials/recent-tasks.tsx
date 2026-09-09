@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/src/components/ui/button";
 import { Card, CardContent } from "@/src/components/ui/card";
-import { TaskRow } from "@/src/components/modules/task-row";
+import { TaskRow } from "@/src/components/screens/dashboard/partials/task-row";
 import { DashboardResponse } from "@/src/lib/types";
 
 export function RecentTasks({ data }: { data: DashboardResponse }) {

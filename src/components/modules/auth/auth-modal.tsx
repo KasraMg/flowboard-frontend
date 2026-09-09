@@ -1,10 +1,10 @@
 import React, { ReactNode, useState } from "react";
-import { Dialog, DialogContent, DialogTrigger } from "../../../ui/dialog";
-import { Button } from "../../../ui/button";
 import Login from "./partials/login/login";
 import Register from "./partials/register/register";
 import { User } from "lucide-react";
 import { cn } from "@/src/lib/utils";
+import { Button } from "../../ui/button";
+import { Dialog, DialogContent, DialogTrigger } from "../../ui/dialog";
 
 const AuthModal = ({
   title,
@@ -19,7 +19,11 @@ const AuthModal = ({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="default" size="sm" className={cn("flex",btnClassName)}>
+        <Button
+          variant="default"
+          size="sm"
+          className={cn("flex", btnClassName)}
+        >
           {title ? (
             title
           ) : (
