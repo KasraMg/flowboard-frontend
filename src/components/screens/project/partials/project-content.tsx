@@ -1,5 +1,5 @@
 import useUser from "@/src/hooks/useUser";
-import { ProjectBoard } from "./project-board";
+import { ProjectBoard } from "./project-board/project-board";
 import ProjectMembers from "./project-members";
 import { ProjectSetting } from "./project-setting/project-setting";
 import {
