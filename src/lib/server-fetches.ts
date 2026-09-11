@@ -61,7 +61,7 @@ export async function getSideBar() {
   const cookieStore = await cookies();
   const accessToken = cookieStore.get("token");
   if (!accessToken?.value) {
-    return null;
+    return undefined;
   }
 
   const response = await fetch(`${backendUrl}/users/sidebar`, {

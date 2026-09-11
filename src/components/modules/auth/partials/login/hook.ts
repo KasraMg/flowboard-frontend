@@ -7,7 +7,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Cookies from "js-cookie";
 import { useLogin as useLoginMutation } from "@/src/hooks/useLogin";
 import { useRouter } from "next/navigation";
-import { fetchMe } from "@/src/hooks/useUser";
 
 const loginSchema = z.object({
   email: z
@@ -15,7 +14,7 @@ const loginSchema = z.object({
     .min(1, "Email is required")
     .email("Please enter a valid email"),
 
-  password: z.string().min(8, "Password must be at least 8 characters"),
+  password: z.string().min(6, "Password must be at least 8 characters"),
 });
 
 export type LoginFormValues = z.infer<typeof loginSchema>;
@@ -39,6 +38,9 @@ export const useLogin = (setOpen: (open: boolean) => void) => {
         Cookies.set("token", data.access_token);
         await queryClient.refetchQueries({
           queryKey: ["user"],
+        });
+        await queryClient.refetchQueries({
+          queryKey: ["sidebar"],
         });
 
         setOpen(false);

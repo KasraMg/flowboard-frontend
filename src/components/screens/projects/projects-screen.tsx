@@ -1,6 +1,6 @@
 "use client";
 
-import { Search, Star, FolderKanban, SlidersHorizontal } from "lucide-react";
+import { Search, Star, SlidersHorizontal } from "lucide-react";
 import { ProjectFormModal } from "@/src/components/screens/projects/partials/project-form-modal";
 import { Button } from "@/src/components/ui/button";
 import { Input } from "@/src/components/ui/input";

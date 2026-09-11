@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Sparkles } from "lucide-react";
 import { cn } from "@/src/lib/utils";
 import AuthModal from "@/src/components/modules/auth/auth-modal";
+import { ThemeToggle } from "@/src/components/modules/theme-toggle";
 
 const navLinks = [
   { label: "Features", href: "#features" },
@@ -51,8 +52,10 @@ export function LandingNavbar() {
             </a>
           ))}
         </div>
-
-        <AuthModal />
+        <div className="flex gap-2 items-center">
+          <ThemeToggle />
+          <AuthModal />
+        </div>
       </nav>
     </header>
   );

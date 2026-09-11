@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import type { Project } from "@/src/lib/types";
 import InviteModal from "./invite-modal";
 import useUser from "@/src/hooks/useUser";
-import { getBackground } from "@/src/lib/utils";
+import { cn, getBackground } from "@/src/lib/utils";
 import FavoriteButton from "@/src/components/modules/favorite-button";
 
 export function ProjectHeader({ project }: { project: Project }) {
@@ -57,8 +57,13 @@ export function ProjectHeader({ project }: { project: Project }) {
           </div>
 
           <div className="flex items-center gap-2">
-            {project?.members?.map((member) => (
-              <UserAvatar key={member.role} user={member.user} size="md" />
+            {project?.members?.map((member, i) => (
+              <UserAvatar
+                className={`${i == 0 ? "left-4" : ""} relative`}
+                key={member.role}
+                user={member.user}
+                size="md"
+              />
             ))}
             {data.data.user.id == project.owner.id ? <InviteModal /> : ""}
             <FavoriteButton
