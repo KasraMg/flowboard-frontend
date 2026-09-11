@@ -1,10 +1,11 @@
 import React, { ReactNode, useState } from "react";
-import { Dialog, DialogContent, DialogTrigger } from "../../../ui/dialog";
-import { Button } from "../../../ui/button";
 import Login from "./partials/login/login";
 import Register from "./partials/register/register";
 import { User } from "lucide-react";
 import { cn } from "@/src/lib/utils";
+import { Button } from "../../ui/button";
+import { Dialog, DialogContent, DialogTrigger } from "../../ui/dialog";
+import ForgotPassword from "./partials/forgot-password/forgot-password";
 
 const AuthModal = ({
   title,
@@ -17,9 +18,21 @@ const AuthModal = ({
   const [step, setStep] = useState("login");
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog
+      open={open}
+      onOpenChange={(o) => {
+        setOpen(o);
+        if (!o) {
+          setStep("login");
+        }
+      }}
+    >
       <DialogTrigger asChild>
-        <Button variant="default" size="sm" className={cn("flex",btnClassName)}>
+        <Button
+          variant="default"
+          size="sm"
+          className={cn("flex", btnClassName)}
+        >
           {title ? (
             title
           ) : (
@@ -30,11 +43,13 @@ const AuthModal = ({
           )}
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-h-[90vh] max-w-xl overflow-y-auto">
+      <DialogContent className="max-h-[90vh] max-w-xl overflow-y-auto outline-0! shadow-none! ring-0!">
         {step === "login" ? (
           <Login setOpen={setOpen} setStep={setStep} />
-        ) : (
+        ) : step == "register" ? (
           <Register setOpen={setOpen} setStep={setStep} />
+        ) : (
+          <ForgotPassword setModalStep={setStep} setOpen={setOpen} />
         )}
       </DialogContent>
     </Dialog>

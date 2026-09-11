@@ -1,7 +1,7 @@
 import { toast } from "sonner";
 import { backendUrl } from "../lib/helpers";
 import { useMutation } from "@tanstack/react-query";
-import { LoginFormValues } from "../components/modules/layout/auth/partials/login/hook";
+import { LoginFormValues } from "../components/modules/auth/partials/login/hook";
 
 export const useLogin = () => {
   const loginRequest = async (

@@ -25,7 +25,7 @@ const registerSchema = z
       .min(18, "You must be at least 18 years old")
       .max(100, "Please enter a valid age"),
 
-    password: z.string().min(8, "Password must be at least 8 characters"),
+    password: z.string().min(6, "Password must be at least 8 characters"),
 
     confirmPassword: z.string().min(1, "Please confirm your password"),
   })
@@ -54,12 +54,16 @@ export const useRegister = (setOpen: (open: boolean) => void) => {
 
   const onSubmit = form.handleSubmit((data) => {
     mutation.mutate(data, {
-      onSuccess(data) {
+      onSuccess: async (data) => {
         Cookies.set("token", data.access_token);
-        queryClient.invalidateQueries({
+        await queryClient.invalidateQueries({
           queryKey: ["user"],
         });
+        await queryClient.refetchQueries({
+          queryKey: ["sidebar"],
+        });
         setOpen(false);
+        router.refresh();
         router.push("/dashboard");
       },
     });

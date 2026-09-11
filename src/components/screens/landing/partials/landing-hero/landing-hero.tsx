@@ -1,7 +1,7 @@
 import { ArrowRight, Play } from "lucide-react";
 import { KanbanMockup } from "./partials/kanban-mockup";
 import { Button } from "@/src/components/ui/button";
-import AuthModal from "@/src/components/modules/layout/auth/auth-modal";
+import AuthModal from "@/src/components/modules/auth/auth-modal";
 
 export function LandingHero() {
   return (

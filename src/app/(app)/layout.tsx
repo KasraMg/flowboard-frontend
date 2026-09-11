@@ -1,4 +1,4 @@
-import { AppShell } from "@/src/components/modules/layout/app-shell";
+import { AppShell } from "@/src/components/modules/app-shell";
 import { AuthGuard } from "@/src/providers/auth-guard";
 
 export default function AppGroupLayout({

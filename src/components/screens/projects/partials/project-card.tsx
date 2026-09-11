@@ -11,7 +11,8 @@ import {
   DropdownMenuTrigger,
 } from "@/src/components/ui/dropdown-menu";
 import { Project } from "@/src/lib/types";
-import FavoriteButton from "@/src/components/modules/layout/favorite-button";
+import FavoriteButton from "@/src/components/modules/favorite-button";
+import useUser from "@/src/hooks/useUser";
 
 export function ProjectCard({
   data,
@@ -28,6 +29,8 @@ export function ProjectCard({
     };
   };
 }) {
+  const { data: user } = useUser();
+
   return data ? (
     <div className="group relative flex flex-col overflow-hidden rounded-xl border border-border bg-card transition-all hover:shadow-lg">
       <Link
@@ -73,28 +76,32 @@ export function ProjectCard({
               {data.project.title}
             </h3>
           </Link>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-7 w-7 shrink-0 opacity-0 transition-opacity group-hover:opacity-100"
-              >
-                <MoreHorizontal className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem className="p-0!">
-                <Link
-                  className="flex gap-1 p-2 w-full items-center"
-                  href={`/projects/${data.project.id}?t=setting`}
+          {user?.data?.user.id == data.project?.owner.id ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-7 w-7 shrink-0 opacity-0 transition-opacity group-hover:opacity-100"
                 >
-                  {" "}
-                  <Settings className="mr-2 h-4 w-4" /> Setting
-                </Link>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+                  <MoreHorizontal className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem className="p-0!">
+                  <Link
+                    className="flex gap-1 p-2 w-full items-center"
+                    href={`/projects/${data.project.id}?t=setting`}
+                  >
+                    {" "}
+                    <Settings className="mr-2 h-4 w-4" /> Setting
+                  </Link>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            ""
+          )}
         </div>
 
         <Link href={`/projects/${data.project.id}`}>
