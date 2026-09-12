@@ -3,8 +3,8 @@ export const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 import { Eye, CalendarCheck, BarChart3, Users, Workflow } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { Monitor, Moon, Sun } from "lucide-react";
-import type { Priority, TaskStatus, ProjectStatus } from "./types";
-import { PRIORITY_META, STATUS_META, PROJECT_STATUS_META } from "./types";
+import type { Priority } from "./types";
+import { PRIORITY_META } from "./types";
 
 export function getInitials(name: string): string {
   const parts = name.trim().split(/\s+/);
@@ -73,14 +73,6 @@ export function dueSoon(iso?: string, days = 2): boolean {
 
 export function priorityMeta(p: Priority) {
   return PRIORITY_META[p];
-}
-
-export function statusMeta(s: TaskStatus) {
-  return STATUS_META[s];
-}
-
-export function projectStatusMeta(s: ProjectStatus) {
-  return PROJECT_STATUS_META[s];
 }
 
 export function checklistProgress(items: { completed: boolean }[]): number {
