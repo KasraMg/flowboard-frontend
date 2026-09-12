@@ -20,12 +20,12 @@ const registerSchema = z
       .min(1, "Email is required")
       .email("Please enter a valid email"),
 
-    age: z.coerce
-      .number()
-      .min(18, "You must be at least 18 years old")
-      .max(100, "Please enter a valid age"),
+    // age: z.coerce
+    //   .number()
+    //   .min(18, "You must be at least 18 years old")
+    //   .max(100, "Please enter a valid age"),
 
-    password: z.string().min(6, "Password must be at least 8 characters"),
+    password: z.string().min(6, "Password must be at least 6 characters"),
 
     confirmPassword: z.string().min(1, "Please confirm your password"),
   })
@@ -43,7 +43,7 @@ export const useRegister = (setOpen: (open: boolean) => void) => {
     defaultValues: {
       name: "",
       email: "",
-      age: undefined,
+      // age: undefined,
       password: "",
       confirmPassword: "",
     },

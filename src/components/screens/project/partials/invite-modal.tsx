@@ -12,7 +12,7 @@ const InviteModal = ({
 }) => {
   const [open, setOpen] = useState(false);
   const [email, setEmail] = useState<string | null>(null);
-  const { mutate } = useCreateInvitation();
+  const { mutate, isPending } = useCreateInvitation();
   const { projectId } = useParams();
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -63,6 +63,7 @@ const InviteModal = ({
             variant="default"
             size="sm"
             className="gap-1.5"
+            loading={isPending}
           >
             Invite
           </Button>

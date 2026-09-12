@@ -120,8 +120,8 @@ export default function SettingsScreen() {
                             return "Current password is required";
                           }
 
-                          if (value && value.length < 8) {
-                            return "Password must be at least 8 characters";
+                          if (value && value.length < 6) {
+                            return "Password must be at least 6 characters";
                           }
 
                           return true;

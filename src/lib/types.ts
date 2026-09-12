@@ -24,6 +24,11 @@ export interface DashboardResponse {
       totalTasks: number;
       completedTasks: number;
       incompleteTasks: number;
+      trends: {
+        totalProjects: { value: string; up: boolean };
+        totalTasks: { value: string; up: boolean };
+        completedTasks: { value: string; up: boolean };
+      };
     };
     recentProjects: {
       project: Project;

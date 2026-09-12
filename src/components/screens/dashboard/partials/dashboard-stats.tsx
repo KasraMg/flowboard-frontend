@@ -9,40 +9,50 @@ import { StatCard } from "@/src/components/screens/dashboard/partials/stat-card"
 import { DashboardResponse } from "@/src/lib/types";
 
 export function DashboardStats({ data }: { data: DashboardResponse }) {
-  const stats = [
+  const { stats } = data.data;
+
+  const statCards = [
     {
       label: "Total Projects",
-      value: data?.data.stats.totalProjects,
+      value: stats.totalProjects,
       icon: FolderKanban,
       tone: "primary" as const,
-      trend: { value: "12%", up: true },
+      trend: {
+        value: `${stats.trends.totalProjects.value}%`,
+        up: stats.trends.totalProjects.up,
+      },
     },
     {
       label: "Total Tasks",
-      value: data?.data.stats.totalTasks,
+      value: stats.totalTasks,
       icon: NotebookText,
-      tone: "success" as const,
-      trend: { value: "23%", up: true },
+      tone: "destructive" as const,
+      trend: {
+        value: `${stats.trends.totalTasks.value}%`,
+        up: stats.trends.totalTasks.up,
+      },
     },
     {
       label: "Completed",
-      value: data?.data.stats.completedTasks,
+      value: stats.completedTasks,
       icon: CheckCircle2,
       tone: "success" as const,
-      trend: { value: "15%", up: true },
+      trend: {
+        value: `${stats.trends.completedTasks.value}%`,
+        up: stats.trends.completedTasks.up,
+      },
     },
     {
       label: "Pending",
-      value: data?.data.stats.incompleteTasks,
+      value: stats.incompleteTasks,
       icon: Activity,
-      tone: "success" as const,
-      trend: { value: "15%", up: true },
+      tone: "warning" as const,
     },
   ];
 
   return (
     <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
-      {stats.map((stat) => (
+      {statCards.map((stat) => (
         <StatCard key={stat.label} {...stat} />
       ))}
     </div>

@@ -43,7 +43,7 @@ const AuthModal = ({
           )}
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-h-[90vh] max-w-xl overflow-y-auto outline-0! shadow-none! ring-0!">
+      <DialogContent className="max-h-[90vh] max-w-xl overflow-y-auto outline-0! scrollbar-thin shadow-none! ring-0!">
         {step === "login" ? (
           <Login setOpen={setOpen} setStep={setStep} />
         ) : step == "register" ? (
