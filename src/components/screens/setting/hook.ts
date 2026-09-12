@@ -7,6 +7,7 @@ type SettingsFormValues = {
   email: string;
   currentPassword: string;
   newPassword: string;
+  emailNotification: boolean;
 };
 
 const useSetting = () => {
@@ -32,10 +33,12 @@ const useSetting = () => {
   });
   useEffect(() => {
     if (!user) return;
+    console.log(user);
 
     reset({
       name: user.name,
       email: user.email,
+      emailNotification: user.emailNotification,
       currentPassword: "",
       newPassword: "",
     });
@@ -49,6 +52,7 @@ const useSetting = () => {
       {
         name: values.name,
         email: values.email,
+        emailNotification: values.emailNotification,
         currentPassword: values.currentPassword || undefined,
         newPassword: values.newPassword || undefined,
       },

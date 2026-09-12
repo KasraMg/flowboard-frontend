@@ -63,6 +63,7 @@ export const useUpdateUser = () => {
     email: string;
     currentPassword?: string;
     newPassword?: string;
+    emailNotification?: boolean;
   }): Promise<{ message: string }> => {
     const response = await fetch(`${backendUrl}/users`, {
       method: "PUT",
