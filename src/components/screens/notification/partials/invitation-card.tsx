@@ -12,7 +12,7 @@ const InvitationCard = ({ data }: { data: invitation }) => {
 
   return (
     <Card className={cn("border-primary/30 bg-primary/5")}>
-      <CardContent className="flex items-center gap-3 p-3">
+      <CardContent className="flex flex-wrap items-center gap-3 p-3">
         <div
           className={cn(
             "sm:flex! hidden h-9 w-9 shrink-0 items-center justify-center rounded-lg",

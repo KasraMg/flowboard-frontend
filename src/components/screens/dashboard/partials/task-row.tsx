@@ -1,26 +1,12 @@
 "use client";
 
-import { Clock } from "lucide-react";
-import { cn } from "@/src/lib/utils";
-import {
-  formatDate,
-  isOverdue,
-  dueSoon,
-  priorityMeta,
-} from "@/src/lib/helpers";
+import { cn, getBackground } from "@/src/lib/utils";
+import { priorityMeta } from "@/src/lib/helpers";
 import { Task } from "@/src/lib/types";
 import { UserAvatar } from "../../../modules/user-avatar";
 import Link from "next/link";
 
-export function TaskRow({
-  task,
-  showProject = false,
-}: {
-  task: Task;
-  showProject?: boolean;
-}) {
-  const overdue = isOverdue(task.dueDate) && !task.completed;
-  const soon = dueSoon(task.dueDate) && !task.completed;
+export function TaskRow({ task }: { task: Task }) {
   const pm = priorityMeta(task.priority);
 
   return (
@@ -38,27 +24,13 @@ export function TaskRow({
           {task.title}
         </p>
         <div className="mt-0.5 flex items-center gap-2 text-xs text-muted-foreground">
-          {showProject && (
-            <span className="flex items-center gap-1">
-              <span
-                className="h-2 w-2 rounded-full"
-                style={{ backgroundColor: task.backgroundColor }}
-              />
-              {task.project.title}
-            </span>
-          )}
-          {task.dueDate && (
+          <span className="flex items-center gap-1">
             <span
-              className={cn(
-                "flex items-center gap-1",
-                overdue && "text-destructive font-medium",
-                soon && "text-warning font-medium",
-              )}
-            >
-              <Clock className="h-3 w-3" />
-              {formatDate(task.dueDate)}
-            </span>
-          )}
+              className="h-2 w-2 rounded-full"
+              style={{ background: getBackground(task.backgroundColor) }}
+            />
+            {task.project.title}
+          </span>
         </div>
       </div>
 

@@ -9,8 +9,10 @@ import { useDeleteNotification } from "@/src/hooks/useNotification";
 const NotificationCard = ({ data }: { data: notification }) => {
   const { mutate } = useDeleteNotification(data.id);
   return (
-    <Card className={`${data.isRead ? "opacity-70" : "border-primary/30 bg-primary/5"}`}>
-      <CardContent className="flex items-center gap-3 p-3">
+    <Card
+      className={`${data.isRead ? "opacity-70" : "border-primary/30 bg-primary/5"}`}
+    >
+      <CardContent className="flex flex-wrap items-center gap-3 p-3">
         <div
           className={cn(
             "sm:flex! hidden h-9 w-9 shrink-0 items-center justify-center rounded-lg",
