@@ -6,12 +6,13 @@ const NotificationsPage = async () => {
   const cookieStore = await cookies();
   const accessToken = cookieStore.get("token");
 
-  const response = await fetch(`${backendUrl}/invitations`, {
+  const response = await fetch(`${backendUrl}/notifications`, {
     headers: {
       Authorization: `Bearer ${accessToken?.value}`,
     },
   });
   const data = await response.json();
+console.log(data);
 
   return <NotificationsScreen data={data} />;
 };
