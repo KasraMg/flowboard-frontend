@@ -3,12 +3,21 @@ import { Bell } from "lucide-react";
 import type { NotificationData } from "@/src/lib/types";
 import InvitationCard from "./partials/invitation-card";
 import NotificationCard from "./partials/notification-card";
+import { useEffect } from "react";
+import { useReadAllNotifications } from "@/src/hooks/useNotification";
 
 export default function NotificationsScreen({
   data,
 }: {
   data: NotificationData;
 }) {
+  const { mutate } = useReadAllNotifications();
+
+  useEffect(() => {
+    return () => {
+      mutate();
+    };
+  }, []);
   return (
     <div className="mx-auto max-w-2xl space-y-5 p-4 md:p-6">
       {data?.invitations.length == 0 && data?.notifications.length == 0 ? (

@@ -4,10 +4,12 @@ import { Card, CardContent } from "@/src/components/ui/card";
 import { cn } from "@/src/lib/utils";
 import { relativeTime } from "@/src/lib/helpers";
 import { notification } from "@/src/lib/types";
+import { useDeleteNotification } from "@/src/hooks/useNotification";
 
 const NotificationCard = ({ data }: { data: notification }) => {
+  const { mutate } = useDeleteNotification(data.id);
   return (
-    <Card className={cn("border-primary/30 bg-primary/5")}>
+    <Card className={`${data.isRead ? "opacity-70" : "border-primary/30 bg-primary/5"}`}>
       <CardContent className="flex items-center gap-3 p-3">
         <div
           className={cn(
@@ -32,7 +34,9 @@ const NotificationCard = ({ data }: { data: notification }) => {
 
         <div className="flex gap-3 lg:w-max! w-full lg:pt-0! pt-3">
           <Button
-            onClick={() => {}}
+            onClick={() => {
+              mutate();
+            }}
             size={"sm"}
             className="w-full"
             variant={"destructive"}

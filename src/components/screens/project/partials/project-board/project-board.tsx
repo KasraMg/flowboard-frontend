@@ -16,7 +16,7 @@ import { useProject } from "@/src/hooks/useProject";
 import { SortableColumn } from "./partials/sortable-column";
 import { KanbanColumn } from "./partials/kanban-column/kanban-column";
 import { AddItem } from "./partials/kanban-column/partials/add-item";
-import { useProjectBoardDnd } from "@/src/hooks/use-project-board-dnd";
+import { useProjectBoardDnd } from "@/src/hooks/useProjectBoardDnd";
 
 export function ProjectBoard({ projectId }: { projectId: number }) {
   const { data: project } = useProject(String(projectId));
