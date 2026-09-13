@@ -146,10 +146,22 @@ export const PRIORITY_META: Record<
   },
 };
 
-export type NotificationData = {
+export type invitation = {
   createdAt: string;
   id: number;
   invitedBy: { id: number; name: string; email: string };
   project: Project;
   status: string;
+};
+export type notification = {
+  createdAt: string;
+  id: number;
+  isRead: boolean;
+  type: "site" | "task_assignment";
+  message: string;
+  subject: string;
+};
+export type NotificationData = {
+  invitations: invitation[];
+  notifications: notification[];
 };

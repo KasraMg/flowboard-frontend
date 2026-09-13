@@ -59,7 +59,7 @@ export function ProjectHeader({ project }: { project: Project }) {
           <div className="flex items-center gap-2">
             {project?.members?.map((member, i) => (
               <UserAvatar
-                className={`${i == 0 ? "left-4" : ""} relative`}
+                className={`${project?.members.length > 1 ? (i == 0 ? "left-4" : "") : ""} relative`}
                 key={member.role}
                 user={member.user}
                 size="md"

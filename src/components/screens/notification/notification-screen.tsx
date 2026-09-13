@@ -1,25 +1,26 @@
 "use client";
-import { Bell, UserPlus } from "lucide-react";
-import { UserAvatar } from "@/src/components/modules/user-avatar";
-import { Button } from "@/src/components/ui/button";
-import { Card, CardContent } from "@/src/components/ui/card";
-import { cn } from "@/src/lib/utils";
-import { relativeTime } from "@/src/lib/helpers";
-import type { NotificationData, User } from "@/src/lib/types";
-import { useChangeInvitationStatus } from "@/src/hooks/useInvitation";
+import { Bell } from "lucide-react";
+import type { NotificationData } from "@/src/lib/types";
+import InvitationCard from "./partials/invitation-card";
+import NotificationCard from "./partials/notification-card";
+import { useEffect } from "react";
+import { useReadAllNotifications } from "@/src/hooks/useNotification";
 
 export default function NotificationsScreen({
   data,
 }: {
-  data: {
-    data: NotificationData[];
-  };
+  data: NotificationData;
 }) {
-  const { mutate } = useChangeInvitationStatus();
+  const { mutate } = useReadAllNotifications();
 
+  useEffect(() => {
+    return () => {
+      mutate();
+    };
+  }, []);
   return (
     <div className="mx-auto max-w-2xl space-y-5 p-4 md:p-6">
-      {data?.data.length == 0 ? (
+      {data?.invitations.length == 0 && data?.notifications.length == 0 ? (
         <div className="flex flex-col items-center justify-center pt-20 text-center">
           <Bell className="h-10 w-10 text-muted-foreground/40" />
           <h3 className="mt-3 font-medium">No notifications</h3>
@@ -28,66 +29,15 @@ export default function NotificationsScreen({
           </p>
         </div>
       ) : (
-        data.data.map((notif) => (
-          <Card className={cn("border-primary/30 bg-primary/5")}>
-            <CardContent className="flex items-center gap-3 p-3">
-              <div
-                className={cn(
-                  "sm:flex! hidden h-9 w-9 shrink-0 items-center justify-center rounded-lg",
-                )}
-              >
-                <UserPlus className="h-4 w-4" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2">
-                  {notif.invitedBy.name && (
-                    <UserAvatar user={notif.invitedBy as User} size="xs" />
-                  )}
-                  <p className="text-sm font-medium">
-                    ! New invitation: {notif.project.title}
-                  </p>
-                </div>
-                <p className="pt-2 text-sm text-muted-foreground">
-                  {notif.project.description}
-                </p>
-              </div>
-              <div className="flex shrink-0 items-center gap-2">
-                <p className="text-xs text-muted-foreground">
-                  {relativeTime(notif.createdAt)}
-                </p>
-              </div>
+        <>
+          {data.invitations.map((invite) => (
+            <InvitationCard data={invite} />
+          ))}
 
-              <div className="flex gap-3 lg:w-max! w-full lg:pt-0! pt-3">
-                <Button
-                  onClick={() => {
-                    mutate({
-                      action: "accept",
-                      invitationId: notif.id,
-                    });
-                  }}
-                  size={"sm"}
-                  className="w-full"
-                  variant={"default"}
-                >
-                  Accept
-                </Button>
-                <Button
-                  onClick={() => {
-                    mutate({
-                      action: "reject",
-                      invitationId: notif.id,
-                    });
-                  }}
-                  size={"sm"}
-                  className="w-full"
-                  variant={"destructive"}
-                >
-                  Reject
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        ))
+          {data.notifications.map((notification) => (
+            <NotificationCard data={notification} />
+          ))}
+        </>
       )}
     </div>
   );

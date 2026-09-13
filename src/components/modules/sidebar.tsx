@@ -28,6 +28,7 @@ import Cookies from "js-cookie";
 import { useQueryClient } from "@tanstack/react-query";
 import { userSidebar } from "@/src/hooks/useUser";
 import { Project } from "@/src/lib/types";
+import { Badge } from "../ui/badge";
 
 type NavItem = { label: string; href: string; icon: LucideIcon };
 
@@ -82,14 +83,24 @@ export function Sidebar({
         <nav className="flex-1 overflow-y-auto px-3 py-3 scrollbar-thin">
           <div className="space-y-1">
             {mainNav.map((item) => (
-              <SidebarLink
-                key={item.href}
-                item={item}
-                active={
-                  pathname === item.href || pathname.startsWith(item.href + "/")
-                }
-                collapsed={collapsed}
-              />
+              <div className="relative">
+                {item.label == "Notifications" ? (
+                  <Badge variant={"destructive"} className="text-xs px-2 absolute right-1.5 top-1.5">
+                    {data?.data.notificationCount}
+                  </Badge>
+                ) : (
+                  ""
+                )}
+                <SidebarLink
+                  key={item.href}
+                  item={item}
+                  active={
+                    pathname === item.href ||
+                    pathname.startsWith(item.href + "/")
+                  }
+                  collapsed={collapsed}
+                />
+              </div>
             ))}
           </div>
 
@@ -132,7 +143,7 @@ export function Sidebar({
           )}
           {!collapsed && data?.data?.projects.length > 0 && (
             <div className="mt-6">
-              <div className="mb-2 flex items-center justify-between px-2">
+              <div className="mb-2 flex items-center justify-between pr-1 pl-2">
                 <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
                   Recent
                 </span>
