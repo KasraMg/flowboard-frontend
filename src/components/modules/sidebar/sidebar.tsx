@@ -7,28 +7,24 @@ import {
   FolderKanban,
   Bell,
   Settings,
-  Star,
   ChevronsLeft,
   ChevronsRight,
-  Plus,
   Sparkles,
   LogOut,
 } from "lucide-react";
-import { cn, getBackground } from "@/src/lib/utils";
+import { cn } from "@/src/lib/utils";
 import { Button } from "@/src/components/ui/button";
 import {
-  Tooltip,
-  TooltipContent,
   TooltipProvider,
-  TooltipTrigger,
 } from "@/src/components/ui/tooltip";
 import type { LucideIcon } from "lucide-react";
-
 import Cookies from "js-cookie";
 import { useQueryClient } from "@tanstack/react-query";
 import { userSidebar } from "@/src/hooks/useUser";
-import { Project } from "@/src/lib/types";
-import { Badge } from "../ui/badge";
+import { Badge } from "../../ui/badge";
+import SidebarFavorites from "./partials/sidebar-favorites";
+import SidebarProjects from "./partials/sidebar-projects";
+import SidebarLink from "./partials/sidebar-link";
 
 type NavItem = { label: string; href: string; icon: LucideIcon };
 
@@ -85,7 +81,10 @@ export function Sidebar({
             {mainNav.map((item) => (
               <div className="relative">
                 {item.label == "Notifications" ? (
-                  <Badge variant={"destructive"} className="text-xs px-2 absolute right-1.5 top-1.5">
+                  <Badge
+                    variant={"destructive"}
+                    className={`${collapsed ? "text-[11px] pl-1.25 pr-1.5 py-0 -right-2" : "text-xs pl-1.75 pr-2 right-1.5"} top-1.75 absolute`}
+                  >
                     {data?.data.notificationCount}
                   </Badge>
                 ) : (
@@ -104,77 +103,9 @@ export function Sidebar({
             ))}
           </div>
 
-          {!collapsed && (
-            <div className="mt-6">
-              <div className="mb-2 flex items-center justify-between px-2">
-                <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                  Favorites
-                </span>
-                <Star className="h-3.5 w-3.5 text-amber-500" />
-              </div>
-              <div className="space-y-0.5">
-                {data?.data?.favorites.length === 0 ? (
-                  <p className="px-2 text-xs text-muted-foreground">
-                    No favorites yet
-                  </p>
-                ) : (
-                  data?.data?.favorites.map((p: { project: Project }) => (
-                    <Link
-                      key={p.project.id}
-                      href={`/projects/${p.project.id}`}
-                      className={cn(
-                        "flex items-center gap-2 rounded-lg px-2 py-1.5 text-sm transition-colors hover:bg-sidebar-accent",
-                        pathname.startsWith(`/projects/${p.project.id}`) &&
-                          "bg-sidebar-accent text-sidebar-accent-foreground",
-                      )}
-                    >
-                      <span
-                        className="h-2.5 w-2.5 shrink-0 rounded-full"
-                        style={{
-                          background: getBackground(p.project.background),
-                        }}
-                      />
-                      <span className="truncate">{p.project.title}</span>
-                    </Link>
-                  ))
-                )}
-              </div>
-            </div>
-          )}
+          {!collapsed && <SidebarFavorites favorites={data?.data?.favorites} />}
           {!collapsed && data?.data?.projects.length > 0 && (
-            <div className="mt-6">
-              <div className="mb-2 flex items-center justify-between pr-1 pl-2">
-                <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                  Recent
-                </span>
-                <Link href="/projects">
-                  <Button variant="ghost" size="icon" className="h-6 w-6">
-                    <Plus className="h-3.5 w-3.5" />
-                  </Button>
-                </Link>
-              </div>
-              <div className="space-y-0.5">
-                {data?.data?.projects.slice(0, 4).map((p: Project) => (
-                  <Link
-                    key={p.id}
-                    href={`/projects/${p.id}`}
-                    className={cn(
-                      "flex items-center gap-2 rounded-lg px-2 py-1.5 text-sm transition-colors hover:bg-sidebar-accent",
-                      pathname.startsWith(`/projects/${p.id}`) &&
-                        "bg-sidebar-accent text-sidebar-accent-foreground",
-                    )}
-                  >
-                    <span
-                      className="h-2.5 w-2.5 shrink-0 rounded-full"
-                      style={{
-                        background: getBackground(p.background),
-                      }}
-                    />
-                    <span className="truncate">{p.title}</span>
-                  </Link>
-                ))}
-              </div>
-            </div>
+            <SidebarProjects projects={data?.data?.projects} />
           )}
 
           <div className="mt-6 space-y-1">
@@ -225,51 +156,4 @@ export function Sidebar({
       </aside>
     </TooltipProvider>
   );
-}
-
-function SidebarLink({
-  item,
-  active,
-  collapsed,
-  badge,
-}: {
-  item: NavItem;
-  active: boolean;
-  collapsed: boolean;
-  badge?: number;
-}) {
-  const content = (
-    <Link
-      href={item.href}
-      className={cn(
-        "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all",
-        active
-          ? "bg-primary/10 text-primary"
-          : "text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
-      )}
-    >
-      <item.icon className="h-[1.1rem] w-[1.1rem] shrink-0" />
-      {!collapsed && <span className="flex-1">{item.label}</span>}
-      {!collapsed && badge !== undefined && (
-        <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1.5 text-xs font-semibold text-primary-foreground">
-          {badge}
-        </span>
-      )}
-      {collapsed && badge !== undefined && (
-        <span className="absolute right-1 top-1 h-2 w-2 rounded-full bg-primary" />
-      )}
-    </Link>
-  );
-
-  if (collapsed) {
-    return (
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <div className="relative">{content}</div>
-        </TooltipTrigger>
-        <TooltipContent side="right">{item.label}</TooltipContent>
-      </Tooltip>
-    );
-  }
-  return content;
 }

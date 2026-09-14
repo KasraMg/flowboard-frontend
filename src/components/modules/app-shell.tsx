@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { Sidebar } from "@/src/components/modules/sidebar";
+import { Sidebar } from "@/src/components/modules/sidebar/sidebar";
 import {
   Sheet,
   SheetContent,
