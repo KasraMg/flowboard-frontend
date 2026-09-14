@@ -64,7 +64,7 @@ export function Sidebar({
       >
         <div className="flex h-16 items-center gap-2 border-b border-sidebar-border px-3">
           <Link href="/dashboard" className="flex items-center gap-2.5 min-w-0">
-            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-linear-to-br from-primary to-blue-600 text-white shadow-sm">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-linear-to-br from-primary text-white shadow-sm">
               <Sparkles className="h-5 w-5" />
             </div>
             {!collapsed && (
