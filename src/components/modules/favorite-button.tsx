@@ -27,7 +27,7 @@ const FavoriteButton = ({
           setFavorite(true);
         }
       }}
-      className="group/button"
+      className="group/button shadow-md"
       variant={"secondary"}
     >
       {favorite ? (

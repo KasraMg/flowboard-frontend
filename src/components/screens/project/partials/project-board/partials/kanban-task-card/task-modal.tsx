@@ -24,7 +24,7 @@ const TaskModal = ({ task }: { task: Task }) => {
         </DialogTrigger>
         <DialogContent
           hideX
-          className="max-h-[90vh] sm:max-w-xl! w-full overflow-y-auto bg-gray-800!"
+          className="max-h-[90vh] sm:max-w-xl! w-full overflow-y-auto bg-white dark:bg-gray-800!"
         >
           <TaskModalActions setOpen={setOpen} task={task} />
           <div className="flex items-center gap-2">

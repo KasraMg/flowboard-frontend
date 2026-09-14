@@ -30,7 +30,7 @@ const TaskColorDropdown = () => {
       <DropdownMenuTrigger className="w-max" asChild>
         <Button
           size={"sm"}
-          className="bg-[#2a3b75] relative text-white hover:bg-[#2a3b75]"
+          className="dark:bg-[#2a3b75] relative text-black bg-[#e1dfdf] dark:text-white hover:bg-[#e1dfdf] dark:hover:bg-[#2a3b75]"
         >
           Color <Palette className="ml-2" />
           <Badge

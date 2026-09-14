@@ -20,7 +20,7 @@ const InviteModal = ({
         <Button
           variant="secondary"
           size={triggerSize ? triggerSize : "sm"}
-          className="gap-1.5"
+          className="gap-1.5 shadow-md"
         >
           <UserPlus className="h-3.5 w-3.5" />
           Invite
