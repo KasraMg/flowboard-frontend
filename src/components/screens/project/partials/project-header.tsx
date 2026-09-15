@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import type { Project } from "@/src/lib/types";
 import InviteModal from "./invite-modal";
 import useUser from "@/src/hooks/useUser";
-import { cn, getBackground } from "@/src/lib/utils";
+import { getBackground } from "@/src/lib/utils";
 import FavoriteButton from "@/src/components/modules/favorite-button";
 
 export function ProjectHeader({ project }: { project: Project }) {
@@ -65,7 +65,7 @@ export function ProjectHeader({ project }: { project: Project }) {
                 size="md"
               />
             ))}
-            {data.data.user.id == project.owner.id ? <InviteModal /> : ""}
+            {data?.id == project.owner.id ? <InviteModal /> : ""}
             <FavoriteButton
               projectId={project.id}
               isFavorite={project.isFave}

@@ -166,7 +166,8 @@ export function useReorderColumns(projectId: number) {
         throw new Error("Failed to reorder columns");
       }
 
-      return response.json();
+      const result = await response.json();
+      return result;
     },
 
     onSuccess: () => {

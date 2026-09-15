@@ -1,10 +1,9 @@
 "use client";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import type { Project, Task } from "@/src/lib/types";
+import type { Task } from "@/src/lib/types";
 import { backendUrl } from "../lib/helpers";
 import Cookies from "js-cookie";
-import { useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
 
 export interface CreateTaskPayload {
@@ -136,6 +135,8 @@ export function useDeleteTask(projectId: number) {
 
     onSuccess: (data) => {
       toast.success(data.message);
+      console.log(data);
+
       queryClient.invalidateQueries({
         queryKey: ["project", String(projectId)],
       });
@@ -150,7 +151,7 @@ export function useReorderTasks(projectId: number) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (data:{}) => {
+    mutationFn: async (data: {}) => {
       const response = await fetch(`${backendUrl}/tasks/reorder/${projectId}`, {
         method: "PATCH",
         credentials: "include",
@@ -165,7 +166,8 @@ export function useReorderTasks(projectId: number) {
         throw new Error("Failed to reorder columns");
       }
 
-      return response.json();
+      const result = await response.json();
+      return result;
     },
 
     onSuccess: () => {

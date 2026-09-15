@@ -21,7 +21,6 @@ export const useDeleteNotification = (id: number) => {
       if (!response.ok) {
         throw new Error(data?.message || "Failed to delete notification");
       }
-
       return data;
     },
 

@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { backendUrl } from "../lib/helpers";
 import { toast } from "sonner";
-import { RegisterFormValues } from "../components/modules/layout/auth/partials/register/hook";
+import { RegisterFormValues } from "../components/modules/auth/partials/register/hook";
 
 type RegisterResponse = {
   access_token: string;
@@ -30,7 +30,8 @@ export const useRegister = () => {
       );
     }
 
-    return response.json();
+    const result = await response.json();
+    return result;
   };
 
   return useMutation({

@@ -10,6 +10,7 @@ import {
 } from "@/src/components/ui/card";
 import { Save } from "lucide-react";
 import useSetting from "../hook";
+import { User } from "@/src/lib/types";
 
 const Account = () => {
   const {
@@ -33,7 +34,7 @@ const Account = () => {
       <CardContent>
         <form onSubmit={handleSubmit(updateUserHandler)} className="space-y-4">
           <div className="flex items-center gap-4">
-            <UserAvatar user={user} />
+            <UserAvatar user={user as User} />
           </div>
 
           <div className="space-y-1.5">

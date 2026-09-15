@@ -10,6 +10,7 @@ export default function ProjectScreen() {
   const params = useParams();
 
   const { data: project, isPending } = useProject(String(params.projectId));
+console.log(project);
 
   if (isPending) {
     return (

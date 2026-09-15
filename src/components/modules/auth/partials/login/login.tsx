@@ -114,7 +114,7 @@ const Login = ({
           Don&apos;t have an account?{" "}
           <span
             onClick={() => setStep("register")}
-            className="font-medium text-primary hover:underline"
+            className="font-medium text-primary hover:underline cursor-pointer"
           >
             Create one
           </span>

@@ -19,8 +19,8 @@ const TaskModalActions = ({
       <DialogClose className="cursor-pointer text-gray-400 hover:text-white">
         <X size={21} />
       </DialogClose>
-      {task.creator.email == userData?.data.user?.email ||
-      task.project.owner.email == userData?.data.user?.email ? (
+      {task.creator.email == userData?.email ||
+      task.project.owner.email == userData?.email ? (
         <Trash
           onClick={() =>
             deleteMutate(task.id, {

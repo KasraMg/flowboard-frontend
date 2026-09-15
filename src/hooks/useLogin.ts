@@ -25,7 +25,8 @@ export const useLogin = () => {
       );
     }
 
-    return response.json();
+    const result = await response.json();
+    return result;
   };
   return useMutation({
     mutationFn: loginRequest,

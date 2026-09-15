@@ -219,8 +219,11 @@ export function useProject(projectId: string) {
         throw new Error("Failed to fetch project");
       }
 
-      return response.json();
+      const result = await response.json();
+
+      return result.data;
     },
+
     refetchOnWindowFocus: false,
     enabled: !!projectId,
   });
@@ -228,7 +231,7 @@ export function useProject(projectId: string) {
 
 export function useProjects() {
   return useQuery<Project>({
-    queryKey: ["projects"],
+    queryKey: ['projects'],
 
     queryFn: async () => {
       const response = await fetch(`${backendUrl}/projects`, {
@@ -242,7 +245,9 @@ export function useProjects() {
         throw new Error("Failed to fetch projects");
       }
 
-      return response.json();
+      const result = await response.json();
+
+      return result.data;
     },
   });
 }

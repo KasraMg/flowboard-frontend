@@ -28,7 +28,7 @@ export function RecentProjects({ data }: { data: DashboardResponse }) {
         </Link>
       </div>
 
-      {data?.data.recentProjects.length === 0 ? (
+      {data?.recentProjects.length === 0 ? (
         <EmptyState
           icon={FolderKanban}
           title="No projects yet"
@@ -42,7 +42,7 @@ export function RecentProjects({ data }: { data: DashboardResponse }) {
         />
       ) : (
         <div className="grid gap-4 xl:grid-cols-3 sm:grid-cols-2">
-          {data?.data.recentProjects.map((project) => (
+          {data?.recentProjects.map((project) => (
             <ProjectCard isDashboard key={project.project.id} data={project} />
           ))}
         </div>

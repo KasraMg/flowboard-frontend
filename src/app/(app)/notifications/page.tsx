@@ -21,7 +21,7 @@ const NotificationsPage = async () => {
   });
   const data = await response.json();
 
-  return <NotificationsScreen data={data} />;
+  return <NotificationsScreen data={data.data} />;
 };
 
 export default NotificationsPage;

@@ -13,7 +13,9 @@ export async function getUser() {
       Authorization: `Bearer ${accessToken?.value}`,
     },
   });
-  return response.json();
+
+  const result = await response.json();
+  return result.data;
 }
 export async function getProject(projectId: string) {
   const cookieStore = await cookies();
@@ -27,7 +29,8 @@ export async function getProject(projectId: string) {
       Authorization: `Bearer ${accessToken?.value}`,
     },
   });
-  return response.json();
+  const result = await response.json();
+  return result.data;
 }
 export async function getProjects() {
   const cookieStore = await cookies();
@@ -41,7 +44,9 @@ export async function getProjects() {
       Authorization: `Bearer ${accessToken?.value}`,
     },
   });
-  return response.json();
+  const result = await response.json();
+
+  return result.data;
 }
 export async function getDashboardData() {
   const cookieStore = await cookies();
@@ -55,7 +60,8 @@ export async function getDashboardData() {
       Authorization: `Bearer ${accessToken?.value}`,
     },
   });
-  return response.json();
+  const result = await response.json();
+  return result.data;
 }
 export async function getSideBar() {
   const cookieStore = await cookies();
@@ -69,5 +75,6 @@ export async function getSideBar() {
       Authorization: `Bearer ${accessToken?.value}`,
     },
   });
-  return response.json();
+  const result = await response.json();
+  return result.data;
 }

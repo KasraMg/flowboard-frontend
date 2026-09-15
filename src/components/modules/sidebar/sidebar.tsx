@@ -80,12 +80,12 @@ export function Sidebar({
           <div className="space-y-1">
             {mainNav.map((item) => (
               <div className="relative">
-                {item.label == "Notifications" ? (
+                {item.label == "Notifications" && data?.notificationCount > 0 ? (
                   <Badge
                     variant={"destructive"}
                     className={`${collapsed ? "text-[11px] pl-1.25 pr-1.5 py-0 -right-2" : "text-xs pl-1.75 pr-2 right-1.5"} top-1.75 absolute`}
                   >
-                    {data?.data.notificationCount}
+                    {data?.notificationCount}
                   </Badge>
                 ) : (
                   ""
@@ -103,9 +103,9 @@ export function Sidebar({
             ))}
           </div>
 
-          {!collapsed && <SidebarFavorites favorites={data?.data?.favorites} />}
-          {!collapsed && data?.data?.projects.length > 0 && (
-            <SidebarProjects projects={data?.data?.projects} />
+          {!collapsed && <SidebarFavorites favorites={data?.favorites} />}
+          {!collapsed && data?.projects.length > 0 && (
+            <SidebarProjects projects={data?.projects} />
           )}
 
           <div className="mt-6 space-y-1">

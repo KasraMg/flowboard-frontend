@@ -1,32 +1,18 @@
-import Link from "next/link";
-import { ArrowRight } from "lucide-react";
-import { Button } from "@/src/components/ui/button";
 import { Card, CardContent } from "@/src/components/ui/card";
 import { TaskRow } from "@/src/components/screens/dashboard/partials/task-row";
 import { DashboardResponse } from "@/src/lib/types";
 
 export function RecentTasks({ data }: { data: DashboardResponse }) {
-  return data?.data.recentTasks.length > 0 ? (
+  return data?.recentTasks.length > 0 ? (
     <div>
       <div className="mb-3 flex items-center justify-between">
         <h2 className="text-lg font-semibold">Recent tasks</h2>
-
-        <Link href="/tasks">
-          <Button
-            variant="ghost"
-            size="sm"
-            className="gap-1 text-muted-foreground"
-          >
-            View all
-            <ArrowRight className="h-3.5 w-3.5" />
-          </Button>
-        </Link>
       </div>
 
       <Card>
         <CardContent className="p-3">
           <div className="space-y-1.5 grid grid-cols-2 gap-3">
-            {data?.data.recentTasks.map((task) => (
+            {data?.recentTasks.map((task) => (
               <TaskRow key={task.id} task={task} />
             ))}
           </div>

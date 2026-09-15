@@ -76,7 +76,7 @@ export function ProjectCard({
               {data.project.title}
             </h3>
           </Link>
-          {user?.data?.user.id == data.project?.owner.id ? (
+          {user?.id == data.project?.owner.id ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
