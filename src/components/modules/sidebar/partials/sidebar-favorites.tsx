@@ -22,10 +22,10 @@ const SidebarFavorites = ({
         <Star className="h-3.5 w-3.5 text-amber-500" />
       </div>
       <div className="space-y-0.5">
-        {favorites.length === 0 ? (
+        {favorites?.length === 0 ? (
           <p className="px-2 text-xs text-muted-foreground">No favorites yet</p>
         ) : (
-          favorites.map((p) => (
+          favorites?.map((p) => (
             <Link
               key={p.project.id}
               href={`/projects/${p.project.id}`}

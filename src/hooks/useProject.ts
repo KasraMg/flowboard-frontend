@@ -221,7 +221,7 @@ export function useProject(projectId: string) {
 
       return response.json();
     },
-
+    refetchOnWindowFocus: false,
     enabled: !!projectId,
   });
 }

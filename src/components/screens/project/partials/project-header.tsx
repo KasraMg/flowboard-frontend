@@ -31,7 +31,7 @@ export function ProjectHeader({ project }: { project: Project }) {
             <Button
               variant="ghost"
               size="icon"
-              className="mt-1 h-8 w-8 shrink-0 bg-background/90 backdrop-blur"
+              className="mt-1 h-8 w-8 shrink-0 bg-background/90 backdrop-blur shadow-md"
               onClick={() => router.push("/projects")}
             >
               <ArrowLeft className="h-4 w-4" />
