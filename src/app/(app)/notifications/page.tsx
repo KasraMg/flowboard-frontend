@@ -1,6 +1,14 @@
 import NotificationsScreen from "@/src/components/screens/notification/notification-screen";
 import { backendUrl } from "@/src/lib/helpers";
+import { Metadata } from "next";
 import { cookies } from "next/headers";
+
+export const metadata: Metadata = {
+  title: "FlowBoard — Notifications",
+  icons: "/fav-icon.png",
+  description:
+    "FlowBoard is a modern project and task management app with boards, lists, calendars, and more.",
+};
 
 const NotificationsPage = async () => {
   const cookieStore = await cookies();
@@ -12,7 +20,6 @@ const NotificationsPage = async () => {
     },
   });
   const data = await response.json();
-console.log(data);
 
   return <NotificationsScreen data={data} />;
 };
