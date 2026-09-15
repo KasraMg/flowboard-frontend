@@ -33,7 +33,7 @@ export function StatCard({
 }) {
   const t = toneClasses[tone];
   return (
-    <div className="group relative overflow-hidden rounded-xl border border-border bg-card p-5 transition-all hover:shadow-md">
+    <div className="group relative overflow-hidden rounded-xl border border-border bg-card sm:p-5 p-3 transition-all hover:shadow-md">
       <div className="flex items-start justify-between">
         <div className="min-w-0">
           <p className="text-sm font-medium text-muted-foreground">{label}</p>
@@ -44,7 +44,7 @@ export function StatCard({
         </div>
         <div
           className={cn(
-            "flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ring-1",
+            "flex sm:size-11 size-7 shrink-0 items-center justify-center rounded-xl ring-1",
             t.icon,
             t.ring,
           )}

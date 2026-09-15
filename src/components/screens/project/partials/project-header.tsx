@@ -31,7 +31,7 @@ export function ProjectHeader({ project }: { project: Project }) {
             <Button
               variant="ghost"
               size="icon"
-              className="mt-1 h-8 w-8 shrink-0 bg-background/90 backdrop-blur"
+              className="mt-1 h-8 w-8 shrink-0 bg-background/90 backdrop-blur shadow-md"
               onClick={() => router.push("/projects")}
             >
               <ArrowLeft className="h-4 w-4" />
@@ -39,12 +39,12 @@ export function ProjectHeader({ project }: { project: Project }) {
 
             <div className="min-w-0">
               <div className="flex items-center gap-2">
-                <h1 className="truncate text-xl font-bold md:text-2xl">
+                <h1 className="truncate text-xl text-white font-bold md:text-2xl">
                   {project.title}
                 </h1>
 
                 <Star
-                  className={`${project.isFave ? " text-yellow-400 fill-yellow-400 stroke-yellow-400" : ""} h-4 w-4 text-muted-foreground`}
+                  className={`${project.isFave ? " text-yellow-400 fill-yellow-400 stroke-yellow-400" : ""} h-4 w-4 dark:text-muted-foreground`}
                 />
               </div>
 

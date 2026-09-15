@@ -7,10 +7,13 @@ import QueryWrapper from "../providers/query-wrapper";
 import Hydrated from "../providers/hydrated";
 import { getSideBar, getUser } from "../lib/server-fetches";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
-
+const inter = Inter({
+  subsets: ["latin"],
+});
 export const metadata: Metadata = {
   title: "FlowBoard — Organize your work, flow your way",
+  icons: "/fav-icon.png",
+
   description:
     "FlowBoard is a modern project and task management app with boards, lists, calendars, and more.",
   openGraph: {
@@ -23,6 +26,11 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     images: [{ url: "https://bolt.new/static/og_default.png" }],
   },
+
+  robots: {
+    index: false,
+    follow: false,
+  },
 };
 
 export default function RootLayout({
@@ -32,7 +40,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.variable} font-sans antialiased`}>
+      <body className={`${inter.className}`}>
+        {" "}
         <QueryWrapper>
           <ThemeProvider
             attribute="class"

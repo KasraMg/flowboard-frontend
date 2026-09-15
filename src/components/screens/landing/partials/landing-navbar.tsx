@@ -35,7 +35,7 @@ export function LandingNavbar() {
     >
       <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <Link href="/" className="flex items-center gap-2.5">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-linear-to-br from-primary to-blue-600 text-white shadow-sm">
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-linear-to-br from-primary text-white shadow-sm">
             <Sparkles className="h-5 w-5" />
           </div>
           <span className="text-lg font-bold tracking-tight">Flowboard</span>

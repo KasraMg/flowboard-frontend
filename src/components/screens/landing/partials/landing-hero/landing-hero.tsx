@@ -1,4 +1,4 @@
-import { ArrowRight, Play } from "lucide-react";
+import { ArrowRight, Play, Sparkles } from "lucide-react";
 import { KanbanMockup } from "./partials/kanban-mockup";
 import { Button } from "@/src/components/ui/button";
 import AuthModal from "@/src/components/modules/auth/auth-modal";
@@ -79,16 +79,14 @@ export function LandingHero() {
             <div className="flex">
               <div className="hidden w-48 shrink-0 border-r border-border bg-sidebar p-3 lg:block">
                 <div className="mb-4 flex items-center gap-2">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-linear-to-br from-primary to-blue-600 text-white">
-                    <svg
-                      className="h-4 w-4"
-                      viewBox="0 0 24 24"
-                      fill="currentColor"
-                    >
-                      <path d="M12 2L2 7l10 5 10-5-10-5z" />
-                    </svg>
+                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-linear-to-br from-primary  text-white">
+                    <Sparkles className="h-5 w-5" />
                   </div>
-                  <span className="text-sm font-semibold">FlowBoard</span>
+                  <div>
+                    {" "}
+                    <span className="text-sm font-semibold">FlowBoard</span>
+                    <p className="text-[10px] text-foreground">free plan</p>
+                  </div>
                 </div>
                 <div className="space-y-1">
                   {["Dashboard", "Projects", "Notification"].map((item, i) => (
@@ -132,11 +130,11 @@ export function LandingHero() {
                 </div>
               </div>
               <div className="flex-1 overflow-hidden bg-background p-4">
-                <div className="mb-4 flex items-center justify-between">
+                <div className="sm:mb-4 mb-8 flex sm:items-center justify-between sm:flex-row! gap-y-4 flex-col">
                   <div>
                     <h3 className="text-base font-bold">Mobile App Redesign</h3>
                     <p className="text-xs text-muted-foreground">
-                      4 members · 8 tasks
+                      Redesign the mobile app for a smoother user experience.
                     </p>
                   </div>
                   <div className="flex items-center gap-2">

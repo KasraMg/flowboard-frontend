@@ -22,7 +22,7 @@ const TaskPreview = ({ task }: { task: Task }) => {
       style={{
         borderColor: task.backgroundColor || "",
       }}
-      className={`group ${task.backgroundColor ? "border-t-6" : ""} relative w-full rounded-lg bg-gray-800 py-2 px-2.5 text-center`}
+      className={`group ${task.backgroundColor ? "border-t-6" : ""} relative w-full rounded-lg bg-white shadow-md dark:bg-gray-800 py-2 px-2.5 text-center`}
     >
       {task.labels?.length > 0 ? (
         <div className="flex gap-2 flex-wrap pb-3 pt-1">
@@ -34,7 +34,7 @@ const TaskPreview = ({ task }: { task: Task }) => {
                 backgroundColor: l.backgroundColor,
               }}
             >
-              <p>{l.title}</p>
+              <p className="text-white">{l.title}</p>
             </div>
           ))}
         </div>
