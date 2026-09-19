@@ -14,7 +14,7 @@ const NotificationsPage = async () => {
   const cookieStore = await cookies();
   const accessToken = cookieStore.get("token");
 
-  const response = await fetch(`${backendUrl}/notifications`, {
+  const response = await fetch(`${process.env.BACKEND_URL}/notifications`, {
     headers: {
       Authorization: `Bearer ${accessToken?.value}`,
     },
