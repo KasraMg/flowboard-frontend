@@ -67,7 +67,7 @@ export type Project = {
 export type Column = {
   id: number;
   position: number;
-  tasks: [];
+  tasks: Task[];
   title: string;
 };
 

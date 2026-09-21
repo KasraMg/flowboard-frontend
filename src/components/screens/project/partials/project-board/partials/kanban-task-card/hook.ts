@@ -1,6 +1,7 @@
 import { useDebounce } from "@/src/hooks/useDebounce";
 import { useEditTask } from "@/src/hooks/useTask";
 import { Task } from "@/src/lib/types";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const useTaskModal = (task: Task) => {
@@ -16,7 +17,8 @@ const useTaskModal = (task: Task) => {
 
   const debouncedTitle = useDebounce(form.title, 1500);
   const debouncedDescription = useDebounce(form.description, 1500);
-  const { mutate } = useEditTask(task.id, task.project.id);
+  const { projectId } = useParams();
+  const { mutate } = useEditTask(task.id, Number(projectId));
 
   useEffect(() => {
     const titleChanged = debouncedTitle !== task.title;

@@ -1,7 +1,7 @@
 "use client";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import type { Task } from "@/src/lib/types";
+import type { Column, Task } from "@/src/lib/types";
 import { backendUrl } from "../lib/helpers";
 import Cookies from "js-cookie";
 import { toast } from "sonner";
@@ -15,7 +15,7 @@ export interface CreateTaskPayload {
 export interface CreateTaskResponse {
   message: string;
   success: boolean;
-  data: any;
+  task: Task;
 }
 
 export function useCreateTask(projectId: number) {
@@ -44,12 +44,31 @@ export function useCreateTask(projectId: number) {
       return data;
     },
 
-    onSuccess: (data) => {
+    onSuccess: (data, variables) => {
+      queryClient.setQueryData(
+        ["project", String(projectId)],
+        (oldProject: any) => {
+          if (!oldProject) return oldProject;
+
+          return {
+            ...oldProject,
+            columns: oldProject.columns.map((column: Column) => {
+              if (column.id !== variables.columnId) {
+                return column;
+              }
+
+              return {
+                ...column,
+                tasks: [...column.tasks, data.task],
+              };
+            }),
+          };
+        },
+      );
+
       toast.success(data.message);
-      queryClient.invalidateQueries({
-        queryKey: ["project", String(projectId)],
-      });
     },
+
     onError(error) {
       toast.error(error.message);
     },
