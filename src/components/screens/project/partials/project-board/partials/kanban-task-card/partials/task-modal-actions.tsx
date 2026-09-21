@@ -3,6 +3,7 @@ import { useDeleteTask } from "@/src/hooks/useTask";
 import useUser from "@/src/hooks/useUser";
 import { Task } from "@/src/lib/types";
 import { Trash, X } from "lucide-react";
+import { useParams } from "next/navigation";
 
 const TaskModalActions = ({
   task,
@@ -11,7 +12,8 @@ const TaskModalActions = ({
   task: Task;
   setOpen: (val: boolean) => void;
 }) => {
-  const { mutate: deleteMutate } = useDeleteTask(task.project.id);
+  const { projectId } = useParams();
+  const { mutate: deleteMutate } = useDeleteTask(Number(projectId));
   const { data: userData } = useUser();
 
   return (
@@ -19,8 +21,7 @@ const TaskModalActions = ({
       <DialogClose className="cursor-pointer text-gray-400 hover:text-white">
         <X size={21} />
       </DialogClose>
-      {task.creator.email == userData?.data.user?.email ||
-      task.project.owner.email == userData?.data.user?.email ? (
+      {task.creator.email == userData?.email ? (
         <Trash
           onClick={() =>
             deleteMutate(task.id, {

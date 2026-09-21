@@ -2,6 +2,7 @@ import { toast } from "sonner";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { backendUrl } from "../lib/helpers";
 import Cookies from "js-cookie";
+import { Column } from "../lib/types";
 
 export interface CreateColumnPayload {
   title: string;
@@ -11,7 +12,7 @@ export interface CreateColumnPayload {
 export interface CreateColumnResponse {
   message: string;
   success: boolean;
-  data: any;
+  column: Column;
 }
 
 export function useCreateColumn(projectId: number) {
@@ -41,10 +42,22 @@ export function useCreateColumn(projectId: number) {
     },
 
     onSuccess: (data) => {
-      toast.success(data.message);
-      queryClient.invalidateQueries({
-        queryKey: ["project", String(projectId)],
+      queryClient.setQueryData(["project", String(projectId)], (oldProject:any) => {
+        if (!oldProject) return oldProject;
+
+        return {
+          ...oldProject,
+          columns: [
+            ...oldProject.columns,
+            {
+              ...data.column,
+              tasks: [],
+            },
+          ],
+        };
       });
+
+      toast.success(data.message);
     },
     onError(error) {
       toast.error(error.message);
@@ -166,7 +179,8 @@ export function useReorderColumns(projectId: number) {
         throw new Error("Failed to reorder columns");
       }
 
-      return response.json();
+      const result = await response.json();
+      return result;
     },
 
     onSuccess: () => {

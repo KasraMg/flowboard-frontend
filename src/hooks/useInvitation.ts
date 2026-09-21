@@ -3,7 +3,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { backendUrl } from "../lib/helpers";
 import Cookies from "js-cookie";
-import { useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 

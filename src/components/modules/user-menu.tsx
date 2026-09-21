@@ -23,12 +23,12 @@ const UserMenu = () => {
   const router = useRouter();
   console.log(data);
 
-  return data?.data ? (
+  return data ? (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <button className="flex items-center gap-2 rounded-lg p-1 transition-colors hover:bg-accent">
           <UserAvatar
-            user={data?.data?.user}
+            user={data}
             size="md"
             className="min-h-8 min-w-8"
           />
@@ -38,9 +38,9 @@ const UserMenu = () => {
       <DropdownMenuContent align="end" className="w-56">
         <DropdownMenuLabel>
           <div className="flex flex-col">
-            <span className="text-sm font-medium">{data?.data?.user.name}</span>
+            <span className="text-sm font-medium">{data.name}</span>
             <span className="truncate text-xs font-normal text-muted-foreground">
-              {data?.data?.user.email}
+              {data.email}
             </span>
           </div>
         </DropdownMenuLabel>

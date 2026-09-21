@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Cookies from "js-cookie";
 import { backendUrl } from "../lib/helpers";
 import { toast } from "sonner";
+import { User } from "../lib/types";
 
 export const fetchMe = async () => {
   const response = await fetch(`${backendUrl}/auth/me`, {
@@ -17,11 +18,12 @@ export const fetchMe = async () => {
     const error = await response.json().catch(() => ({}));
     throw new Error(error.message || "error");
   }
-  return response.json();
+  const result = await response.json();
+  return result.data;
 };
 
 const useUser = () => {
-  return useQuery({
+  return useQuery<User>({
     queryKey: ["user"],
     queryFn: fetchMe,
     enabled: true,
@@ -45,7 +47,8 @@ export const fetchSidebar = async () => {
     const error = await response.json().catch(() => ({}));
     throw new Error(error.message || "error");
   }
-  return response.json();
+  const result = await response.json();
+  return result.data;
 };
 
 export const userSidebar = () => {
@@ -77,7 +80,8 @@ export const useUpdateUser = () => {
       const error = await response.json();
       throw new Error(error.message);
     }
-    return response.json();
+    const result = await response.json();
+    return result;
   };
 
   return useMutation({
@@ -107,7 +111,8 @@ export const useUpdateAvatar = () => {
       const error = await response.json();
       throw new Error(error.message);
     }
-    return response.json();
+    const result = await response.json();
+    return result;
   };
 
   return useMutation({

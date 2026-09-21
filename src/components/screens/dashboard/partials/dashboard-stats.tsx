@@ -9,7 +9,7 @@ import { StatCard } from "@/src/components/screens/dashboard/partials/stat-card"
 import { DashboardResponse } from "@/src/lib/types";
 
 export function DashboardStats({ data }: { data: DashboardResponse }) {
-  const { stats } = data.data;
+  const { stats } = data;
 
   const statCards = [
     {

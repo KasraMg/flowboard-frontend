@@ -29,7 +29,8 @@ export function useToggleFavorite(projectId: number) {
         throw new Error("Failed to toggle favorite");
       }
 
-      return response.json();
+      const result = await response.json();
+return result.data;
     },
 
     onSuccess: (data) => {

@@ -18,30 +18,27 @@ export type User = {
 };
 
 export interface DashboardResponse {
-  success: boolean;
-  data: {
-    stats: {
-      totalProjects: number;
-      totalTasks: number;
-      completedTasks: number;
-      incompleteTasks: number;
-      trends: {
-        totalProjects: { value: string; up: boolean };
-        totalTasks: { value: string; up: boolean };
-        completedTasks: { value: string; up: boolean };
-      };
+  stats: {
+    totalProjects: number;
+    totalTasks: number;
+    completedTasks: number;
+    incompleteTasks: number;
+    trends: {
+      totalProjects: { value: string; up: boolean };
+      totalTasks: { value: string; up: boolean };
+      completedTasks: { value: string; up: boolean };
     };
-    recentProjects: {
-      project: Project;
-      isFave: boolean;
-      taskStats: {
-        completed: number;
-        completionPercentage: number;
-        total: number;
-      };
-    }[];
-    recentTasks: Task[];
   };
+  recentProjects: {
+    project: Project;
+    isFave: boolean;
+    taskStats: {
+      completed: number;
+      completionPercentage: number;
+      total: number;
+    };
+  }[];
+  recentTasks: Task[];
 }
 export type ProjectStatus = "active" | "on_hold" | "completed" | "archived";
 
@@ -70,7 +67,7 @@ export type Project = {
 export type Column = {
   id: number;
   position: number;
-  tasks: [];
+  tasks: Task[];
   title: string;
 };
 

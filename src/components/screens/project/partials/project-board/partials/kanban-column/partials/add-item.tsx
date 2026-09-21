@@ -4,7 +4,7 @@ import { Button } from "@/src/components/ui/button";
 import { Input } from "@/src/components/ui/input";
 import { useCreateColumn } from "@/src/hooks/useColumn";
 import { useCreateTask } from "@/src/hooks/useTask";
-import { Plus } from "lucide-react";
+import { Loader, Plus } from "lucide-react";
 import { useParams } from "next/navigation";
 import { KeyboardEvent, useState } from "react";
 
@@ -20,8 +20,10 @@ export function AddItem({
   const [title, setTitle] = useState("");
   const { projectId } = useParams();
   const [addingItem, setAddingItem] = useState(false);
-  const { mutate: createColumnMutate } = useCreateColumn(Number(projectId));
-  const { mutate: createTaskMutate } = useCreateTask(Number(projectId));
+  const { mutate: createColumnMutate, isPending: createColumnPending } =
+    useCreateColumn(Number(projectId));
+  const { mutate: createTaskMutate, isPending: createTaskPending } =
+    useCreateTask(Number(projectId));
 
   const submit = () => {
     if (!title.trim()) return;
@@ -71,7 +73,11 @@ export function AddItem({
 
       <div className="pt-4 flex gap-2">
         <Button size="sm" onClick={submit} disabled={!title.trim()}>
-          Add
+          {createColumnPending || createTaskPending ? (
+            <Loader className="animate-spin mx-auto size-4" />
+          ) : (
+            "Add"
+          )}
         </Button>
 
         <Button size="sm" variant="ghost" onClick={() => setAddingItem(false)}>

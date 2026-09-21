@@ -158,7 +158,7 @@ const Register = ({
           Already have an account?{" "}
           <span
             onClick={() => setStep("login")}
-            className="font-medium text-primary hover:underline"
+            className="font-medium text-primary hover:underline cursor-pointer"
           >
             Sign in
           </span>

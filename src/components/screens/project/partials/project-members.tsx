@@ -27,7 +27,7 @@ const ProjectMembers = ({ projectId }: { projectId: number }) => {
 
             <div>
               <p className="text-sm">{member.role}</p>
-              {project.owner.email == data.data.user.email &&
+              {project.owner.email == data?.email &&
               project.owner.email !== member.user.email ? (
                 <Button
                   onClick={() => mutate({ projectId, userId: member.user.id })}
@@ -45,7 +45,7 @@ const ProjectMembers = ({ projectId }: { projectId: number }) => {
         ))}
       </div>
       <div className="w-full py-10 flex justify-center">
-        {data.data.user.id == project?.owner.id ? (
+        {data?.id == project?.owner.id ? (
           <InviteModal triggerSize="lg" />
         ) : (
           ""

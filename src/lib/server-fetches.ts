@@ -1,5 +1,4 @@
 import { cookies } from "next/headers";
-import { backendUrl } from "./helpers";
 
 export async function getUser() {
   const cookieStore = await cookies();
@@ -8,12 +7,14 @@ export async function getUser() {
     return undefined;
   }
 
-  const response = await fetch(`${backendUrl}/auth/me`, {
+  const response = await fetch(`${process.env.BACKEND_URL}/auth/me`, {
     headers: {
       Authorization: `Bearer ${accessToken?.value}`,
     },
   });
-  return response.json();
+
+  const result = await response.json();
+  return result.data;
 }
 export async function getProject(projectId: string) {
   const cookieStore = await cookies();
@@ -22,12 +23,13 @@ export async function getProject(projectId: string) {
     return null;
   }
 
-  const response = await fetch(`${backendUrl}/projects/${projectId}`, {
+  const response = await fetch(`${process.env.BACKEND_URL}/projects/${projectId}`, {
     headers: {
       Authorization: `Bearer ${accessToken?.value}`,
     },
   });
-  return response.json();
+  const result = await response.json();
+  return result.data;
 }
 export async function getProjects() {
   const cookieStore = await cookies();
@@ -36,12 +38,14 @@ export async function getProjects() {
     return null;
   }
 
-  const response = await fetch(`${backendUrl}/projects`, {
+  const response = await fetch(`${process.env.BACKEND_URL}/projects`, {
     headers: {
       Authorization: `Bearer ${accessToken?.value}`,
     },
   });
-  return response.json();
+  const result = await response.json();
+
+  return result.data;
 }
 export async function getDashboardData() {
   const cookieStore = await cookies();
@@ -50,12 +54,13 @@ export async function getDashboardData() {
     return null;
   }
 
-  const response = await fetch(`${backendUrl}/dashboard`, {
+  const response = await fetch(`${process.env.BACKEND_URL}/dashboard`, {
     headers: {
       Authorization: `Bearer ${accessToken?.value}`,
     },
   });
-  return response.json();
+  const result = await response.json();
+  return result.data;
 }
 export async function getSideBar() {
   const cookieStore = await cookies();
@@ -64,10 +69,11 @@ export async function getSideBar() {
     return undefined;
   }
 
-  const response = await fetch(`${backendUrl}/users/sidebar`, {
+  const response = await fetch(`${process.env.BACKEND_URL}/users/sidebar`, {
     headers: {
       Authorization: `Bearer ${accessToken?.value}`,
     },
   });
-  return response.json();
+  const result = await response.json();
+  return result.data;
 }

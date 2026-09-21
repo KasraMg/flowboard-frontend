@@ -15,7 +15,7 @@ const useSetting = () => {
 
   const { mutate, isPending } = useUpdateUser();
 
-  const user = data?.data?.user;
+  const user = data
 
   const {
     register,

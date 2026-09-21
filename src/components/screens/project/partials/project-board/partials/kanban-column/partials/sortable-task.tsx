@@ -17,22 +17,18 @@ export function SortableTask({ task }: Props) {
     setNodeRef,
     transform,
     transition,
+    isDragging,
   } = useSortable({
     id: `task-${task.id}`,
   });
-
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
+    opacity: isDragging ? 0.35 : 1,
   };
 
   return (
-    <div
-      ref={setNodeRef}
-      style={style}
-      {...attributes}
-      {...listeners}
-    >
+    <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
       <TaskModal task={task} />
     </div>
   );

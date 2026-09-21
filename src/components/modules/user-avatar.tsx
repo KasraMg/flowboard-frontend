@@ -28,7 +28,7 @@ export function UserAvatar({
   if (user.avatar) {
     return (
       <img
-        src={backendUrl + user.avatar}
+        src={user.avatar}
         alt={user.name}
         className={cn(
           "rounded-full object-cover ring-2 ring-background",

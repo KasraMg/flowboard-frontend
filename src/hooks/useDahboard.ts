@@ -16,7 +16,8 @@ export const fetchDashboard = async () => {
     const error = await response.json().catch(() => ({}));
     throw new Error(error.message || "error");
   }
-  return response.json();
+  const result = await response.json();
+  return result.data;
 };
 
 const useDashboard = () => {

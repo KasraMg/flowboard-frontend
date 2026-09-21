@@ -37,7 +37,7 @@ export function ProjectContent({ projectId }: { projectId: number }) {
               <Activity className="h-3.5 w-3.5" />
               Members
             </TabsTrigger>
-            {data.data.user.id == project?.owner.id ? (
+            {data?.id == project?.owner.id ? (
               <TabsTrigger value="setting" className="gap-1.5 cursor-pointer">
                 <Settings className="h-3.5 w-3.5" />
                 setting
@@ -54,7 +54,7 @@ export function ProjectContent({ projectId }: { projectId: number }) {
             <TabsContent className="pb-10" value="members">
               <ProjectMembers projectId={projectId} />
             </TabsContent>
-            {data.data.user.id == project?.owner.id ? (
+            {data?.id == project?.owner.id ? (
               <TabsContent className="pb-10" value="setting">
                 <ProjectSetting projectId={projectId} />
               </TabsContent>
