@@ -89,7 +89,7 @@ export interface EditTaskPayload {
 export interface EditTaskResponse {
   message: string;
   success: boolean;
-  data: Task;
+  task: Task;
 }
 export function useEditTask(taskId: number, projectId: number) {
   const queryClient = useQueryClient();
@@ -116,11 +116,31 @@ export function useEditTask(taskId: number, projectId: number) {
     },
 
     onSuccess: (data) => {
+      queryClient.setQueryData(
+        ["project", String(projectId)],
+        (oldProject: any) => {
+          if (!oldProject) return oldProject;
+
+          return {
+            ...oldProject,
+            columns: oldProject.columns.map((column: Column) => ({
+              ...column,
+              tasks: column.tasks.map((task) =>
+                task.id === taskId
+                  ? {
+                      ...task,
+                      ...data.task,
+                    }
+                  : task,
+              ),
+            })),
+          };
+        },
+      );
+
       toast.success(data.message);
-      queryClient.invalidateQueries({
-        queryKey: ["project", String(projectId)],
-      });
     },
+
     onError(error) {
       toast.error(error.message);
     },
@@ -152,14 +172,25 @@ export function useDeleteTask(projectId: number) {
       return data;
     },
 
-    onSuccess: (data) => {
-      toast.success(data.message);
-      console.log(data);
+    onSuccess: (data, taskId) => {
+      queryClient.setQueryData(
+        ["project", String(projectId)],
+        (oldProject: any) => {
+          if (!oldProject) return oldProject;
 
-      queryClient.invalidateQueries({
-        queryKey: ["project", String(projectId)],
-      });
+          return {
+            ...oldProject,
+            columns: oldProject.columns.map((column: Column) => ({
+              ...column,
+              tasks: column.tasks.filter((task) => task.id !== taskId),
+            })),
+          };
+        },
+      );
+
+      toast.success(data.message);
     },
+
     onError(error) {
       toast.error(error.message);
     },

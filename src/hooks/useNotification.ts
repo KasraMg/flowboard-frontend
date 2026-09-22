@@ -1,11 +1,35 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Cookies from "js-cookie";
 import { backendUrl } from "../lib/helpers";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { notification, NotificationData } from "../lib/types";
+
+export function useNotification() {
+  return useQuery<NotificationData>({
+    queryKey: ["notifications"],
+
+    queryFn: async () => {
+      const response = await fetch(`${backendUrl}/notifications`, {
+        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${Cookies.get("token")}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch Notification");
+      }
+
+      const result = await response.json();
+
+      return result;
+    },
+  });
+}
 
 export const useDeleteNotification = (id: number) => {
-  const router = useRouter();
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (): Promise<{ message: string }> => {
@@ -21,13 +45,25 @@ export const useDeleteNotification = (id: number) => {
       if (!response.ok) {
         throw new Error(data?.message || "Failed to delete notification");
       }
+
       return data;
     },
 
     onSuccess: (data) => {
+      queryClient.setQueryData(["notifications"], (oldData: any) => {
+        if (!oldData) return oldData;
+
+        return {
+          ...oldData,
+          notifications: oldData.notifications.filter(
+            (notification: notification) => notification.id !== id,
+          ),
+        };
+      });
+
       toast.success(data.message);
-      router.refresh();
     },
+
     onError(error) {
       toast.error(error.message);
     },

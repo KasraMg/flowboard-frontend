@@ -1,10 +1,11 @@
 "use client";
 
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { backendUrl } from "../lib/helpers";
 import Cookies from "js-cookie";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { invitation } from "../lib/types";
 
 export interface CreateInvitationPayload {
   email: string;
@@ -62,7 +63,8 @@ export interface ChangeInvitationStatusResponse {
 }
 
 export function useChangeInvitationStatus() {
-  const router = useRouter();
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: async (
       payload: ChangeInvitationStatusPayload,
@@ -76,7 +78,9 @@ export function useChangeInvitationStatus() {
             Authorization: `Bearer ${Cookies.get("token")}`,
           },
           credentials: "include",
-          body: JSON.stringify({ action: payload.action }),
+          body: JSON.stringify({
+            action: payload.action,
+          }),
         },
       );
 
@@ -89,10 +93,22 @@ export function useChangeInvitationStatus() {
       return data;
     },
 
-    onSuccess: (data) => {
+    onSuccess: (data, variables) => {
+      queryClient.setQueryData(["notifications"], (oldData: any) => {
+        if (!oldData) return oldData;
+
+        return {
+          ...oldData,
+          invitations: oldData.invitations.filter(
+            (invitation: invitation) =>
+              invitation.id !== variables.invitationId,
+          ),
+        };
+      });
+
       toast.success(data.message);
-      router.refresh();
     },
+
     onError(error) {
       toast.error(error.message);
     },

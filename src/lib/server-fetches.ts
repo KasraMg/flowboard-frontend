@@ -77,3 +77,18 @@ export async function getSideBar() {
   const result = await response.json();
   return result.data;
 }
+export async function getNotifications() {
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get("token");
+  if (!accessToken?.value) {
+    return undefined;
+  }
+
+  const response = await fetch(`${process.env.BACKEND_URL}/notifications`, {
+    headers: {
+      Authorization: `Bearer ${accessToken?.value}`,
+    },
+  });
+  const result = await response.json();
+  return result.data;
+}

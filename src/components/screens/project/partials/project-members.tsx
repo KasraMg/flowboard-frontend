@@ -1,14 +1,14 @@
 import { UserAvatar } from "@/src/components/modules/user-avatar";
 import { Button } from "@/src/components/ui/button";
 import { useProject, useRemoveUserFromProject } from "@/src/hooks/useProject";
-import { Trash } from "lucide-react";
+import { Loader, Trash } from "lucide-react";
 import useUser from "@/src/hooks/useUser";
 import InviteModal from "./invite-modal";
 
 const ProjectMembers = ({ projectId }: { projectId: number }) => {
   const { data: project } = useProject(String(projectId));
   const { data } = useUser();
-  const { mutate } = useRemoveUserFromProject(String(project?.id));
+  const { mutate, isPending } = useRemoveUserFromProject(String(project?.id));
 
   return (
     <>
@@ -35,7 +35,11 @@ const ProjectMembers = ({ projectId }: { projectId: number }) => {
                   className="px-3.5! mt-2"
                   variant="destructive"
                 >
-                  <Trash size={17} />
+                  {isPending ? (
+                    <Loader size={17} className="animate-spin" />
+                  ) : (
+                    <Trash size={17} />
+                  )}
                 </Button>
               ) : (
                 ""
@@ -45,11 +49,7 @@ const ProjectMembers = ({ projectId }: { projectId: number }) => {
         ))}
       </div>
       <div className="w-full py-10 flex justify-center">
-        {data?.id == project?.owner.id ? (
-          <InviteModal triggerSize="lg" />
-        ) : (
-          ""
-        )}
+        {data?.id == project?.owner.id ? <InviteModal triggerSize="lg" /> : ""}
       </div>
     </>
   );
