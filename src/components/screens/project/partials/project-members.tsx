@@ -49,7 +49,14 @@ const ProjectMembers = ({ projectId }: { projectId: number }) => {
         ))}
       </div>
       <div className="w-full py-10 flex justify-center">
-        {data?.id == project?.owner.id ? <InviteModal triggerSize="lg" /> : ""}
+        {data?.id == project?.owner.id ? (
+          <InviteModal
+            ownerEmail={String(project?.owner.email)}
+            triggerSize="lg"
+          />
+        ) : (
+          ""
+        )}
       </div>
     </>
   );

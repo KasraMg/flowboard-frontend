@@ -4,11 +4,14 @@ import { Button } from "@/src/components/ui/button";
 import { UserPlus } from "lucide-react";
 import { useCreateInvitation } from "@/src/hooks/useInvitation";
 import { useParams } from "next/navigation";
+import { toast } from "sonner";
 
 const InviteModal = ({
   triggerSize,
+  ownerEmail,
 }: {
   triggerSize?: "default" | "sm" | "lg" | "icon" | null | undefined;
+  ownerEmail: string;
 }) => {
   const [open, setOpen] = useState(false);
   const [email, setEmail] = useState<string | null>(null);
@@ -48,6 +51,10 @@ const InviteModal = ({
               ).test(email as string) == false
             }
             onClick={() => {
+              if (email == ownerEmail) {
+                toast.error("You cannot invite the owner");
+                return;
+              }
               mutate(
                 {
                   email: String(email),

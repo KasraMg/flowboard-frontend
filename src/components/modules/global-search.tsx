@@ -34,7 +34,6 @@ export function GlobalSearch({
 
   const [query, setQuery] = useState("");
   const { data } = useProjects();
-console.log(data);
 
   useEffect(() => {
     if (open) setQuery("");

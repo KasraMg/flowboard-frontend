@@ -65,7 +65,7 @@ export function ProjectHeader({ project }: { project: Project }) {
                 size="md"
               />
             ))}
-            {data?.id == project.owner.id ? <InviteModal /> : ""}
+            {data?.id == project.owner.id ? <InviteModal ownerEmail={project.owner.email}/> : ""}
             <FavoriteButton
               projectId={project.id}
               isFavorite={project.isFave}
