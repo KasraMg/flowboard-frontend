@@ -11,7 +11,7 @@ export function RecentTasks({ data }: { data: DashboardResponse }) {
 
       <Card>
         <CardContent className="p-3">
-          <div className="space-y-1.5 grid grid-cols-2 gap-3">
+          <div className="space-y-1.5 grid sm:grid-cols-2 gap-3">
             {data?.recentTasks.map((task) => (
               <TaskRow key={task.id} task={task} />
             ))}

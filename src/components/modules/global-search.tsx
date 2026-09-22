@@ -34,6 +34,7 @@ export function GlobalSearch({
 
   const [query, setQuery] = useState("");
   const { data } = useProjects();
+console.log(data);
 
   useEffect(() => {
     if (open) setQuery("");
@@ -43,7 +44,7 @@ export function GlobalSearch({
 
   const projectResults: Result[] = q
     ? (data as any)
-        .filter(
+        ?.filter(
           (p: any) =>
             p.project.title.toLowerCase().includes(q) ||
             p.project.description.toLowerCase().includes(q),
