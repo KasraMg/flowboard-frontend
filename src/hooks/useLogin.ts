@@ -2,11 +2,12 @@ import { toast } from "sonner";
 import { backendUrl } from "../lib/helpers";
 import { useMutation } from "@tanstack/react-query";
 import { LoginFormValues } from "../components/modules/auth/partials/login/hook";
+import { User } from "../lib/types";
 
 export const useLogin = () => {
   const loginRequest = async (
     data: LoginFormValues,
-  ): Promise<{ access_token: string }> => {
+  ): Promise<{ access_token: string; user: User }> => {
     const response = await fetch(`${backendUrl}/auth/login`, {
       method: "POST",
       headers: {
