@@ -19,7 +19,6 @@ import ProjectNotFound from "./partials/project-not-found";
 
 export default function ProjectsScreen() {
   const { data: projects } = useProjects();
-console.log(projects);
 
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");

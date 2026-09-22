@@ -55,8 +55,6 @@ export function useCreateProject() {
     },
 
     onSuccess: (data) => {
-      console.log(data);
-
       const project = data.project;
 
       queryClient.setQueryData(
