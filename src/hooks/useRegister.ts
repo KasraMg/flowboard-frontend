@@ -2,9 +2,11 @@ import { useMutation } from "@tanstack/react-query";
 import { backendUrl } from "../lib/helpers";
 import { toast } from "sonner";
 import { RegisterFormValues } from "../components/modules/auth/partials/register/hook";
+import { User } from "../lib/types";
 
 type RegisterResponse = {
   access_token: string;
+  user: User;
 };
 export const useRegister = () => {
   const registerRequest = async (

@@ -21,6 +21,7 @@ const Register = ({
     onSubmit,
     formState: { errors },
     isLoading,
+    isSuccess,
   } = useRegister(setOpen);
   return (
     <>
@@ -46,7 +47,7 @@ const Register = ({
 
               <Input
                 id="name"
-                placeholder="Alex Morgan"
+                placeholder="Ali Ahmadi"
                 className="pl-9"
                 {...register("name")}
               />
@@ -139,8 +140,13 @@ const Register = ({
             )}
           </div>
 
-          <Button type="submit" loading={isLoading} className="w-full">
-            Create account
+          <Button
+            type="submit"
+            disabled={isSuccess}
+            loading={isLoading}
+            className="w-full"
+          >
+            {isSuccess ? "Redirecting..." : "Create account"}
           </Button>
         </form>
         <div className="relative pt-1">

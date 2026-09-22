@@ -55,17 +55,12 @@ export const useRegister = (setOpen: (open: boolean) => void) => {
   const onSubmit = form.handleSubmit((data) => {
     mutation.mutate(data, {
       onSuccess: async (data) => {
-        console.log(data);
-        
         Cookies.set("token", data.access_token);
-        await queryClient.invalidateQueries({
-          queryKey: ["user"],
-        });
+        queryClient.setQueryData(["user"], data.user);
+
         await queryClient.refetchQueries({
           queryKey: ["sidebar"],
         });
-        setOpen(false);
-        router.refresh();
         router.push("/dashboard");
       },
     });

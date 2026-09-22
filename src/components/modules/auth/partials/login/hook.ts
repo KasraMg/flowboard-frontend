@@ -35,7 +35,6 @@ export const useLogin = (setOpen: (open: boolean) => void) => {
   const onSubmit = form.handleSubmit((data) => {
     mutation.mutate(data, {
       onSuccess: async (data) => {
-
         Cookies.set("token", data.access_token);
         queryClient.setQueryData(["user"], data.user);
         await queryClient.refetchQueries({
