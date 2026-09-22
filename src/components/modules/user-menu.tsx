@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronDown, User, Settings, LogOut } from "lucide-react";
+import { ChevronDown, Settings, LogOut } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,22 +16,22 @@ import Link from "next/link";
 import Cookies from "js-cookie";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
+import { Skeleton } from "../ui/skeleton";
 
 const UserMenu = () => {
-  const { data } = useUser();
+  const { data, isPending } = useUser();
   const queryClient = useQueryClient();
   const router = useRouter();
-  console.log(data);
 
   return data ? (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <button className="flex items-center gap-2 rounded-lg p-1 transition-colors hover:bg-accent">
-          <UserAvatar
-            user={data}
-            size="md"
-            className="min-h-8 min-w-8"
-          />
+          {isPending ? (
+            <Skeleton className="min-h-8 min-w-8 rounded-full"/>
+          ) : (
+            <UserAvatar user={data} size="md" className="min-h-8 min-w-8" />
+          )}
           <ChevronDown className="hidden h-4 w-4 text-muted-foreground sm:block" />
         </button>
       </DropdownMenuTrigger>

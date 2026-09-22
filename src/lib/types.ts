@@ -51,11 +51,7 @@ export type Project = {
   status: "archived" | "active";
   title: string;
   updatedAt: string;
-  members: {
-    id: number;
-    role: string;
-    user: User;
-  }[];
+  members: Member[];
   owner: {
     email: string;
     id: number;
@@ -64,6 +60,11 @@ export type Project = {
   columns: Column[];
 };
 
+export type Member = {
+   id: number;
+    role: string;
+    user: User;
+}
 export type Column = {
   id: number;
   position: number;

@@ -1,3 +1,4 @@
+import { Skeleton } from "@/src/components/ui/skeleton";
 import { Project } from "@/src/lib/types";
 import { cn, getBackground } from "@/src/lib/utils";
 import { Star } from "lucide-react";
@@ -6,7 +7,9 @@ import { usePathname } from "next/navigation";
 
 const SidebarFavorites = ({
   favorites,
+  isPending,
 }: {
+  isPending: boolean;
   favorites: {
     project: Project;
   }[];
@@ -22,7 +25,12 @@ const SidebarFavorites = ({
         <Star className="h-3.5 w-3.5 text-amber-500" />
       </div>
       <div className="space-y-0.5">
-        {favorites?.length === 0 ? (
+        {isPending ? (
+          <div className="px-2 pt-2">
+            <Skeleton className="w-full h-8" />
+            <Skeleton className="w-full h-8 mt-2" />
+          </div>
+        ) : favorites?.length === 0 ? (
           <p className="px-2 text-xs text-muted-foreground">No favorites yet</p>
         ) : (
           favorites?.map((p) => (
