@@ -1,23 +1,22 @@
 "use client";
 import { Bell } from "lucide-react";
-import type { NotificationData } from "@/src/lib/types";
 import InvitationCard from "./partials/invitation-card";
 import NotificationCard from "./partials/notification-card";
 import { useEffect } from "react";
-import { useReadAllNotifications } from "@/src/hooks/useNotification";
+import {
+  useNotification,
+  useReadAllNotifications,
+} from "@/src/hooks/useNotification";
 
-export default function NotificationsScreen({
-  data,
-}: {
-  data: NotificationData;
-}) {
+export default function NotificationsScreen() {
   const { mutate } = useReadAllNotifications();
-
+  const { data } = useNotification();
   useEffect(() => {
     return () => {
       mutate();
     };
   }, []);
+
   return (
     <div className="mx-auto max-w-2xl space-y-5 p-4 md:p-6">
       {data?.invitations.length == 0 && data?.notifications.length == 0 ? (
@@ -30,12 +29,12 @@ export default function NotificationsScreen({
         </div>
       ) : (
         <>
-          {data.invitations.map((invite) => (
-            <InvitationCard data={invite} />
+          {data?.invitations.map((invite) => (
+            <InvitationCard key={invite.id} data={invite} />
           ))}
 
-          {data.notifications.map((notification) => (
-            <NotificationCard data={notification} />
+          {data?.notifications.map((notification) => (
+            <NotificationCard key={notification.id} data={notification} />
           ))}
         </>
       )}

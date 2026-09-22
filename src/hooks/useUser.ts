@@ -68,8 +68,8 @@ export const useUpdateUser = () => {
     newPassword?: string;
     emailNotification?: boolean;
   }): Promise<{ message: string }> => {
-    const response = await fetch(`${backendUrl}/users`, {
-      method: "PUT",
+    const response = await fetch(`${backendUrl}/users/me`, {
+      method: "PATCH",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${Cookies.get("token")}`,
@@ -97,9 +97,13 @@ export const useUpdateUser = () => {
 
 export const useUpdateAvatar = () => {
   const queryClient = useQueryClient();
+
   const updateAvatarRequest = async (
-    formData: any,
-  ): Promise<{ message: string }> => {
+    formData: FormData,
+  ): Promise<{
+    message: string;
+    avatar: string;
+  }> => {
     const response = await fetch(`${backendUrl}/users/me/avatar`, {
       method: "PATCH",
       headers: {
@@ -107,23 +111,31 @@ export const useUpdateAvatar = () => {
       },
       body: formData,
     });
+
     if (!response.ok) {
       const error = await response.json();
       throw new Error(error.message);
     }
-    const result = await response.json();
-    return result;
+
+    return response.json();
   };
 
   return useMutation({
     mutationFn: updateAvatarRequest,
 
     onSuccess(data) {
-      toast.success(data.message);
-      queryClient.invalidateQueries({
-        queryKey: ["user"],
+      queryClient.setQueryData(["user"], (oldUser: any) => {
+        if (!oldUser) return oldUser;
+
+        return {
+          ...oldUser,
+          avatar: data.avatar,
+        };
       });
+
+      toast.success(data.message);
     },
+
     onError(error) {
       toast.error(error.message);
     },

@@ -33,7 +33,6 @@ const useSetting = () => {
   });
   useEffect(() => {
     if (!user) return;
-    console.log(user);
 
     reset({
       name: user.name,

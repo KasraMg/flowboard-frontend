@@ -1,7 +1,7 @@
 "use client";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import type { Project } from "@/src/lib/types";
+import type { Member, Project } from "@/src/lib/types";
 import { backendUrl } from "../lib/helpers";
 import Cookies from "js-cookie";
 import { useQuery } from "@tanstack/react-query";
@@ -25,7 +25,7 @@ export interface CreateProjectPayload {
 export interface CreateProjectResponse {
   message: string;
   success: boolean;
-  data: Project;
+  project: Project;
 }
 
 export function useCreateProject() {
@@ -54,15 +54,60 @@ export function useCreateProject() {
       return data;
     },
 
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["projects"],
+    onSuccess: (data) => {
+      const project = data.project;
+
+      queryClient.setQueryData(
+        ["projects"],
+        (oldProjects: any[] | undefined) => {
+          if (!oldProjects) return oldProjects;
+
+          return [
+            {
+              project,
+              taskStats: {
+                total: 0,
+                completed: 0,
+                incomplete: 0,
+                completionPercentage: 0,
+              },
+              isFave: false,
+            },
+            ...oldProjects,
+          ];
+        },
+      );
+
+      queryClient.setQueryData(["dashboard"], (oldDashboard: any) => {
+        if (!oldDashboard) return oldDashboard;
+
+        return {
+          ...oldDashboard,
+          recentProjects: [
+            {
+              id: project.id,
+              project,
+              isFave: false,
+              taskStats: {
+                total: 0,
+                completed: 0,
+                incomplete: 0,
+                completionPercentage: 0,
+              },
+            },
+            ...oldDashboard.recentProjects,
+          ].slice(0, 4),
+
+          stats: {
+            ...oldDashboard.stats,
+            totalProjects: oldDashboard.stats.totalProjects + 1,
+          },
+        };
       });
 
-      queryClient.invalidateQueries({
-        queryKey: ["dashboard"],
-      });
+      toast.success(data.message);
     },
+
     onError(error) {
       toast.error(error.message);
     },
@@ -93,15 +138,39 @@ export function useDeleteProject(projectId: string) {
     },
 
     onSuccess: (data) => {
-      queryClient.invalidateQueries({
+      queryClient.removeQueries({
         queryKey: ["project", projectId],
       });
 
-      queryClient.invalidateQueries({
-        queryKey: ["dashboard"],
+      queryClient.setQueryData(
+        ["projects"],
+        (oldProjects: any[] | undefined) => {
+          if (!oldProjects) return oldProjects;
+
+          return oldProjects.filter(
+            (item) => String(item.project.id) !== projectId,
+          );
+        },
+      );
+
+      queryClient.setQueryData(["dashboard"], (oldDashboard: any) => {
+        if (!oldDashboard) return oldDashboard;
+
+        return {
+          ...oldDashboard,
+          recentProjects: oldDashboard.recentProjects.filter(
+            (item: any) => String(item.project.id) !== projectId,
+          ),
+          stats: {
+            ...oldDashboard.stats,
+            totalProjects: Math.max(0, oldDashboard.stats.totalProjects - 1),
+          },
+        };
       });
+
       toast.success(data.message);
     },
+
     onError(error) {
       toast.error(error.message);
     },
@@ -117,7 +186,7 @@ export interface UpdateProjectPayload {
 export interface UpdateProjectResponse {
   message: string;
   success: boolean;
-  data: Project;
+  project: Project;
 }
 export function useUpdateProject(projectId: string) {
   const queryClient = useQueryClient();
@@ -146,15 +215,22 @@ export function useUpdateProject(projectId: string) {
     },
 
     onSuccess: (data) => {
-      queryClient.invalidateQueries({
-        queryKey: ["project", projectId],
+      queryClient.setQueryData(["project", projectId], (oldProject: any) => {
+        if (!oldProject) return oldProject;
+
+        return {
+          ...oldProject,
+          ...data.project,
+        };
       });
 
       queryClient.invalidateQueries({
         queryKey: ["dashboard"],
       });
+
       toast.success(data.message);
     },
+
     onError(error) {
       toast.error(error.message);
     },
@@ -191,12 +267,21 @@ export function useRemoveUserFromProject(projectId: string) {
       return data;
     },
 
-    onSuccess: (data) => {
-      queryClient.invalidateQueries({
-        queryKey: ["project", projectId],
+    onSuccess: (data, variables) => {
+      queryClient.setQueryData(["project", projectId], (oldProject: any) => {
+        if (!oldProject) return oldProject;
+
+        return {
+          ...oldProject,
+          members: oldProject.members.filter(
+            (member: Member) => member.user.id !== variables.userId,
+          ),
+        };
       });
+
       toast.success(data.message);
     },
+
     onError(error) {
       toast.error(error.message);
     },
@@ -231,7 +316,7 @@ export function useProject(projectId: string) {
 
 export function useProjects() {
   return useQuery<Project>({
-    queryKey: ['projects'],
+    queryKey: ["projects"],
 
     queryFn: async () => {
       const response = await fetch(`${backendUrl}/projects`, {

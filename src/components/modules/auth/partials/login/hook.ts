@@ -36,15 +36,10 @@ export const useLogin = (setOpen: (open: boolean) => void) => {
     mutation.mutate(data, {
       onSuccess: async (data) => {
         Cookies.set("token", data.access_token);
-        await queryClient.refetchQueries({
-          queryKey: ["user"],
-        });
+        queryClient.setQueryData(["user"], data.user);
         await queryClient.refetchQueries({
           queryKey: ["sidebar"],
         });
-
-        setOpen(false);
-        router.refresh();
         router.replace("/dashboard");
       },
     });

@@ -1,14 +1,16 @@
 import { cn } from "@/src/lib/utils";
 import { UserAvatar } from "@/src/components/modules/user-avatar";
 import { Card, CardContent } from "@/src/components/ui/card";
-import { UserPlus } from "lucide-react";
+import { Loader, UserPlus } from "lucide-react";
 import { invitation, User } from "@/src/lib/types";
 import { relativeTime } from "@/src/lib/helpers";
 import { Button } from "@/src/components/ui/button";
 import { useChangeInvitationStatus } from "@/src/hooks/useInvitation";
+import { useState } from "react";
 
 const InvitationCard = ({ data }: { data: invitation }) => {
-  const { mutate } = useChangeInvitationStatus();
+  const { mutate, isPending } = useChangeInvitationStatus();
+  const [action, setAction] = useState("");
 
   return (
     <Card className={cn("border-primary/30 bg-primary/5")}>
@@ -42,6 +44,7 @@ const InvitationCard = ({ data }: { data: invitation }) => {
         <div className="flex gap-3 lg:w-max! w-full lg:pt-0! pt-3">
           <Button
             onClick={() => {
+              setAction("accept");
               mutate({
                 action: "accept",
                 invitationId: data.id,
@@ -51,10 +54,15 @@ const InvitationCard = ({ data }: { data: invitation }) => {
             className="w-full"
             variant={"default"}
           >
-            Accept
+            {isPending && action == "accept" ? (
+              <Loader className="animate-spin" size={17} />
+            ) : (
+              "Accept"
+            )}
           </Button>
           <Button
             onClick={() => {
+              setAction("reject");
               mutate({
                 action: "reject",
                 invitationId: data.id,
@@ -64,7 +72,11 @@ const InvitationCard = ({ data }: { data: invitation }) => {
             className="w-full"
             variant={"destructive"}
           >
-            Reject
+            {isPending && action == "reject" ? (
+              <Loader className="animate-spin" size={17} />
+            ) : (
+              "Reject"
+            )}
           </Button>
         </div>
       </CardContent>

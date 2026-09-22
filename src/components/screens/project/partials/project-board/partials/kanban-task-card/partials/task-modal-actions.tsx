@@ -2,7 +2,7 @@ import { DialogClose } from "@/src/components/ui/dialog";
 import { useDeleteTask } from "@/src/hooks/useTask";
 import useUser from "@/src/hooks/useUser";
 import { Task } from "@/src/lib/types";
-import { Trash, X } from "lucide-react";
+import { Loader, Trash, X } from "lucide-react";
 import { useParams } from "next/navigation";
 
 const TaskModalActions = ({
@@ -13,7 +13,7 @@ const TaskModalActions = ({
   setOpen: (val: boolean) => void;
 }) => {
   const { projectId } = useParams();
-  const { mutate: deleteMutate } = useDeleteTask(Number(projectId));
+  const { mutate: deleteMutate, isPending } = useDeleteTask(Number(projectId));
   const { data: userData } = useUser();
 
   return (
@@ -22,17 +22,21 @@ const TaskModalActions = ({
         <X size={21} />
       </DialogClose>
       {task.creator.email == userData?.email ? (
-        <Trash
-          onClick={() =>
-            deleteMutate(task.id, {
-              onSuccess() {
-                setOpen(false);
-              },
-            })
-          }
-          className="cursor-pointer text-red-500"
-          size={21}
-        />
+        isPending ? (
+          <Loader size={21} className="text-red-500 animate-spin" />
+        ) : (
+          <Trash
+            onClick={() =>
+              deleteMutate(task.id, {
+                onSuccess() {
+                  setOpen(false);
+                },
+              })
+            }
+            className="cursor-pointer text-red-500"
+            size={21}
+          />
+        )
       ) : (
         ""
       )}

@@ -11,7 +11,7 @@ import {
   DialogTrigger,
 } from "@/src/components/ui/dialog";
 import { Button } from "@/src/components/ui/button";
-import { Archive } from "lucide-react";
+import { Archive, Loader } from "lucide-react";
 import { useUpdateProject } from "@/src/hooks/useProject";
 
 type Props = {
@@ -78,7 +78,11 @@ export function ArchiveProjectModal({
           </Button>
 
           <Button onClick={handleArchive} disabled={isPending}>
-            {status == "archived" ? "Active" : "Archive"} project
+            {isPending ? (
+              <Loader className="size-4 animate-spin" />
+            ) : (
+              `${status == "archived" ? "Active" : "Archive"} project`
+            )}
           </Button>
         </DialogFooter>
       </DialogContent>

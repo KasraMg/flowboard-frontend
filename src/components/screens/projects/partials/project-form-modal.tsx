@@ -83,10 +83,7 @@ export function ProjectFormModal({
 
     createProjectMutation.mutate(payload, {
       onSuccess: () => {
-        toast.success("Project created successfully");
-
         setOpen(false);
-
         setName("");
         setDescription("");
         setBackground(ProjectBackground.OCEAN);

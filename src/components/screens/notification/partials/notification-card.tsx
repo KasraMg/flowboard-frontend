@@ -1,13 +1,13 @@
-import { List } from "lucide-react";
+import { List, Loader } from "lucide-react";
 import { Button } from "@/src/components/ui/button";
 import { Card, CardContent } from "@/src/components/ui/card";
 import { cn } from "@/src/lib/utils";
 import { relativeTime } from "@/src/lib/helpers";
 import { notification } from "@/src/lib/types";
-import { useDeleteNotification } from "@/src/hooks/useNotification";
+import { useDeleteNotification } from "@/src/hooks/useNotification"
 
 const NotificationCard = ({ data }: { data: notification }) => {
-  const { mutate } = useDeleteNotification(data.id);
+  const { mutate, isPending } = useDeleteNotification(data.id);
   return (
     <Card
       className={`${data.isRead ? "opacity-70" : "border-primary/30 bg-primary/5"}`}
@@ -43,7 +43,11 @@ const NotificationCard = ({ data }: { data: notification }) => {
             className="w-full"
             variant={"destructive"}
           >
-            Delete
+            {isPending ? (
+              <Loader className="animate-spin" size={17} />
+            ) : (
+              "Delete"
+            )}
           </Button>
         </div>
       </CardContent>

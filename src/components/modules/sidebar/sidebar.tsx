@@ -48,7 +48,7 @@ export function Sidebar({
   const pathname = usePathname();
   const queryClient = useQueryClient();
 
-  const { data } = userSidebar();
+  const { data, isPending } = userSidebar();
 
   return (
     <TooltipProvider delayDuration={collapsed ? 200 : 999999}>
@@ -103,9 +103,9 @@ export function Sidebar({
             ))}
           </div>
 
-          {!collapsed && <SidebarFavorites favorites={data?.favorites} />}
+          {!collapsed && <SidebarFavorites isPending={isPending} favorites={data?.favorites} />}
           {!collapsed && data?.projects.length > 0 && (
-            <SidebarProjects projects={data?.projects} />
+            <SidebarProjects isPending={isPending} projects={data?.projects} />
           )}
 
           <div className="mt-6 space-y-1">

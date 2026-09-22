@@ -8,7 +8,6 @@ import {
 import { Input } from "@/src/components/ui/input";
 import { Label } from "@/src/components/ui/label";
 import { Lock, Mail } from "lucide-react";
-import Link from "next/link";
 import { useLogin } from "./hook";
 
 const Login = ({
@@ -23,6 +22,7 @@ const Login = ({
     onSubmit,
     formState: { errors },
     isLoading,
+    isSuccess,
   } = useLogin(setOpen);
   return (
     <>
@@ -94,8 +94,13 @@ const Login = ({
             </Label>
           </div>
 
-          <Button loading={isLoading} type="submit" className="w-full">
-            Sign in
+          <Button
+            loading={isLoading}
+            disabled={isSuccess}
+            type="submit"
+            className="w-full"
+          >
+            {isSuccess ? "Redirecting..." : "Sign in"}
           </Button>
         </form>
 

@@ -42,20 +42,23 @@ export function useCreateColumn(projectId: number) {
     },
 
     onSuccess: (data) => {
-      queryClient.setQueryData(["project", String(projectId)], (oldProject:any) => {
-        if (!oldProject) return oldProject;
+      queryClient.setQueryData(
+        ["project", String(projectId)],
+        (oldProject: any) => {
+          if (!oldProject) return oldProject;
 
-        return {
-          ...oldProject,
-          columns: [
-            ...oldProject.columns,
-            {
-              ...data.column,
-              tasks: [],
-            },
-          ],
-        };
-      });
+          return {
+            ...oldProject,
+            columns: [
+              ...oldProject.columns,
+              {
+                ...data.column,
+                tasks: [],
+              },
+            ],
+          };
+        },
+      );
 
       toast.success(data.message);
     },
@@ -67,7 +70,6 @@ export function useCreateColumn(projectId: number) {
 
 export interface EditColumnPayload {
   title: string;
-  position?: number;
   columnId: number;
 }
 
@@ -78,7 +80,7 @@ export interface EditColumnResponse {
 }
 
 export function useEditColumn(projectId: number) {
-  const queryClient = useQueryClient();
+  // const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (
@@ -93,7 +95,9 @@ export function useEditColumn(projectId: number) {
             Authorization: `Bearer ${Cookies.get("token")}`,
           },
           credentials: "include",
-          body: JSON.stringify(payload),
+          body: JSON.stringify({
+            title: payload.title,
+          }),
         },
       );
 
@@ -106,12 +110,9 @@ export function useEditColumn(projectId: number) {
       return data;
     },
 
-    onSuccess: (data) => {
-      toast.success(data.message);
-      queryClient.invalidateQueries({
-        queryKey: ["project", String(projectId)],
-      });
-    },
+    // onSuccess: (data) => {
+    //   toast.success(data.message);
+    // },
     onError(error) {
       toast.error(error.message);
     },
@@ -143,12 +144,24 @@ export function useDeleteColumn(projectId: number) {
       return data;
     },
 
-    onSuccess: (data) => {
+    onSuccess: (data, columnId) => {
+      queryClient.setQueryData(
+        ["project", String(projectId)],
+        (oldProject: any) => {
+          if (!oldProject) return oldProject;
+
+          return {
+            ...oldProject,
+            columns: oldProject.columns.filter(
+              (column: Column) => column.id !== columnId,
+            ),
+          };
+        },
+      );
+
       toast.success(data.message);
-      queryClient.invalidateQueries({
-        queryKey: ["project", String(projectId)],
-      });
     },
+
     onError(error) {
       toast.error(error.message);
     },

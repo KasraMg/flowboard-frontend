@@ -1,7 +1,7 @@
 import NotificationsScreen from "@/src/components/screens/notification/notification-screen";
-import { backendUrl } from "@/src/lib/helpers";
+import { getNotifications } from "@/src/lib/server-fetches";
+import Hydrated from "@/src/providers/hydrated";
 import { Metadata } from "next";
-import { cookies } from "next/headers";
 
 export const metadata: Metadata = {
   title: "FlowBoard — Notifications",
@@ -11,17 +11,11 @@ export const metadata: Metadata = {
 };
 
 const NotificationsPage = async () => {
-  const cookieStore = await cookies();
-  const accessToken = cookieStore.get("token");
-
-  const response = await fetch(`${process.env.BACKEND_URL}/notifications`, {
-    headers: {
-      Authorization: `Bearer ${accessToken?.value}`,
-    },
-  });
-  const data = await response.json();
-
-  return <NotificationsScreen data={data.data} />;
+  return (
+    <Hydrated queryFn={getNotifications} queryKey={["notifications"]}>
+      <NotificationsScreen />
+    </Hydrated>
+  );
 };
 
 export default NotificationsPage;
