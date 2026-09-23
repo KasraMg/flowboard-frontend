@@ -11,19 +11,11 @@ export default function ProjectScreen() {
 
   const { data: project, isPending } = useProject(String(params.projectId));
 
-  if (isPending) {
-    return (
-      <div className="flex h-full items-center justify-center">
-        <p className="text-sm text-muted-foreground">Loading project...</p>
-      </div>
-    );
-  }
-
   useEffect(() => {
     if ((project as any)?.statusCode == 404 && !isPending) {
       notFound();
     }
-  }, [project]);
+  }, [project]); 
 
   return project?.id ? (
     <div className="flex h-full flex-col">
