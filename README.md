@@ -42,7 +42,7 @@ The application provides a responsive interface for managing projects, tasks, te
 
 ### Project Board
 
-![FlowBoard Project Board](./public/project-board.png)
+![FlowBoard Project Board](./public/project.png)
 
 ## 📂 Project Structure
 
